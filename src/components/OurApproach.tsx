@@ -1,108 +1,167 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
-import { Compass, Sparkles, ShieldCheck } from "lucide-react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { Compass, Sparkles, ShieldCheck, ArrowUpRight } from "lucide-react";
 
 export default function OurApproach() {
-  const approaches = [
+  const steps = [
     {
       number: "01",
-      title: "Personally Designed Journeys",
-      subtitle: "Tailored to Your Rhythm",
+      title: "Dream a little.",
+      eyebrow: "Initial Vision",
       description:
-        "Every itinerary is thoughtfully created around the traveller's interests, expectations, budget, and preferred pace. We take time to listen, understanding what inspires you before crafting a journey that feels entirely your own.",
+        "Tell us where you want to go, what you enjoy, and your preferred rhythm. That's all we need to begin sculpting a journey tailored around your individuality.",
       icon: Compass,
       image: "/images/generated/tea-plantation-approach.jpg",
-      imageAlt: "Munnar rolling tea hills at misty dawn",
+      imageAlt: "Misty tea slopes of Munnar",
+      highlight: "Personal Conversation",
     },
     {
       number: "02",
-      title: "Authentic Local Experiences",
-      subtitle: "Beyond the Conventional Guidebook",
+      eyebrow: "Bespoke Curation",
+      title: "Shape the journey.",
       description:
-        "Discover the culture, landscapes, cuisine, and hidden treasures of Kerala through meaningful local experiences. From private plantation walks to village waterways and culinary traditions, we connect you genuinely with South India.",
+        "We consult with you directly. Our Kerala team adjusts everything — the boutique heritage stays, private chauffeurs, secret vantage points, and the pace until it fits you flawlessly.",
       icon: Sparkles,
       image: "/images/generated/spice-gardens.jpg",
-      imageAlt: "Organic cardamom and spice plantation in Wayanad, Kerala",
+      imageAlt: "Organic spice gardens and plantation walk",
+      highlight: "Hand-Crafted Itinerary",
     },
     {
       number: "03",
-      title: "Thoughtful Travel Coordination",
-      subtitle: "Effortless, Discreet & Reliable",
+      eyebrow: "Seamless Execution",
+      title: "Confirm & unwind.",
       description:
-        "Enjoy a seamless journey with carefully coordinated accommodation, transportation, and experiences. Our dedicated attention ensures peace of mind from your arrival until your journey concludes.",
+        "We coordinate every transfer, accommodation, and private encounter. You simply arrive in South India — every host is vetted, and our team is by your side at every turn.",
       icon: ShieldCheck,
       image: "/images/generated/luxury-resort-stay.jpg",
-      imageAlt: "Boutique heritage eco-resort overlooking private tropical water",
+      imageAlt: "Luxury lakeside resort stay",
+      highlight: "Peace of Mind",
     },
   ];
 
   return (
-    <section id="approach" className="py-24 sm:py-32 bg-[#E9E0D2]/25 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="max-w-3xl mx-auto text-center space-y-4 mb-20">
-          <span className="text-[#8B5E35] text-xs uppercase tracking-[0.25em] font-semibold">
-            Boutique Philosophy
-          </span>
-          <h2 className="text-3xl sm:text-5xl font-serif text-[#183D2B] font-light tracking-tight">
-            Our Approach to Travel
-          </h2>
-          <div className="w-12 h-[1px] bg-[#8B5E35] mx-auto my-4" />
-          <p className="text-base sm:text-lg text-[#242424]/80 font-light leading-relaxed font-sans">
-            We believe the finest journeys are born from genuine personal attention, local insight, and an unhurried appreciation for the places we visit.
-          </p>
-        </div>
+    <section id="approach" className="py-20 sm:py-28 md:py-36 bg-[#FFFCF5] relative overflow-hidden">
+      {/* Subtle organic gradient */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-[#E9E0D2]/20 rounded-full blur-3xl pointer-events-none" />
 
-        {/* Editorial Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-12">
-          {approaches.map((item) => {
-            const Icon = item.icon;
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Section Header (Reference Image 1: Minimal, Editorial & Classy) */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="max-w-3xl mb-14 sm:mb-20"
+        >
+          <span className="text-[#8B5E35] text-xs uppercase tracking-[0.25em] font-semibold block mb-3">
+            The Process
+          </span>
+          <h2 className="text-3xl sm:text-5xl md:text-6xl font-serif text-[#183D2B] font-light tracking-tight leading-[1.1]">
+            How a{" "}
+            <span className="italic font-serif text-[#183D2B] font-normal underline decoration-[#8B5E35]/40 decoration-1 underline-offset-8">
+              Journeys
+            </span>{" "}
+            trip comes together.
+          </h2>
+          <p className="mt-5 text-base sm:text-lg text-[#242424]/80 font-light font-sans leading-relaxed max-w-2xl">
+            We don&apos;t build cookie-cutter tours. Here is how our collaborative, unhurried planning
+            process brings your bespoke holiday to life.
+          </p>
+        </motion.div>
+
+        {/* 3 Step Columns with Top Hairline Rule & Floating Icon Badges */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+          {steps.map((step, idx) => {
+            const Icon = step.icon;
             return (
-              <div
-                key={item.number}
-                className="group bg-[#FFFCF5] rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-[#E9E0D2]/70 flex flex-col"
+              <motion.div
+                key={step.number}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.7, delay: idx * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                className="group relative pt-8 border-t border-[#E9E0D2] flex flex-col justify-between transition-all duration-300"
               >
-                {/* Visual Imagery */}
-                <div className="relative aspect-[16/11] overflow-hidden">
+                {/* Top Step Header with Large Italic Number and Circular Icon */}
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <span className="font-serif italic text-5xl sm:text-6xl text-[#183D2B] group-hover:text-[#8B5E35] transition-colors duration-300 font-light select-none">
+                      {step.number}
+                    </span>
+
+                    {/* Circular Icon Pill with Hover Fill */}
+                    <div className="w-10 h-10 rounded-full border border-[#E9E0D2] bg-[#FFFCF5] group-hover:bg-[#183D2B] group-hover:border-[#183D2B] flex items-center justify-center text-[#183D2B] group-hover:text-[#FFFCF5] transition-all duration-300 shadow-sm group-hover:scale-110">
+                      <Icon className="w-4 h-4" />
+                    </div>
+                  </div>
+
+                  {/* Step Title */}
+                  <h3 className="text-2xl sm:text-3xl font-serif text-[#183D2B] font-normal mb-3 group-hover:translate-x-1 transition-transform duration-300">
+                    {step.title}
+                  </h3>
+
+                  {/* Body Description */}
+                  <p className="text-sm sm:text-base text-[#242424]/80 font-sans font-light leading-relaxed mb-6">
+                    {step.description}
+                  </p>
+                </div>
+
+                {/* Micro Visual Card with Hover Zoom */}
+                <div className="relative aspect-[16/10] rounded-2xl overflow-hidden shadow-sm group-hover:shadow-xl transition-all duration-500 border border-[#E9E0D2]/70 mt-2">
                   <Image
-                    src={item.image}
-                    alt={item.imageAlt}
+                    src={step.image}
+                    alt={step.imageAlt}
                     fill
                     sizes="(max-width: 768px) 100vw, 33vw"
-                    className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                    className="object-cover transition-transform duration-1000 group-hover:scale-108"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-                  <div className="absolute top-4 left-4 bg-[#FFFCF5]/90 backdrop-blur-sm text-[#183D2B] text-xs font-serif font-semibold px-3 py-1 rounded-full">
-                    {item.number}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-70 group-hover:opacity-50 transition-opacity" />
+                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white/95">
+                    <span className="text-[11px] font-sans uppercase tracking-wider text-[#E9E0D2] font-medium">
+                      {step.highlight}
+                    </span>
+                    <span className="text-xs font-serif italic text-white/80">Journeys</span>
                   </div>
                 </div>
 
-                {/* Content */}
-                <div className="p-8 sm:p-9 flex-1 flex flex-col justify-between space-y-5">
-                  <div className="space-y-3">
-                    <div className="inline-flex items-center gap-2 text-[#8B5E35]">
-                      <Icon className="w-4 h-4" />
-                      <span className="text-xs uppercase tracking-widest font-medium">
-                        {item.subtitle}
-                      </span>
-                    </div>
-                    <h3 className="text-2xl font-serif text-[#183D2B] font-normal leading-snug">
-                      {item.title}
-                    </h3>
-                    <p className="text-[#242424]/80 font-sans text-sm sm:text-base leading-relaxed font-light">
-                      {item.description}
-                    </p>
-                  </div>
-
-                  <div className="pt-4 border-t border-[#E9E0D2]/50 flex items-center justify-between text-xs text-[#507C7B] font-medium tracking-wide">
-                    <span>Journeys by Jibu Thomas</span>
-                    <span className="text-[#8B5E35] font-serif italic">Bespoke</span>
-                  </div>
-                </div>
-              </div>
+                {/* Subtle bottom accent line that glows on hover */}
+                <div className="w-full h-0.5 bg-transparent group-hover:bg-[#8B5E35]/60 transition-all duration-500 mt-6 rounded-full" />
+              </motion.div>
             );
           })}
         </div>
+
+        {/* Process Bottom CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="mt-16 sm:mt-20 pt-8 border-t border-[#E9E0D2] flex flex-col sm:flex-row items-center justify-between gap-6"
+        >
+          <div className="space-y-1 text-center sm:text-left">
+            <h4 className="font-serif text-xl sm:text-2xl text-[#183D2B]">
+              Ready to sculpt your South India itinerary?
+            </h4>
+            <p className="text-xs sm:text-sm text-[#242424]/70 font-sans">
+              No commitments. A simple, thoughtful conversation with our destination specialists.
+            </p>
+          </div>
+
+          <Link
+            href="#contact"
+            className="group inline-flex items-center gap-3 px-7 py-3.5 rounded-full bg-[#183D2B] text-[#FFFCF5] text-xs uppercase tracking-wider font-medium hover:bg-[#122e20] transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105 active:scale-95 shrink-0"
+          >
+            <span>Start Planning With Us</span>
+            <div className="p-1 rounded-full bg-white/10 group-hover:bg-[#8B5E35] transition-colors">
+              <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </div>
+          </Link>
+        </motion.div>
       </div>
     </section>
   );

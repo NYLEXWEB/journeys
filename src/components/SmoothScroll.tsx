@@ -5,17 +5,17 @@ import Lenis from "lenis";
 
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
-    // Add lenis classes to html element for 100% smooth momentum scroll
+    // Add lenis classes to html element for silky smooth momentum scroll
     document.documentElement.classList.add("lenis", "lenis-smooth");
 
     const lenis = new Lenis({
-      duration: 1.35,
+      duration: 1.15,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
-      wheelMultiplier: 0.95,
-      touchMultiplier: 1.5,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 1.1,
       infinite: false,
     });
 
@@ -29,11 +29,16 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     // Smooth scroll on anchor link clicks
     const handleAnchorClick = (e: MouseEvent) => {
       const target = (e.target as HTMLElement).closest("a");
-      if (target && target.hash && target.hash.startsWith("#") && target.origin === window.location.origin) {
+      if (
+        target &&
+        target.hash &&
+        target.hash.startsWith("#") &&
+        target.origin === window.location.origin
+      ) {
         const elem = document.querySelector(target.hash);
         if (elem) {
           e.preventDefault();
-          lenis.scrollTo(elem, { offset: -20, duration: 1.5 });
+          lenis.scrollTo(elem, { offset: -20, duration: 1.2 });
         }
       }
     };
@@ -60,4 +65,3 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
 
   return <>{children}</>;
 }
-

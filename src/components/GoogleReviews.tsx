@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 import { Star, PenSquare, CheckCircle2, ChevronRight, X } from "lucide-react";
 
 interface Review {
@@ -164,7 +165,13 @@ export default function GoogleReviews() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Authentic Google Review Header Card */}
-        <div className="bg-white rounded-3xl p-6 sm:p-10 border border-[#E9E0D2] shadow-[0_4px_24px_rgba(0,0,0,0.06)] mb-12 sm:mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.8 }}
+          className="bg-white rounded-3xl p-6 sm:p-10 border border-[#E9E0D2] shadow-[0_4px_24px_rgba(0,0,0,0.06)] mb-12 sm:mb-16"
+        >
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
 
             {/* Left: Google Brand & Score */}
@@ -241,7 +248,7 @@ export default function GoogleReviews() {
             </div>
 
           </div>
-        </div>
+        </motion.div>
 
         {/* 100% Google Reviews - Automatic Infinite Horizontal Loop */}
         <div className="relative w-full overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-4 group">

@@ -3,38 +3,45 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, ArrowUpRight } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#183D2B] text-[#FFFCF5] pt-20 pb-12 border-t border-[#8B5E35]/30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-16 pb-16 border-b border-white/10">
-          {/* Brand Identity & Larger Transparent Logo */}
-          <div className="lg:col-span-5 space-y-6">
-            <div className="relative h-18 sm:h-22 md:h-24 w-64 sm:w-72 md:w-80">
-              <Image
-                src="/images/logo-light.png"
-                alt="Journeys by Jibu Thomas - Official Brand Logo"
-                fill
-                sizes="(max-width: 768px) 260px, 320px"
-                className="object-contain object-left"
-              />
-            </div>
+    <footer className="bg-[#183D2B] text-[#FFFCF5] pt-20 pb-12 border-t border-[#8B5E35]/30 relative overflow-hidden">
+      {/* Subtle background glow */}
+      <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#8B5E35]/10 rounded-full blur-3xl pointer-events-none" />
 
-            <p className="font-serif italic text-lg text-[#E9E0D2] tracking-wide">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-16 pb-16 border-b border-white/10">
+          {/* Brand Identity & Logo */}
+          <div className="lg:col-span-5 space-y-6">
+            <Link href="#hero" className="inline-block">
+              <div className="relative h-16 sm:h-20 w-64 sm:w-72">
+                <Image
+                  src="/images/logo.png"
+                  alt="Journeys by Jibu Thomas - Official Brand Logo"
+                  fill
+                  sizes="(max-width: 768px) 260px, 320px"
+                  className="object-contain object-left brightness-0 invert opacity-95"
+                />
+              </div>
+            </Link>
+
+            <p className="font-serif italic text-lg sm:text-xl text-[#E9E0D2] tracking-wide">
               Travel, Tailored Around You.
             </p>
 
             <p className="text-sm font-sans text-[#FFFCF5]/80 font-light leading-relaxed max-w-sm">
-              Boutique travel design and destination management company based in Kerala, India, specialising in personalised holidays, privately curated journeys and authentic travel experiences across Kerala and South India.
+              Boutique travel design and destination management company based in Kerala, India,
+              specialising in personalised holidays, privately curated journeys and authentic travel
+              experiences across Kerala and South India.
             </p>
 
             <div className="flex items-center space-x-3 pt-2">
               <span className="text-xs uppercase tracking-widest text-[#E9E0D2]">Connect:</span>
               <a
                 href="#contact"
-                className="p-2.5 rounded-full bg-white/10 hover:bg-[#8B5E35] text-white transition-colors"
+                className="p-2.5 rounded-full bg-white/10 hover:bg-[#8B5E35] text-white transition-all hover:scale-110"
                 aria-label="Instagram (Placeholder)"
               >
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -43,7 +50,7 @@ export default function Footer() {
               </a>
               <a
                 href="#contact"
-                className="p-2.5 rounded-full bg-white/10 hover:bg-[#8B5E35] text-white transition-colors"
+                className="p-2.5 rounded-full bg-white/10 hover:bg-[#8B5E35] text-white transition-all hover:scale-110"
                 aria-label="Facebook (Placeholder)"
               >
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -61,32 +68,32 @@ export default function Footer() {
             <ul className="space-y-2.5 text-sm font-sans font-light text-[#FFFCF5]/85">
               <li>
                 <Link href="#about" className="hover:text-[#E9E0D2] transition-colors">
-                  About Our Brand
+                  Who We Are
                 </Link>
               </li>
               <li>
                 <Link href="#approach" className="hover:text-[#E9E0D2] transition-colors">
-                  Our Boutique Approach
+                  The Process
+                </Link>
+              </li>
+              <li>
+                <Link href="#journeys" className="hover:text-[#E9E0D2] transition-colors">
+                  Popular Packages
                 </Link>
               </li>
               <li>
                 <Link href="#experiences" className="hover:text-[#E9E0D2] transition-colors">
-                  Signature Experiences
+                  Curated Services
                 </Link>
               </li>
               <li>
                 <Link href="#destinations" className="hover:text-[#E9E0D2] transition-colors">
-                  Kerala Destinations
-                </Link>
-              </li>
-              <li>
-                <Link href="#destinations" className="hover:text-[#E9E0D2] transition-colors">
-                  Beyond Kerala
+                  Destination Portfolio
                 </Link>
               </li>
               <li>
                 <Link href="#gallery" className="hover:text-[#E9E0D2] transition-colors">
-                  Travel Inspiration Gallery
+                  Inspiration Gallery
                 </Link>
               </li>
               <li>
@@ -97,13 +104,14 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact Details (Client Placeholders) */}
+          {/* Contact Details */}
           <div className="lg:col-span-4 space-y-4">
             <h4 className="text-xs font-sans uppercase tracking-[0.2em] text-[#E9E0D2] font-semibold">
               Boutique Destination Office
             </h4>
             <p className="text-sm text-[#FFFCF5]/80 font-light leading-relaxed">
-              Based in Kerala, India. Dedicated to crafting intimate, privately coordinated travel across South India.
+              Based in Kerala, India. Dedicated to crafting intimate, privately coordinated travel
+              across South India.
             </p>
             <div className="space-y-3 text-sm text-[#FFFCF5]/85 font-light pt-2">
               <div className="flex items-start gap-3">
@@ -124,9 +132,7 @@ export default function Footer() {
 
         {/* Bottom Bar & Copyright */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-[#FFFCF5]/60 font-sans tracking-wide gap-4">
-          <p>
-            &copy; 2026 Journeys by Jibu Thomas. All rights reserved.
-          </p>
+          <p>&copy; 2026 Journeys by Jibu Thomas. All rights reserved.</p>
           <div className="flex items-center space-x-6">
             <span>Boutique Travel Design</span>
             <span>&bull;</span>

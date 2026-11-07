@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -10,10 +10,9 @@ import {
   Car,
   Hotel,
   Sparkles,
-  Calendar,
+  ArrowRight,
   MapPin,
   Clock,
-  ArrowRight,
 } from "lucide-react";
 
 interface JourneyPackage {
@@ -23,6 +22,7 @@ interface JourneyPackage {
   route: string;
   duration: string;
   image: string;
+  video: string;
   imageAlt: string;
   tagline: string;
   highlights: string[];
@@ -36,6 +36,7 @@ const PACKAGES: JourneyPackage[] = [
     route: "KANNUR · KASARAGOD · KOCHI",
     duration: "15 DAYS · 14 NIGHTS",
     image: "/images/generated/fort-kochi-heritage.jpg",
+    video: "/video/video-5.mp4",
     imageAlt: "Cultural Kerala heritage and classical art performances",
     tagline: "Living temple rituals, ritual arts, and coastal spice ports.",
     highlights: ["Theyyam Ritual Arts", "Private Chauffeur", "Heritage Homestays"],
@@ -47,6 +48,7 @@ const PACKAGES: JourneyPackage[] = [
     route: "WAYANAD · KANNUR · CALICUT",
     duration: "7 DAYS · 6 NIGHTS",
     image: "/images/generated/spice-gardens.jpg",
+    video: "/video/video-1.mp4",
     imageAlt: "Organic spice plantations and ancient colonial trade routes",
     tagline: "Cardamom plantations, Malabar cuisine, and quiet forest sanctuaries.",
     highlights: ["Spice Estate Walks", "Culinary Masterclasses", "Colonial History"],
@@ -58,6 +60,7 @@ const PACKAGES: JourneyPackage[] = [
     route: "MUNNAR · ALLEPPEY · MARARI",
     duration: "8 DAYS · 7 NIGHTS",
     image: "/images/generated/tea-plantation-approach.jpg",
+    video: "/video/video-2.mp4",
     imageAlt: "Misty tea estates overlooking tranquil waters",
     tagline: "Misty tea bungalows, private kettuvallam cruise, and quiet beaches.",
     highlights: ["Private Tea Bungalow", "Luxury Houseboat", "Ayurvedic Spa"],
@@ -69,6 +72,7 @@ const PACKAGES: JourneyPackage[] = [
     route: "ALAPPUZHA · KUMARAKOM · KOCHI",
     duration: "6 DAYS · 5 NIGHTS",
     image: "/images/generated/houseboat-backwaters.jpg",
+    video: "/video/video-2.mp4",
     imageAlt: "Lush green monsoon backwaters with traditional boat",
     tagline: "Watch emerald rain ripple over tranquil canals from your veranda.",
     highlights: ["Monsoon Rejuvenation", "Canal Kayaking", "Fresh Seafood Feasts"],
@@ -80,6 +84,7 @@ const PACKAGES: JourneyPackage[] = [
     route: "VARKALA · KOVALAM · TRIVANDRUM",
     duration: "7 DAYS · 6 NIGHTS",
     image: "/images/generated/coastal-varkala.jpg",
+    video: "/video/video-4.mp4",
     imageAlt: "Red laterite cliffs and pristine Arabian Sea shores",
     tagline: "Ayurvedic wellness, secluded red cliffs, and sunset ocean meditations.",
     highlights: ["Authentic Ayurveda", "Sunset Yoga", "Private Beach Access"],
@@ -128,38 +133,51 @@ const SIGNATURE_SERVICES = [
 export default function Experiences() {
   const [activePackageIndex, setActivePackageIndex] = useState(0);
   const activePackage = PACKAGES[activePackageIndex];
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  // Play video smoothly when active package changes
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.play().catch(() => {});
+    }
+  }, [activePackageIndex]);
 
   return (
     <section id="experiences" className="bg-[#FFFCF5] relative overflow-hidden">
       {/* ------------------------------------------------------------------ */}
-      {/* Part 1: Interactive Popular Packages (Reference Image 4 Aesthetic)  */}
+      {/* Part 1: Interactive Popular Packages (High Visibility Cinematic)    */}
       {/* ------------------------------------------------------------------ */}
       <div id="journeys" className="relative py-20 sm:py-28 md:py-36 border-b border-[#E9E0D2]">
-        {/* Dynamic Background Image with Smooth Cross-Fade on Hover */}
+        {/* Highly Visible Cinematic Background Video & Image Backdrop */}
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-          <AnimatePresence mode="sync">
+          <AnimatePresence mode="wait">
             <motion.div
               key={activePackage.id}
-              initial={{ opacity: 0, scale: 1.05 }}
-              animate={{ opacity: 0.22, scale: 1 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.65 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
               className="absolute inset-0"
             >
-              <Image
-                src={activePackage.image}
-                alt={activePackage.imageAlt}
-                fill
-                priority
-                sizes="100vw"
-                className="object-cover object-right md:object-center"
+              {/* Cinematic Video Loop */}
+              <video
+                ref={videoRef}
+                src={activePackage.video}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
+                poster={activePackage.image}
+                className="w-full h-full object-cover object-center md:object-right filter contrast-[1.05] brightness-[0.95]"
               />
             </motion.div>
           </AnimatePresence>
 
-          {/* Gradients ensuring high text contrast on left while revealing art on right */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#FFFCF5] via-[#FFFCF5]/90 md:via-[#FFFCF5]/80 to-[#FFFCF5]/40" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#FFFCF5] via-transparent to-[#FFFCF5]" />
+          {/* Calibrated Directional Gradients ensuring left copy legibility while leaving right backdrop vividly visible */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#FFFCF5] via-[#FFFCF5]/85 md:via-[#FFFCF5]/65 to-[#FFFCF5]/20" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#FFFCF5] via-transparent to-[#FFFCF5]/90" />
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -183,13 +201,12 @@ export default function Experiences() {
                 </span>
               </h2>
 
-              <p className="text-base sm:text-lg text-[#242424]/80 font-light font-sans leading-relaxed">
-                Hover to preview. Each package is a curated starting point &mdash; we&apos;ll rebuild
-                it around your pace, your dates, and the destinations that pull on you.
+              <p className="text-base sm:text-lg text-[#242424]/85 font-light font-sans leading-relaxed">
+                Hover over any journey to preview the live experience. Each itinerary is a bespoke starting point &mdash; we&apos;ll rebuild it around your pace, your dates, and the destinations that pull on you.
               </p>
 
-              {/* Active Package Quick Card on Mobile / Desktop */}
-              <div className="p-5 rounded-2xl bg-white/70 backdrop-blur-md border border-[#E9E0D2] shadow-sm space-y-2">
+              {/* Active Package Information Pill */}
+              <div className="p-5 rounded-2xl bg-[#FFFCF5]/75 backdrop-blur-md border border-[#E9E0D2] shadow-sm space-y-2">
                 <div className="flex items-center justify-between text-xs text-[#8B5E35] font-semibold tracking-wider uppercase">
                   <span>Currently Previewing:</span>
                   <span className="font-serif italic text-sm text-[#183D2B]">
@@ -199,14 +216,14 @@ export default function Experiences() {
                 <p className="font-serif text-lg text-[#183D2B] font-medium leading-snug">
                   {activePackage.title}
                 </p>
-                <p className="text-xs text-[#242424]/75 font-sans leading-relaxed">
+                <p className="text-xs text-[#242424]/80 font-sans leading-relaxed">
                   {activePackage.tagline}
                 </p>
                 <div className="flex flex-wrap gap-1.5 pt-2">
                   {activePackage.highlights.map((h) => (
                     <span
                       key={h}
-                      className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded bg-[#183D2B]/5 text-[#183D2B] font-medium"
+                      className="text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#183D2B]/10 text-[#183D2B] font-medium"
                     >
                       {h}
                     </span>
@@ -218,19 +235,19 @@ export default function Experiences() {
               <div className="pt-2">
                 <Link
                   href="#contact"
-                  className="group inline-flex items-center gap-3 px-8 py-4 rounded-full bg-[#183D2B] text-[#FFFCF5] text-xs uppercase tracking-wider font-medium hover:bg-[#122e20] transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105 active:scale-95"
+                  className="group inline-flex items-center gap-3 px-8 py-4 rounded-full bg-[#183D2B] text-[#FFFCF5] text-xs uppercase tracking-wider font-medium hover:bg-[#8B5E35] transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105 active:scale-95"
                 >
                   <span>Inquire About These Journeys</span>
-                  <div className="p-1 rounded-full bg-white/10 group-hover:bg-[#8B5E35] transition-colors">
+                  <div className="p-1 rounded-full bg-white/10 group-hover:bg-white group-hover:text-[#183D2B] transition-colors">
                     <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </div>
                 </Link>
               </div>
             </motion.div>
 
-            {/* Right Column: Interactive Numbered List (Reference Image 4) */}
+            {/* Right Column: 100% Transparent List Items with Highlighted Headings (As User Requested) */}
             <div className="lg:col-span-7">
-              <div className="space-y-1">
+              <div className="space-y-0">
                 {PACKAGES.map((pkg, index) => {
                   const isActive = index === activePackageIndex;
                   return (
@@ -242,54 +259,67 @@ export default function Experiences() {
                       transition={{ duration: 0.5, delay: index * 0.08 }}
                       onMouseEnter={() => setActivePackageIndex(index)}
                       onClick={() => setActivePackageIndex(index)}
-                      className={`group relative p-4 sm:p-5 rounded-2xl transition-all duration-300 cursor-pointer border ${
-                        isActive
-                          ? "bg-white/85 shadow-lg border-[#8B5E35]/40 backdrop-blur-md translate-x-1"
-                          : "bg-transparent hover:bg-white/40 border-b border-t-0 border-l-0 border-r-0 border-[#E9E0D2] rounded-none hover:translate-x-0.5"
-                      }`}
+                      className="group relative py-5 sm:py-6 bg-transparent border-b border-[#242424]/15 cursor-pointer transition-all duration-300 select-none"
                     >
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
-                        {/* Number & Title */}
-                        <div className="flex items-center gap-4">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-6">
+                        {/* Number & Highlighted Heading */}
+                        <div className="flex items-baseline gap-4 sm:gap-5 flex-1">
                           <span
-                            className={`font-serif italic text-2xl sm:text-3xl font-light transition-colors ${
+                            className={`font-serif italic text-2xl sm:text-3xl font-light transition-all duration-300 shrink-0 ${
                               isActive
-                                ? "text-[#8B5E35]"
-                                : "text-[#183D2B]/50 group-hover:text-[#183D2B]"
+                                ? "text-[#8B5E35] scale-110 translate-x-1"
+                                : "text-[#183D2B]/40 group-hover:text-[#183D2B]"
                             }`}
                           >
                             {pkg.number}
                           </span>
 
-                          <div>
+                          <div className="space-y-1">
                             <h3
-                              className={`font-serif text-lg sm:text-xl md:text-2xl transition-colors leading-snug ${
+                              className={`font-serif text-xl sm:text-2xl md:text-[27px] transition-all duration-300 leading-snug ${
                                 isActive
-                                  ? "text-[#183D2B] font-medium"
-                                  : "text-[#242424] group-hover:text-[#183D2B]"
+                                  ? "text-[#183D2B] font-medium tracking-tight drop-shadow-sm translate-x-1"
+                                  : "text-[#242424]/80 group-hover:text-[#183D2B] font-normal"
                               }`}
                             >
                               {pkg.title}
                             </h3>
+
+                            {/* Active subtle indicator bar */}
+                            {isActive && (
+                              <motion.div
+                                layoutId="packageActiveLine"
+                                className="h-[2px] w-16 bg-[#8B5E35] rounded-full"
+                                transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                              />
+                            )}
                           </div>
                         </div>
 
-                        {/* Location Tag & Duration */}
-                        <div className="flex items-center gap-3 sm:gap-5 text-right pl-10 sm:pl-0">
+                        {/* Location Tag, Duration & Arrow Action */}
+                        <div className="flex items-center gap-4 sm:gap-6 pl-10 sm:pl-0 self-end sm:self-center shrink-0">
                           <div className="space-y-0.5 text-left sm:text-right">
-                            <span className="block text-[11px] font-sans uppercase tracking-widest text-[#242424]/70 font-medium">
+                            <span
+                              className={`block text-[11px] font-sans uppercase tracking-widest font-medium transition-colors ${
+                                isActive ? "text-[#183D2B]" : "text-[#242424]/60"
+                              }`}
+                            >
                               {pkg.route}
                             </span>
-                            <span className="block text-[10px] font-sans uppercase tracking-wider text-[#8B5E35]">
+                            <span
+                              className={`block text-[10px] font-sans uppercase tracking-wider transition-colors ${
+                                isActive ? "text-[#8B5E35] font-semibold" : "text-[#8B5E35]/75"
+                              }`}
+                            >
                               {pkg.duration}
                             </span>
                           </div>
 
                           <div
-                            className={`p-2 rounded-full transition-all duration-300 shrink-0 ${
+                            className={`p-2.5 rounded-full transition-all duration-300 ${
                               isActive
-                                ? "bg-[#183D2B] text-white rotate-0"
-                                : "bg-transparent text-[#242424]/40 group-hover:text-[#183D2B] group-hover:bg-[#E9E0D2]/50 -rotate-45"
+                                ? "bg-[#183D2B] text-white shadow-md rotate-0 scale-110"
+                                : "bg-black/5 text-[#242424]/40 group-hover:text-[#183D2B] group-hover:bg-white -rotate-45"
                             }`}
                           >
                             <ArrowRight className="w-4 h-4" />

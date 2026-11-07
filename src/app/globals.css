@@ -9,6 +9,12 @@
     --charcoal: #242424;
     --warm-sand: #e9e0d2;
   }
+
+  html,
+  body {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
 }
 
 /* Custom font utilities mapping to Next.js font variables */
@@ -45,6 +51,16 @@ html.lenis body {
 html {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Hide scrollbar for clean horizontal tab lists */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* Editorial line-clamp and image hover treatments */

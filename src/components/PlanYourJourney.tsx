@@ -294,40 +294,7 @@ export default function PlanYourJourney() {
                     </div>
                   </div>
 
-                  {/* Travel Preferences */}
-                  <div>
-                    <label className="block text-xs uppercase tracking-wider text-[#183D2B] font-medium mb-2.5">
-                      Travel Interests &amp; Themes
-                    </label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                      {preferenceOptions.map((pref) => {
-                        const checked = formData.preferences.includes(pref);
-                        return (
-                          <button
-                            type="button"
-                            key={pref}
-                            onClick={() => handleCheckboxToggle(pref)}
-                            className={`px-3.5 py-2.5 text-left rounded-xl text-xs font-sans transition-all flex items-center justify-between border ${
-                              checked
-                                ? "bg-[#183D2B] text-[#FFFCF5] border-[#183D2B] shadow-sm"
-                                : "bg-white text-[#242424] border-[#E9E0D2] hover:border-[#8B5E35]"
-                            }`}
-                          >
-                            <span>{pref}</span>
-                            <span
-                              className={`w-4 h-4 rounded-full border flex items-center justify-center text-[10px] transition-colors ${
-                                checked
-                                  ? "border-white bg-[#8B5E35] text-white"
-                                  : "border-gray-300"
-                              }`}
-                            >
-                              {checked ? "✓" : ""}
-                            </span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
+   
 
                   {/* Additional Notes */}
                   <div>

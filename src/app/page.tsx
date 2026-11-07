@@ -41,9 +41,6 @@ export default function Home() {
           {/* Pure Visual Inspiration Gallery */}
           <InspirationGallery />
 
-          {/* Authentic 100% Google Reviews Section */}
-          <GoogleReviews />
-
           {/* Tailored Consultation Enquiry Form & WhatsApp CTA */}
           <PlanYourJourney />
         </main>

@@ -89,34 +89,34 @@ export default function Destinations() {
   });
 
   return (
-    <section id="destinations" className="py-20 sm:py-28 md:py-36 bg-[#FFFCF5] relative">
+    <section id="destinations" className="py-16 sm:py-24 md:py-36 bg-[#FFFCF5] relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-14 sm:mb-20">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 sm:gap-8 mb-10 sm:mb-16 md:mb-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="max-w-2xl space-y-3"
+            className="max-w-2xl space-y-2 sm:space-y-3"
           >
             <span className="text-[#8B5E35] text-xs uppercase tracking-[0.25em] font-semibold block">
               Destination Portfolio
             </span>
-            <h2 className="text-3xl sm:text-5xl font-serif text-[#183D2B] font-light tracking-tight leading-[1.1]">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-serif text-[#183D2B] font-light tracking-tight leading-[1.12] sm:leading-[1.1]">
               Discover Kerala &amp;{" "}
               <span className="italic font-serif text-[#183D2B] underline decoration-[#8B5E35]/40 decoration-1 underline-offset-8">
                 South India
               </span>
             </h2>
-            <p className="text-base sm:text-lg text-[#242424]/80 font-light font-sans leading-relaxed">
+            <p className="text-sm sm:text-lg text-[#242424]/80 font-light font-sans leading-relaxed">
               From the tranquil lagoons of Alleppey to the mist-draped peaks of the Western Ghats and
               the ancient cultural corridors beyond.
             </p>
           </motion.div>
 
           {/* Filter Pills with Animated Selection */}
-          <div className="flex items-center gap-1.5 p-1.5 rounded-full bg-[#E9E0D2]/50 border border-[#E9E0D2] self-start md:self-end">
+          <div className="flex items-center gap-1 sm:gap-1.5 p-1 sm:p-1.5 rounded-full bg-[#E9E0D2]/50 border border-[#E9E0D2] max-w-full overflow-x-auto no-scrollbar self-start md:self-end">
             {(
               [
                 { id: "all", label: "All Regions" },
@@ -129,7 +129,7 @@ export default function Destinations() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveCategory(tab.id)}
-                  className={`relative px-4 sm:px-5 py-2 rounded-full text-xs font-medium tracking-wider uppercase transition-all duration-300 ${
+                  className={`relative px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full text-[11px] sm:text-xs font-medium tracking-wider uppercase whitespace-nowrap transition-all duration-300 ${
                     isActive ? "text-[#FFFCF5]" : "text-[#242424] hover:text-[#183D2B]"
                   }`}
                 >
@@ -148,7 +148,7 @@ export default function Destinations() {
         </div>
 
         {/* Magazine Destination Grid */}
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 sm:gap-9">
+        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8">
           <AnimatePresence mode="popLayout">
             {filteredDestinations.map((dest) => (
               <motion.div
@@ -161,7 +161,7 @@ export default function Destinations() {
               >
                 <Link
                   href="#contact"
-                  className="group block bg-white rounded-3xl overflow-hidden border border-[#E9E0D2] shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-1.5"
+                  className="group block bg-white rounded-2xl sm:rounded-3xl overflow-hidden border border-[#E9E0D2] shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-1.5"
                 >
                   {/* Image Container with Zoom & Gradient */}
                   <div className="relative aspect-[4/3] sm:aspect-[16/11] overflow-hidden">
@@ -169,30 +169,24 @@ export default function Destinations() {
                       src={dest.image}
                       alt={dest.name}
                       fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className="object-cover transition-transform duration-1000 group-hover:scale-108"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
 
-                    {/* Region Pill */}
-                    <div className="absolute top-4 left-4 bg-[#FFFCF5]/90 backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-sans font-medium text-[#183D2B] flex items-center gap-1.5 shadow-sm">
-                      <MapPin className="w-3 h-3 text-[#8B5E35]" />
-                      <span>{dest.region}</span>
-                    </div>
-
                     {/* Bottom Card Title & Reveal Details */}
-                    <div className="absolute bottom-5 left-5 right-5 text-white flex items-end justify-between gap-4">
-                      <div className="space-y-1">
-                        <h3 className="font-serif text-2xl sm:text-3xl font-normal leading-tight text-white drop-shadow-sm group-hover:text-[#E9E0D2] transition-colors">
+                    <div className="absolute bottom-4 sm:bottom-5 left-4 sm:left-5 right-4 sm:right-5 text-white flex items-end justify-between gap-3 sm:gap-4">
+                      <div className="space-y-0.5 sm:space-y-1">
+                        <h3 className="font-serif text-xl sm:text-2xl md:text-3xl font-normal leading-tight text-white drop-shadow-sm group-hover:text-[#E9E0D2] transition-colors">
                           {dest.name}
                         </h3>
-                        <p className="text-xs text-white/80 font-sans font-light line-clamp-1">
+                        <p className="text-[11px] sm:text-xs text-white/80 font-sans font-light line-clamp-1">
                           {dest.tagline}
                         </p>
                       </div>
 
-                      <div className="p-2.5 rounded-full bg-white/20 backdrop-blur-sm group-hover:bg-[#8B5E35] transition-colors shrink-0 shadow-md">
-                        <ArrowUpRight className="w-4 h-4 text-white transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                      <div className="p-2 sm:p-2.5 rounded-full bg-white/20 backdrop-blur-sm group-hover:bg-[#8B5E35] transition-colors shrink-0 shadow-md">
+                        <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                       </div>
                     </div>
                   </div>

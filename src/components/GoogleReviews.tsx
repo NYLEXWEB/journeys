@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Star, PenSquare, CheckCircle2, ChevronRight, X } from "lucide-react";
 
@@ -122,6 +122,33 @@ export default function GoogleReviews() {
   const [isWriteModalOpen, setIsWriteModalOpen] = useState(false);
   const [reviewSubmitted, setReviewSubmitted] = useState(false);
 
+  // Background Scroll Lock (Lenis + Body Freeze) when modal is open
+  useEffect(() => {
+    if (isWriteModalOpen) {
+      document.body.style.overflow = "hidden";
+      document.body.classList.add("modal-open");
+      document.documentElement.classList.add("modal-open");
+    } else {
+      document.body.style.overflow = "";
+      document.body.classList.remove("modal-open");
+      document.documentElement.classList.remove("modal-open");
+    }
+    return () => {
+      document.body.style.overflow = "";
+      document.body.classList.remove("modal-open");
+      document.documentElement.classList.remove("modal-open");
+    };
+  }, [isWriteModalOpen]);
+
+  // Close on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsWriteModalOpen(false);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   // Form state
   const [newAuthor, setNewAuthor] = useState("");
   const [newRating, setNewRating] = useState(5);
@@ -163,6 +190,23 @@ export default function GoogleReviews() {
   return (
     <section id="reviews" className="py-20 sm:py-28 bg-[#FFFCF5] relative border-t border-[#E9E0D2]/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        {/* Minimal Section Header */}
+        <div className="max-w-3xl mb-10 sm:mb-14">
+          <div className="inline-flex items-center gap-2 text-[#8B5E35] text-xs uppercase tracking-[0.25em] font-semibold mb-3">
+            <span className="w-6 h-[1.5px] bg-[#8B5E35]" />
+            <span>GUEST EXPERIENCES &bull; 5.0 VERIFIED RATING</span>
+          </div>
+          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-serif text-[#183D2B] font-light tracking-tight leading-[1.12]">
+            Words from travelers who{" "}
+            <span className="italic font-normal underline decoration-[#8B5E35]/40 decoration-1 underline-offset-8">
+              journeyed with us.
+            </span>
+          </h2>
+          <p className="mt-3 text-sm sm:text-base text-[#242424]/75 font-light leading-relaxed max-w-2xl">
+            Real encounters, genuine memories, and verified feedback from guests across the globe.
+          </p>
+        </div>
 
         {/* Authentic Google Review Header Card */}
         <motion.div
@@ -252,12 +296,8 @@ export default function GoogleReviews() {
 
         {/* 100% Google Reviews - Automatic Infinite Horizontal Loop */}
         <div className="relative w-full overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-4 group">
-          {/* Edge Blur / Fade Gradients */}
-          <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 sm:w-24 bg-gradient-to-r from-[#FFFCF5] via-[#FFFCF5]/80 to-transparent z-10" />
-          <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 sm:w-24 bg-gradient-to-l from-[#FFFCF5] via-[#FFFCF5]/80 to-transparent z-10" />
-
           {/* Continuous Loop Track */}
-          <div className="animate-marquee-infinite flex gap-6 items-stretch">
+          <div className="animate-marquee-left flex gap-6 items-stretch">
             {[...reviews, ...reviews].map((rev, index) => (
               <div
                 key={`${rev.id}-${index}`}
@@ -326,8 +366,8 @@ export default function GoogleReviews() {
                         <Star
                           key={s}
                           className={`w-4 h-4 ${s <= rev.rating
-                              ? "fill-[#FBBC05] text-[#FBBC05]"
-                              : "fill-gray-200 text-gray-200"
+                            ? "fill-[#FBBC05] text-[#FBBC05]"
+                            : "fill-gray-200 text-gray-200"
                             }`}
                         />
                       ))}
@@ -376,10 +416,11 @@ export default function GoogleReviews() {
       {/* Google "Write a Review" Modal */}
       {isWriteModalOpen && (
         <div
-          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
+          className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
           onClick={() => setIsWriteModalOpen(false)}
         >
           <div
+            data-lenis-prevent="true"
             className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-gray-100 relative animate-in fade-in zoom-in-95 duration-200"
             onClick={(e) => e.stopPropagation()}
           >
@@ -457,8 +498,8 @@ export default function GoogleReviews() {
                       >
                         <Star
                           className={`w-7 h-7 ${star <= (hoverRating || newRating)
-                              ? "fill-[#FBBC05] text-[#FBBC05]"
-                              : "fill-gray-200 text-gray-200"
+                            ? "fill-[#FBBC05] text-[#FBBC05]"
+                            : "fill-gray-200 text-gray-200"
                             }`}
                         />
                       </button>

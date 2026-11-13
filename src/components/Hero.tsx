@@ -144,23 +144,23 @@ export default function Hero() {
             className="flex flex-col items-center text-center max-w-4xl"
           >
             {/* Single-Word Punchy Headline with Italic Accent */}
-            <h1 className="text-[38px] sm:text-6xl md:text-8xl lg:text-9xl font-serif font-light tracking-tight leading-[1.0] sm:leading-[0.95] mb-4 sm:mb-7 text-[#FFFCF5] drop-shadow-lg select-none">
+            <h1 className="text-[34px] sm:text-6xl md:text-8xl lg:text-9xl font-serif font-light tracking-tight leading-[1.05] sm:leading-[0.95] mb-3 sm:mb-7 text-[#FFFCF5] drop-shadow-lg select-none">
               {currentSlide.word}
-              <span className="italic font-normal text-[#E9E0D2] font-serif ml-2.5 sm:ml-4">
+              <span className="italic font-normal text-[#E9E0D2] font-serif ml-2 sm:ml-4">
                 {currentSlide.subWord}
               </span>
             </h1>
 
             {/* 1-2 Line Poetic Description */}
-            <p className="max-w-xl sm:max-w-2xl text-sm sm:text-lg md:text-xl font-light text-[#FFFCF5]/90 leading-relaxed font-sans tracking-wide drop-shadow-sm mb-7 sm:mb-11 px-2 sm:px-0">
+            <p className="max-w-xl sm:max-w-2xl text-xs sm:text-base md:text-xl font-light text-[#FFFCF5]/90 leading-relaxed font-sans tracking-wide drop-shadow-sm mb-6 sm:mb-11 px-2 sm:px-0">
               {currentSlide.description}
             </p>
 
             {/* Action Buttons with Premium Hover Effects */}
             <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-5 w-full sm:w-auto">
               <Link
-                href="#journeys"
-                className="group relative inline-flex items-center justify-center gap-3 px-7 sm:px-8 py-3.5 sm:py-4 rounded-full bg-[#FFFCF5] text-[#183D2B] text-xs sm:text-sm font-medium tracking-wider uppercase shadow-xl hover:shadow-[0_12px_30px_rgba(0,0,0,0.35)] transition-all duration-300 hover:scale-105 active:scale-95 w-full sm:w-auto"
+                href="#travel-with-jibu"
+                className="group relative inline-flex items-center justify-center gap-3 px-6 sm:px-8 py-3.5 sm:py-4 rounded-full bg-[#FFFCF5] text-[#183D2B] text-xs sm:text-sm font-medium tracking-wider uppercase shadow-xl hover:shadow-[0_12px_30px_rgba(0,0,0,0.35)] transition-all duration-300 hover:scale-105 active:scale-95 w-full sm:w-auto"
               >
                 <span>Explore Journeys</span>
                 <div className="p-1 rounded-full bg-[#183D2B] text-[#FFFCF5] transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5">
@@ -173,7 +173,7 @@ export default function Hero() {
       </div>
 
       {/* Interactive Bottom Progress Indicator & Video Switcher */}
-      <div className="absolute bottom-5 sm:bottom-10 left-0 right-0 z-30 px-3 sm:px-8">
+      <div className="absolute bottom-4 sm:bottom-10 left-0 right-0 z-30 px-3 sm:px-8 pr-16 sm:pr-8">
         <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
           {/* Slide Navigation Tabs */}
           <div className="flex items-center gap-1.5 sm:gap-3 w-full sm:w-auto justify-center max-w-full overflow-x-auto no-scrollbar py-1">

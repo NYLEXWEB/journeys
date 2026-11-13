@@ -54,7 +54,24 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     };
     window.addEventListener("pageshow", handlePageShow);
 
+    // Stop Lenis when modal is open, resume when closed
+    const observer = new MutationObserver(() => {
+      const isLocked =
+        document.body.classList.contains("modal-open") ||
+        document.body.style.overflow === "hidden" ||
+        document.documentElement.classList.contains("modal-open");
+      if (isLocked) {
+        lenis.stop();
+      } else {
+        lenis.start();
+      }
+    });
+
+    observer.observe(document.body, { attributes: true, attributeFilter: ["class", "style"] });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class", "style"] });
+
     return () => {
+      observer.disconnect();
       cancelAnimationFrame(rafId);
       document.removeEventListener("click", handleAnchorClick);
       window.removeEventListener("pageshow", handlePageShow);

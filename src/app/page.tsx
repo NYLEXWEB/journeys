@@ -1,52 +1,80 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import BrandStory from "@/components/BrandStory";
-import OurApproach from "@/components/OurApproach";
-import Experiences from "@/components/Experiences";
+import AboutUs from "@/components/AboutUs";
 import Destinations from "@/components/Destinations";
-import WhyChooseUs from "@/components/WhyChooseUs";
-import InspirationGallery from "@/components/InspirationGallery";
+import CuratedExperiences from "@/components/CuratedExperiences";
+import TravelWithJibu from "@/components/TravelWithJibu";
+import OurServices from "@/components/OurServices";
+import TravelJournal from "@/components/TravelJournal";
 import GoogleReviews from "@/components/GoogleReviews";
-import PlanYourJourney from "@/components/PlanYourJourney";
+import ContactUs from "@/components/ContactUs";
 import Footer from "@/components/Footer";
 import SmoothScroll from "@/components/SmoothScroll";
+import FloatingWhatsApp from "@/components/FloatingWhatsApp";
+import StackingSection from "@/components/StackingSection";
 
 export default function Home() {
   return (
     <SmoothScroll>
       <div className="min-h-screen bg-[#FFFCF5] text-[#242424] flex flex-col font-sans selection:bg-[#183D2B] selection:text-[#FFFCF5]">
-        {/* Editorial Navigation */}
+        {/* Editorial Navigation with Exact Site Hierarchy Mega-menus */}
         <Navbar />
 
         {/* Main Content Flow */}
-        <main className="flex-1">
-          {/* Full-screen Cinematic 5-Video Hero */}
-          <Hero />
+        <main className="flex-1 relative">
+          {/* HOME Cover: Cinematic Hero (Sticky Pin Curtain) */}
+          <div className="sticky top-0 z-0 h-screen w-full overflow-hidden">
+            <Hero />
+          </div>
 
-          {/* Brand Story & Philosophy */}
-          <BrandStory />
+          {/* 1. ABOUT US: Page 1 */}
+          <StackingSection zIndex={10} isFirst={true}>
+            <AboutUs />
+          </StackingSection>
 
-          {/* Our Approach (Three Pillars) */}
-          <OurApproach />
+          {/* 2. DESTINATIONS: Page 2 */}
+          <StackingSection zIndex={12}>
+            <Destinations />
+          </StackingSection>
 
-          {/* Signature Experiences */}
-          <Experiences />
+          {/* 3. CURATED EXPERIENCES: Page 3 */}
+          <StackingSection zIndex={14}>
+            <CuratedExperiences />
+          </StackingSection>
 
-          {/* Minimal Destinations Portfolio */}
-          <Destinations />
+          {/* 4. TRAVEL WITH JIBU: Page 4 */}
+          <StackingSection zIndex={16}>
+            <TravelWithJibu />
+          </StackingSection>
 
-          {/* Why Discerning Travellers Choose Us */}
-          <WhyChooseUs />
+          {/* 5. OUR SERVICES: Page 5 */}
+          <StackingSection zIndex={18}>
+            <OurServices />
+          </StackingSection>
 
-          {/* Pure Visual Inspiration Gallery */}
-          <InspirationGallery />
+          {/* 6. TRAVEL JOURNAL: Page 6 */}
+          <StackingSection zIndex={20}>
+            <TravelJournal />
+          </StackingSection>
 
-          {/* Tailored Consultation Enquiry Form & WhatsApp CTA */}
-          <PlanYourJourney />
+          {/* Authentic Google Reviews & Guest Stories: Page 7 */}
+          <StackingSection zIndex={22}>
+            <GoogleReviews />
+          </StackingSection>
+
+          {/* 7. CONTACT US: Page 8 */}
+          <StackingSection zIndex={24}>
+            <ContactUs />
+          </StackingSection>
         </main>
 
-        {/* Brand Footer */}
-        <Footer />
+        {/* Structured Brand Footer: Page 9 */}
+        <StackingSection zIndex={26} isFooter={true}>
+          <Footer />
+        </StackingSection>
+
+        {/* Floating Minimalist WhatsApp Concierge */}
+        <FloatingWhatsApp />
       </div>
     </SmoothScroll>
   );

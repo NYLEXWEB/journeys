@@ -1,17 +1,10 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Plus_Jakarta_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 
-const cormorant = Cormorant_Garamond({
+const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-serif",
-  display: "swap",
-});
-
-const jakarta = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["200", "300", "400", "500", "600"],
   variable: "--font-sans",
   display: "swap",
 });
@@ -48,9 +41,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${cormorant.variable} ${jakarta.variable} antialiased`}
+      className={`${inter.variable} antialiased`}
     >
-      <body className="min-h-screen bg-[#FFFCF5] text-[#242424] font-sans selection:bg-[#183D2B] selection:text-[#FFFCF5]">
+      <body className="min-h-screen bg-[#FFFCF5] text-[#242424] font-sans font-light selection:bg-[#183D2B] selection:text-[#FFFCF5] tracking-[-0.015em]">
         {children}
       </body>
     </html>

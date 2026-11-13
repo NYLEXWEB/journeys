@@ -2,8 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import { WhatsAppIcon } from "./WhatsAppIcon";
+import { useWebsiteContent } from "@/hooks/useWebsiteContent";
+import { INITIAL_CONTACT_INFO } from "@/lib/seedData";
 
 export default function FloatingWhatsApp() {
+  const content = useWebsiteContent();
+  const contact = content.contactInfo || INITIAL_CONTACT_INFO;
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPastHero, setIsPastHero] = useState(false);
 
@@ -52,7 +57,7 @@ export default function FloatingWhatsApp() {
       }`}
     >
       <a
-        href="https://wa.me/919447000000?text=Hello%20Jibu%2C%20I%20would%20like%20to%20enquire%20about%20planning%20a%20luxury%20journey%20to%20Kerala."
+        href={`https://wa.me/${contact.whatsappNumber.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(contact.whatsappPrefill || "Hello Jibu, I would like to enquire about planning a luxury journey to Kerala.")}`}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Direct WhatsApp Enquiry with Jibu Thomas"

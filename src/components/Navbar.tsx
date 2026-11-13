@@ -32,52 +32,68 @@ interface NavItem {
 
 export const SITE_STRUCTURE: NavItem[] = [
   {
-    id: "about",
-    name: "About",
-    fullName: "1. About Us",
-    href: "/about",
-    items: [
-      { name: "Our Story", href: "/about#story" },
-      { name: "Meet Jibu Thomas", href: "/about#jibu" },
-      { name: "Our Travel Philosophy", href: "/about#philosophy" },
-      { name: "Why Travel With Us", href: "/about#why-us" },
-    ],
-  },
-  {
-    id: "destinations",
-    name: "Destinations",
-    fullName: "2. Destinations",
+    id: "kerala",
+    name: "Kerala",
+    fullName: "Kerala Discovery",
     href: "/destinations",
     groups: [
       {
-        groupTitle: "Kerala",
+        groupTitle: "Places",
         items: [
+          { name: "Kochi", href: "/destinations#fort-kochi" },
           { name: "Munnar", href: "/destinations#munnar" },
-          { name: "Wayanad", href: "/destinations#wayanad" },
           { name: "Thekkady", href: "/destinations#thekkady" },
-          { name: "Alleppey", href: "/destinations#alleppey" },
+          { name: "Alappuzha / Alleppey", href: "/destinations#alleppey" },
           { name: "Kumarakom", href: "/destinations#kumarakom" },
-          { name: "Fort Kochi", href: "/destinations#fort-kochi" },
+          { name: "Wayanad", href: "/destinations#wayanad" },
           { name: "Varkala", href: "/destinations#varkala" },
           { name: "Kovalam", href: "/destinations#kovalam" },
+          { name: "Kozhikode", href: "/destinations#kozhikode" },
+          { name: "Kannur", href: "/destinations#kannur" },
+          { name: "Bekal", href: "/destinations#bekal" },
+          { name: "Lesser-known Kerala", href: "/destinations" },
         ],
       },
       {
-        groupTitle: "Tamil Nadu",
+        groupTitle: "Discover Kerala",
         items: [
-          { name: "Ooty", href: "/destinations#ooty" },
-          { name: "Kodaikanal", href: "/destinations#kodaikanal" },
-          { name: "Madurai", href: "/destinations#madurai" },
-          { name: "Rameswaram", href: "/destinations#rameswaram" },
+          { name: "Where to go", href: "/destinations" },
+          { name: "When to visit", href: "/#journal" },
+          { name: "How long to spend", href: "/#journal" },
+          { name: "Getting around Kerala", href: "/#services" },
+          { name: "First-time Kerala", href: "/about" },
+          { name: "Kerala with children", href: "/#travel-with-jibu" },
+          { name: "Kerala for senior travellers", href: "/#services" },
+          { name: "Handpicked Stays", href: "/#services" },
+        ],
+      },
+    ],
+  },
+  {
+    id: "journeys",
+    name: "Journeys",
+    fullName: "Journeys, Never Packages",
+    href: "/#travel-with-jibu",
+    groups: [
+      {
+        groupTitle: "Journey Ideas",
+        items: [
+          { name: "Classic Kerala", href: "/#travel-with-jibu" },
+          { name: "Slow Kerala", href: "/#travel-with-jibu" },
+          { name: "Kerala Beyond the Usual", href: "/#travel-with-jibu" },
+          { name: "Nature & Wildlife", href: "/#travel-with-jibu" },
+          { name: "Culture & Cuisine", href: "/#travel-with-jibu" },
+          { name: "South India Journeys", href: "/#travel-with-jibu" },
         ],
       },
       {
-        groupTitle: "Karnataka",
+        groupTitle: "Who are you travelling with?",
         items: [
-          { name: "Coorg", href: "/destinations#coorg" },
-          { name: "Mysore", href: "/destinations#mysore" },
-          { name: "Chikmagalur", href: "/destinations#chikmagalur" },
-          { name: "Hampi", href: "/destinations#hampi" },
+          { name: "Couples", href: "/#travel-with-jibu" },
+          { name: "Families", href: "/#travel-with-jibu" },
+          { name: "Senior travellers", href: "/#services" },
+          { name: "Multi-generational families", href: "/#services" },
+          { name: "Friends / small groups", href: "/#travel-with-jibu" },
         ],
       },
     ],
@@ -85,77 +101,60 @@ export const SITE_STRUCTURE: NavItem[] = [
   {
     id: "experiences",
     name: "Experiences",
-    fullName: "3. Curated Experiences",
+    fullName: "Curated Local Knowledge",
     href: "/#experiences",
     items: [
-      { name: "Backwater & Houseboat", href: "/#experiences" },
-      { name: "Hill Stations & Plantation Trails", href: "/#experiences" },
-      { name: "Nature & Wildlife Experiences", href: "/#experiences" },
-      { name: "Culture & Heritage Journeys", href: "/#experiences" },
-      { name: "Beaches & Coastal Escapes", href: "/#experiences" },
-      { name: "Culinary & Local Food", href: "/#experiences" },
-      { name: "Village & Community Encounters", href: "/#experiences" },
+      { name: "Food & Cuisine", href: "/#experiences" },
+      { name: "Culture & Heritage", href: "/#experiences" },
+      { name: "Wildlife & Nature", href: "/#experiences" },
+      { name: "Walking & Hiking", href: "/#experiences" },
+      { name: "Tea & Plantations", href: "/#experiences" },
+      { name: "Backwaters", href: "/#experiences" },
+      { name: "Village Life", href: "/#experiences" },
+      { name: "Arts & Traditions", href: "/#experiences" },
+      { name: "Wellness & Ayurveda", href: "/#experiences" },
     ],
   },
   {
-    id: "travel-with-jibu",
-    name: "Journeys",
-    fullName: "4. Travel With Jibu",
-    href: "/#travel-with-jibu",
+    id: "about",
+    name: "About",
+    fullName: "About Journeys by Jibu Thomas",
+    href: "/about",
+    items: [
+      { name: "Meet Jibu", href: "/about#jibu" },
+      { name: "Why travel with us", href: "/about#why-us" },
+      { name: "How we plan your journey", href: "/contact#how-it-works" },
+      { name: "Traveller stories & reviews", href: "/#reviews" },
+      { name: "Responsible travel", href: "/about#philosophy" },
+      { name: "Our local network", href: "/about#story" },
+    ],
+  },
+  {
+    id: "travel-guide",
+    name: "Travel Guide",
+    fullName: "The Journeys Journal",
+    href: "/#journal",
     groups: [
       {
-        groupTitle: "Signature Journeys",
+        groupTitle: "Planning questions",
         items: [
-          { name: "Kerala Discovery", href: "/#travel-with-jibu" },
-          { name: "Romantic Escapes", href: "/#travel-with-jibu" },
-          { name: "Family Holidays", href: "/#travel-with-jibu" },
-          { name: "Nature & Wildlife", href: "/#travel-with-jibu" },
-          { name: "South India Heritage", href: "/#travel-with-jibu" },
+          { name: "Best time to visit Kerala", href: "/#journal" },
+          { name: "How many days in Kerala?", href: "/#journal" },
+          { name: "First trip to Kerala", href: "/#journal" },
+          { name: "Getting around Kerala", href: "/#services" },
+          { name: "Where to stay", href: "/#services" },
         ],
       },
       {
-        groupTitle: "Bespoke Journeys",
+        groupTitle: "Useful comparisons",
         items: [
-          { name: "Personalised Planning", href: "/contact" },
-          { name: "Custom Itinerary Design", href: "/contact" },
-          { name: "Tailor-Made Experiences", href: "/contact" },
+          { name: "Munnar vs Wayanad", href: "/#journal" },
+          { name: "Houseboat: day cruise or overnight?", href: "/#journal" },
+          { name: "Kerala with children", href: "/#journal" },
+          { name: "Kerala for senior travellers", href: "/#journal" },
+          { name: "Food, culture & practical advice", href: "/#journal" },
         ],
       },
-    ],
-  },
-  {
-    id: "services",
-    name: "Services",
-    fullName: "5. Our Services",
-    href: "/#services",
-    items: [
-      { name: "Private Chauffeurs", href: "/#services" },
-      { name: "Handpicked Stays", href: "/#services" },
-      { name: "Family & Senior-Friendly", href: "/#services" },
-      { name: "Special Interest Travel", href: "/#services" },
-      { name: "End-to-End Coordination", href: "/#services" },
-    ],
-  },
-  {
-    id: "journal",
-    name: "Journal",
-    fullName: "6. Travel Journal",
-    href: "/#journal",
-    items: [
-      { name: "Destination Guides", href: "/#journal" },
-      { name: "Travel Tips & Planning", href: "/#journal" },
-      { name: "Culture & Local Stories", href: "/#journal" },
-      { name: "Seasonal Travel Inspiration", href: "/#journal" },
-    ],
-  },
-  {
-    id: "contact",
-    name: "Contact",
-    fullName: "7. Contact Us",
-    href: "/contact",
-    items: [
-      { name: "Direct Contact Details", href: "/contact" },
-      { name: "Bespoke Enquiry Form", href: "/contact" },
     ],
   },
 ];
@@ -172,6 +171,8 @@ export default function Navbar() {
 
   const headerRef = useRef<HTMLElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const isDockedRef = useRef(!isHomepage);
 
   // Monitor if any modal is open across the app, and smoothly hide navbar
   useEffect(() => {
@@ -193,13 +194,16 @@ export default function Navbar() {
 
   // Precise Anchor Tracking on Scroll:
   // Starts on the Hero bottom line (#hero-navbar-anchor), moves UP with scroll locked with Heading and Button.
-  // When it reaches top: 16px, it clamps at 16px and EXPANDS with spring physics!
+  // When it reaches top: 16px, it clamps at 16px and smoothly expands into full top navbar.
   useEffect(() => {
     let rafId: number;
 
     const updatePosition = () => {
       if (!isHomepage) {
-        if (!isDocked) setIsDocked(true);
+        if (!isDockedRef.current) {
+          isDockedRef.current = true;
+          setIsDocked(true);
+        }
         if (headerRef.current) {
           headerRef.current.style.top = "16px";
         }
@@ -208,7 +212,10 @@ export default function Navbar() {
 
       const anchor = document.getElementById("hero-navbar-anchor");
       if (!anchor) {
-        if (!isDocked) setIsDocked(true);
+        if (!isDockedRef.current) {
+          isDockedRef.current = true;
+          setIsDocked(true);
+        }
         if (headerRef.current) {
           headerRef.current.style.top = "16px";
         }
@@ -219,14 +226,20 @@ export default function Navbar() {
       const dockTop = 16; // 16px from top of viewport
 
       if (anchorRect.top <= dockTop) {
-        // Reached the top location: Clamp at 16px and expand!
-        if (!isDocked) setIsDocked(true);
+        // Reached top position: dock and expand
+        if (!isDockedRef.current) {
+          isDockedRef.current = true;
+          setIsDocked(true);
+        }
         if (headerRef.current) {
           headerRef.current.style.top = `${dockTop}px`;
         }
       } else {
-        // In Hero: Locked to the bottom line, moves upward with the scroll
-        if (isDocked) setIsDocked(false);
+        // In Hero: lock position to anchor, compact capsule
+        if (isDockedRef.current) {
+          isDockedRef.current = false;
+          setIsDocked(false);
+        }
         if (headerRef.current) {
           headerRef.current.style.top = `${anchorRect.top}px`;
         }
@@ -235,7 +248,7 @@ export default function Navbar() {
 
     updatePosition();
 
-    // High-frequency tracking using RAF loop for 120fps Lenis momentum sync
+    // High-frequency tracking using RAF loop for 120fps smooth momentum sync
     const loop = () => {
       updatePosition();
       rafId = requestAnimationFrame(loop);
@@ -250,7 +263,7 @@ export default function Navbar() {
       window.removeEventListener("scroll", updatePosition);
       window.removeEventListener("resize", updatePosition);
     };
-  }, [isHomepage, isDocked]);
+  }, [isHomepage]);
 
   const handleMouseEnter = (id: string) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -266,37 +279,20 @@ export default function Navbar() {
 
   return (
     <>
-      <motion.header
+      <header
         ref={headerRef}
-        initial={false}
-        animate={{
-          width: isDocked ? "calc(100% - 24px)" : "max-content",
-          maxWidth: isDocked ? "1600px" : "none",
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 220,
-          damping: 26,
-          mass: 0.85,
-        }}
         style={{
           top: isHomepage ? "calc(100dvh - 90px)" : "16px",
         }}
-        className={`fixed z-50 left-1/2 -translate-x-1/2 pointer-events-none transition-[opacity] duration-300 ${
+        className={`fixed z-50 left-1/2 -translate-x-1/2 pointer-events-none transition-[opacity,transform] duration-300 ${
           isModalOpen ? "opacity-0 -translate-y-12 pointer-events-none" : "opacity-100"
         }`}
       >
-        <motion.div
-          layout
-          transition={{
-            type: "spring",
-            stiffness: 240,
-            damping: 26,
-          }}
-          className={`pointer-events-auto flex items-center justify-between rounded-full transition-colors duration-500 ${
-            !isDocked
-              ? "bg-black/75 backdrop-blur-2xl border border-white/25 shadow-[0_20px_50px_rgba(0,0,0,0.65)] text-white pl-3.5 sm:pl-4 pr-1.5 sm:pr-2 py-1.5 sm:py-2 gap-2 sm:gap-3 h-[48px] sm:h-[54px]"
-              : "bg-[#FFFCF5]/96 backdrop-blur-2xl border border-[#E9E0D2] shadow-[0_16px_40px_rgba(24,61,43,0.12)] text-[#242424] px-3 sm:px-6 py-1.5 sm:py-2.5 w-full h-[52px] sm:h-[58px]"
+        <div
+          className={`pointer-events-auto flex items-center justify-between rounded-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            isDocked
+              ? "w-[calc(100vw-24px)] max-w-[1600px] bg-[#FFFCF5]/96 backdrop-blur-2xl border border-[#E9E0D2] shadow-[0_16px_40px_rgba(24,61,43,0.12)] text-[#242424] px-3 sm:px-6 py-1.5 sm:py-2.5 h-[52px] sm:h-[58px]"
+              : "w-auto max-w-fit bg-black/75 backdrop-blur-2xl border border-white/25 shadow-[0_20px_50px_rgba(0,0,0,0.65)] text-white px-3 sm:px-4 py-1.5 sm:py-2 gap-2 sm:gap-3 h-[48px] sm:h-[54px]"
           }`}
         >
           {/* Brand Logo */}
@@ -328,27 +324,40 @@ export default function Navbar() {
 
           {/* DUAL NAVIGATION CONTENT */}
           {!isDocked ? (
-            /* HERO FLOATING CAPSULE NAVIGATION: [Destinations] [Services] [Contact] */
+            /* HERO FLOATING CAPSULE NAVIGATION: [Kerala] [Journeys] [Experiences] */
             <div className="flex items-center gap-0.5 sm:gap-1.5">
-              <div className="h-4 w-px bg-white/20 mx-1" />
+              <div className="h-3.5 w-px bg-white/20 mx-1" />
               <Link
                 href="#destinations"
                 className="text-[11px] sm:text-xs font-semibold tracking-wider uppercase px-2 sm:px-2.5 py-1.5 rounded-full text-white/90 hover:text-white hover:bg-white/15 transition-all whitespace-nowrap"
               >
-                Destinations
+                Kerala
               </Link>
               <Link
-                href="#services"
+                href="#travel-with-jibu"
                 className="text-[11px] sm:text-xs font-semibold tracking-wider uppercase px-2 sm:px-2.5 py-1.5 rounded-full text-white/90 hover:text-white hover:bg-white/15 transition-all whitespace-nowrap"
               >
-                Services
+                Journeys
               </Link>
               <Link
-                href="/contact"
+                href="#experiences"
                 className="text-[11px] sm:text-xs font-semibold tracking-wider uppercase px-2 sm:px-2.5 py-1.5 rounded-full text-white/90 hover:text-white hover:bg-white/15 transition-all whitespace-nowrap"
               >
-                Contact
+                Experiences
               </Link>
+
+              {/* Mobile menu toggle for hero capsule */}
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="lg:hidden p-1.5 rounded-full transition-all active:scale-95 text-white bg-white/15 hover:bg-white/25 ml-1"
+                aria-label="Toggle Navigation Menu"
+              >
+                {isMobileMenuOpen ? (
+                  <X className="w-4 h-4" />
+                ) : (
+                  <Menu className="w-4 h-4" />
+                )}
+              </button>
             </div>
           ) : (
             /* SCROLLED / DOCKED TOP DESKTOP NAVIGATION: Single-Line with Mega Dropdowns */
@@ -380,19 +389,13 @@ export default function Navbar() {
                           exit={{ opacity: 0, y: 8, scale: 0.98 }}
                           transition={{ duration: 0.18 }}
                           className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-[#FFFCF5] rounded-3xl border border-[#E9E0D2] shadow-2xl p-6 text-[#242424] z-50 ${
-                            item.id === "destinations"
-                              ? "w-[650px]"
-                              : item.id === "travel-with-jibu"
-                              ? "w-[520px]"
+                            item.groups
+                              ? "w-[560px] sm:w-[620px]"
                               : "w-[300px]"
                           }`}
                         >
                           {item.groups ? (
-                            <div
-                              className={`grid gap-6 ${
-                                item.id === "destinations" ? "grid-cols-3" : "grid-cols-2"
-                              }`}
-                            >
+                            <div className="grid grid-cols-2 gap-6">
                               {item.groups.map((grp, gIdx) => (
                                 <div key={gIdx} className="space-y-2">
                                   <span className="text-[10px] uppercase tracking-widest font-semibold text-[#8B5E35] border-b border-[#E9E0D2] pb-1 block">
@@ -456,18 +459,8 @@ export default function Navbar() {
             </nav>
           )}
 
-          {/* RIGHT ACTION BUTTON */}
-          {!isDocked ? (
-            /* HERO FLOATING CAPSULE CTA BUTTON - perfectly padded, no overflow */
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-[10px] sm:text-[11px] font-bold tracking-wider uppercase bg-white hover:bg-[#E9E0D2] text-[#183D2B] transition-all shadow-md active:scale-95 shrink-0 whitespace-nowrap ml-1"
-            >
-              <span>Plan Journey</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
-            </Link>
-          ) : (
-            /* DOCKED / EXPANDED FULL CTA BUTTON + MOBILE MENU TRIGGER */
+          {/* RIGHT ACTION BUTTON: Shown when docked at the top */}
+          {isDocked && (
             <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
               <Link
                 href="/contact"
@@ -492,8 +485,8 @@ export default function Navbar() {
               </button>
             </div>
           )}
-        </motion.div>
-      </motion.header>
+        </div>
+      </header>
 
       {/* Full-Screen Mobile Drawer */}
       <AnimatePresence>

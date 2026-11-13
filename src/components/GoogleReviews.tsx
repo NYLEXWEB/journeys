@@ -3,14 +3,16 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Star, PenSquare, CheckCircle2, ChevronRight, X } from "lucide-react";
+import { useWebsiteContent } from "@/hooks/useWebsiteContent";
 
 interface Review {
-  id: number;
+  id?: number | string;
+  _id?: string;
   author: string;
-  avatarColor: string;
-  avatarInitial: string;
+  avatarColor?: string;
+  avatarInitial?: string;
   location: string;
-  isLocalGuide: boolean;
+  isLocalGuide?: boolean;
   guideStats?: string;
   rating: number;
   relativeTime: string;
@@ -118,9 +120,21 @@ const REVIEWS_DATA: Review[] = [
 ];
 
 export default function GoogleReviews() {
-  const [reviews, setReviews] = useState<Review[]>(REVIEWS_DATA);
+  const content = useWebsiteContent();
+  const activeReviews: Review[] =
+    content.reviews && content.reviews.length > 0
+      ? content.reviews
+      : REVIEWS_DATA;
+
+  const [reviews, setReviews] = useState<Review[]>(activeReviews);
   const [isWriteModalOpen, setIsWriteModalOpen] = useState(false);
   const [reviewSubmitted, setReviewSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (content.reviews && content.reviews.length > 0) {
+      setReviews(content.reviews);
+    }
+  }, [content.reviews]);
 
   // Background Scroll Lock (Lenis + Body Freeze) when modal is open
   useEffect(() => {
@@ -188,32 +202,37 @@ export default function GoogleReviews() {
   };
 
   return (
-    <section id="reviews" className="py-20 sm:py-28 bg-[#FFFCF5] relative border-t border-[#E9E0D2]/60">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="reviews" className="pt-10 sm:pt-14 md:pt-16 pb-20 sm:pb-24 md:pb-28 bg-[#FFFCF5] relative">
+      <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
         {/* Section Header */}
-        <div className="flex items-center gap-3 mb-8 sm:mb-12">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#8B5E35] shrink-0" />
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] text-[#183D2B] uppercase">
-            GOOGLE <span className="text-[#8B5E35]">REVIEWS</span>
+        <div className="flex items-center gap-3 mb-5 sm:mb-6">
+          <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#8B5E35] to-[#B37D47] shadow-sm shrink-0" />
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] uppercase">
+            <span className="bg-gradient-to-r from-[#183D2B] via-[#1E4A35] to-[#27593D] bg-clip-text text-transparent">
+              GOOGLE{" "}
+            </span>
+            <span className="bg-gradient-to-r from-[#8B5E35] via-[#B87D4B] to-[#8B5E35] bg-clip-text text-transparent">
+              REVIEWS
+            </span>
           </h2>
           <span className="h-[1.5px] w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent" />
         </div>
 
-        {/* Authentic Google Review Header Card */}
+        {/* Compact Authentic Google Review Header Bar (Seamlessly merged with Journeys brand theme) */}
         <motion.div
-          initial={{ opacity: 0, y: 25 }}
+          initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.8 }}
-          className="bg-white rounded-3xl p-6 sm:p-10 border border-[#E9E0D2] shadow-[0_4px_24px_rgba(0,0,0,0.06)] mb-12 sm:mb-16"
+          viewport={{ once: true, margin: "-30px" }}
+          transition={{ duration: 0.6 }}
+          className="bg-[#FAF6EF] rounded-2xl p-4 sm:p-5 border border-[#E9E0D2] mb-5 sm:mb-7"
         >
-          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 sm:gap-6">
 
             {/* Left: Google Brand & Score */}
-            <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-              {/* Google 4-Color Icon */}
-              <div className="w-16 h-16 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-center p-3 shrink-0">
+            <div className="flex items-center gap-3.5 sm:gap-4">
+              {/* Google 4-Color Icon in clean container */}
+              <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-white border border-[#E9E0D2] flex items-center justify-center p-2.5 shrink-0">
                 <svg viewBox="0 0 24 24" className="w-full h-full" aria-hidden="true">
                   <path
                     fill="#4285F4"
@@ -235,177 +254,186 @@ export default function GoogleReviews() {
               </div>
 
               <div>
-                <div className="flex items-center gap-2">
-                  <span className="font-sans font-medium text-gray-900 text-lg sm:text-xl">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="font-sans font-semibold text-[#183D2B] text-base sm:text-lg">
                     Google Customer Reviews
                   </span>
-                  <CheckCircle2 className="w-5 h-5 text-[#1A73E8]" />
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#1A73E8]/10 text-[#1A73E8] text-[11px] font-medium">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    Verified Business
+                  </span>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-3 mt-1.5">
-                  <span className="text-3xl sm:text-4xl font-sans font-bold text-gray-900 tracking-tight">
+                <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+                  <span className="text-xl sm:text-2xl font-sans font-bold text-[#183D2B] tracking-tight">
                     5.0
                   </span>
                   <div className="flex items-center gap-0.5">
                     {[1, 2, 3, 4, 5].map((star) => (
                       <Star
                         key={star}
-                        className="w-5 h-5 fill-[#FBBC05] text-[#FBBC05]"
+                        className="w-4 h-4 fill-[#FBBC05] text-[#FBBC05]"
                       />
                     ))}
                   </div>
-                  <span className="text-sm font-sans text-gray-500">
+                  <span className="text-xs font-sans text-[#8B5E35] font-medium">
                     (48+ verified reviews)
                   </span>
+                  <span className="text-xs text-[#242424]/30 hidden sm:inline">&bull;</span>
+                  <span className="text-xs text-[#242424]/65 font-sans hidden sm:inline">
+                    Journeys by Jibu Thomas &bull; Boutique Travel Design &amp; Destination Management
+                  </span>
                 </div>
-                <p className="text-xs text-gray-400 mt-1 font-sans">
-                  Journeys by Jibu Thomas &bull; Boutique Travel Design &amp; Destination Management
-                </p>
               </div>
             </div>
 
-            {/* Right: Write a Review CTA Button */}
-            <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
+            {/* Right: Actions */}
+            <div className="flex items-center gap-2.5 w-full md:w-auto">
               <button
                 onClick={() => setIsWriteModalOpen(true)}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3 rounded-full bg-[#1A73E8] hover:bg-[#1557B0] active:scale-[0.98] text-white font-sans font-medium text-sm transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
+                className="flex-1 md:flex-initial inline-flex items-center justify-center gap-2 px-4 py-2 sm:py-2.5 rounded-full bg-[#1A73E8] hover:bg-[#1557B0] active:scale-[0.98] text-white font-sans font-medium text-xs sm:text-sm transition-all duration-200 cursor-pointer"
               >
-                <PenSquare className="w-4 h-4" />
+                <PenSquare className="w-3.5 h-3.5" />
                 <span>Write a review</span>
               </button>
 
               <a
                 href="#reviews"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-3 rounded-full border border-gray-300 hover:border-gray-400 text-gray-700 bg-white font-sans text-sm font-medium transition-all"
+                className="flex-1 md:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2 sm:py-2.5 rounded-full border border-[#E9E0D2] hover:border-[#183D2B] hover:text-[#183D2B] text-[#242424]/80 bg-white/70 font-sans text-xs sm:text-sm font-medium transition-all"
               >
-                <span>Read all reviews</span>
-                <ChevronRight className="w-4 h-4 text-gray-400" />
+                <span>Read all</span>
+                <ChevronRight className="w-3.5 h-3.5 text-[#8B5E35]" />
               </a>
             </div>
 
           </div>
         </motion.div>
 
-        {/* 100% Google Reviews - Automatic Infinite Horizontal Loop */}
-        <div className="relative w-full overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-4 group">
+        {/* 100% Google Reviews - Automatic Infinite Horizontal Loop (Clean, Zero White Shadows, Compact Cards) */}
+        <div className="relative w-full overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-3 sm:py-4 group">
           {/* Continuous Loop Track */}
-          <div className="animate-marquee-left flex gap-6 items-stretch">
-            {[...reviews, ...reviews].map((rev, index) => (
-              <div
-                key={`${rev.id}-${index}`}
-                className="w-[330px] sm:w-[400px] md:w-[440px] shrink-0 bg-white rounded-2xl p-6 sm:p-7 border border-[#E9E0D2] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between select-none"
-              >
-                <div>
-                  {/* Reviewer Header */}
-                  <div className="flex items-start justify-between gap-3 mb-4">
-                    <div className="flex items-center gap-3.5">
-                      {/* Google Avatar Circle */}
-                      <div
-                        className={`w-11 h-11 rounded-full ${rev.avatarColor} text-white flex items-center justify-center font-sans font-semibold text-lg shrink-0 shadow-inner`}
-                      >
-                        {rev.avatarInitial}
-                      </div>
+          <div className="animate-marquee-left flex gap-4 sm:gap-5 items-stretch">
+            {[...reviews, ...reviews].map((rev, index) => {
+              const avatarBg = rev.avatarColor || "bg-[#1A73E8]";
+              const avatarLetter = rev.avatarInitial || rev.author?.charAt(0)?.toUpperCase() || "J";
+              const itemKey = `${rev.id || rev._id || index}-${index}`;
 
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <h4 className="font-sans font-semibold text-gray-900 text-[15px]">
-                            {rev.author}
-                          </h4>
+              return (
+                <div
+                  key={itemKey}
+                  className="w-[280px] sm:w-[320px] md:w-[340px] shrink-0 bg-[#FAF6EF]/90 hover:bg-[#FAF6EF] rounded-2xl p-4 sm:p-5 border border-[#E9E0D2] hover:border-[#8B5E35]/50 transition-all duration-300 flex flex-col justify-between select-none"
+                >
+                  <div>
+                    {/* Reviewer Header */}
+                    <div className="flex items-start justify-between gap-2.5 mb-2.5">
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        {/* Google Avatar Circle */}
+                        <div
+                          className={`w-9 h-9 rounded-full ${avatarBg} text-white flex items-center justify-center font-sans font-semibold text-sm shrink-0`}
+                        >
+                          {avatarLetter}
                         </div>
 
-                        {rev.isLocalGuide && rev.guideStats ? (
-                          <div className="flex items-center gap-1 text-[12px] font-sans text-[#E37400]">
-                            <span>★</span>
-                            <span>{rev.guideStats}</span>
-                          </div>
-                        ) : (
-                          <p className="text-[12px] font-sans text-gray-500">
-                            {rev.location}
-                          </p>
-                        )}
+                        <div className="min-w-0">
+                          <h4 className="font-sans font-semibold text-[#183D2B] text-[13.5px] truncate">
+                            {rev.author}
+                          </h4>
+
+                          {rev.isLocalGuide && rev.guideStats ? (
+                            <div className="flex items-center gap-1 text-[11px] font-sans text-[#E37400]">
+                              <span>★</span>
+                              <span className="truncate">{rev.guideStats}</span>
+                            </div>
+                          ) : (
+                            <p className="text-[11px] font-sans text-[#242424]/60 truncate">
+                              {rev.location}
+                            </p>
+                          )}
+                        </div>
                       </div>
-                    </div>
 
-                    {/* Google G watermark icon */}
-                    <svg
-                      viewBox="0 0 24 24"
-                      className="w-5 h-5 shrink-0 opacity-80"
-                      aria-hidden="true"
-                    >
-                      <path
-                        fill="#4285F4"
-                        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                      />
-                      <path
-                        fill="#34A853"
-                        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                      />
-                      <path
-                        fill="#FBBC05"
-                        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
-                      />
-                      <path
-                        fill="#EA4335"
-                        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
-                      />
-                    </svg>
-                  </div>
-
-                  {/* Stars & Timestamp */}
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="flex items-center gap-0.5">
-                      {[1, 2, 3, 4, 5].map((s) => (
-                        <Star
-                          key={s}
-                          className={`w-4 h-4 ${s <= rev.rating
-                            ? "fill-[#FBBC05] text-[#FBBC05]"
-                            : "fill-gray-200 text-gray-200"
-                            }`}
+                      {/* Google G watermark icon */}
+                      <svg
+                        viewBox="0 0 24 24"
+                        className="w-4 h-4 shrink-0 opacity-80"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fill="#4285F4"
+                          d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                         />
-                      ))}
+                        <path
+                          fill="#34A853"
+                          d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                        />
+                        <path
+                          fill="#FBBC05"
+                          d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
+                        />
+                        <path
+                          fill="#EA4335"
+                          d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
+                        />
+                      </svg>
                     </div>
-                    <span className="text-xs font-sans text-gray-500">
-                      {rev.relativeTime}
-                    </span>
-                  </div>
 
-                  {/* Trip Type Tag */}
-                  {rev.tripType && (
-                    <div className="inline-block px-2.5 py-1 rounded bg-gray-50 border border-gray-100 text-[11.5px] font-sans text-gray-600 mb-3">
-                      {rev.tripType}
-                    </div>
-                  )}
-
-                  {/* Review Body */}
-                  <p className="font-sans text-[14px] leading-relaxed text-gray-700 line-clamp-6">
-                    {rev.text}
-                  </p>
-                </div>
-
-                {/* Owner Response Box (Authentic Google Style) */}
-                {rev.ownerResponse && (
-                  <div className="mt-5 pt-4 border-t border-gray-100 bg-[#F8F9FA] rounded-xl p-3.5 -mx-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-[12.5px] font-sans font-semibold text-gray-800">
-                        Response from the owner
+                    {/* Stars & Timestamp */}
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="flex items-center gap-0.5">
+                        {[1, 2, 3, 4, 5].map((s) => (
+                          <Star
+                            key={s}
+                            className={`w-3.5 h-3.5 ${
+                              s <= rev.rating
+                                ? "fill-[#FBBC05] text-[#FBBC05]"
+                                : "fill-gray-200 text-gray-200"
+                            }`}
+                          />
+                        ))}
+                      </div>
+                      <span className="text-[11px] font-sans text-[#242424]/55">
+                        {rev.relativeTime}
                       </span>
-                      <span className="text-[11px] font-sans text-gray-400">
-                        &bull; {rev.ownerResponse.date}
-                      </span>
                     </div>
-                    <p className="text-[12.5px] font-sans text-gray-600 leading-relaxed line-clamp-3">
-                      {rev.ownerResponse.text}
+
+                    {/* Trip Type Tag in brand style */}
+                    {rev.tripType && (
+                      <div className="inline-block px-2 py-0.5 rounded bg-[#E9E0D2]/50 border border-[#E9E0D2] text-[10.5px] font-sans text-[#8B5E35] mb-2 truncate max-w-full">
+                        {rev.tripType}
+                      </div>
+                    )}
+
+                    {/* Review Body */}
+                    <p className="font-sans text-[12.5px] sm:text-[13px] leading-relaxed text-[#242424]/85 line-clamp-3 sm:line-clamp-4 break-words">
+                      {rev.text}
                     </p>
                   </div>
-                )}
-              </div>
-            ))}
+
+                  {/* Owner Response Box (Journeys & Google merged theme) */}
+                  {rev.ownerResponse && (
+                    <div className="mt-3 pt-2 border-t border-[#E9E0D2]/70 bg-[#183D2B]/[0.035] border-l-2 border-[#183D2B] rounded-r-lg p-2.5">
+                      <div className="flex items-center gap-1.5 mb-0.5">
+                        <span className="text-[11.5px] font-sans font-semibold text-[#183D2B]">
+                          Response from Jibu Thomas
+                        </span>
+                        <span className="text-[10px] font-sans text-[#242424]/50">
+                          &bull; {rev.ownerResponse.date}
+                        </span>
+                      </div>
+                      <p className="text-[11.5px] font-sans text-[#242424]/75 leading-relaxed line-clamp-2 break-words">
+                        {rev.ownerResponse.text}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
 
       </div>
 
-      {/* Google "Write a Review" Modal */}
+      {/* Google "Write a Review" Modal (Merged Brand Theme) */}
       {isWriteModalOpen && (
         <div
           className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
@@ -413,11 +441,11 @@ export default function GoogleReviews() {
         >
           <div
             data-lenis-prevent="true"
-            className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-gray-100 relative animate-in fade-in zoom-in-95 duration-200"
+            className="bg-[#FFFCF5] rounded-3xl max-w-lg w-full p-6 sm:p-8 border border-[#E9E0D2] shadow-2xl relative animate-in fade-in zoom-in-95 duration-200"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="flex items-center justify-between pb-4 border-b border-gray-100">
+            <div className="flex items-center justify-between pb-4 border-b border-[#E9E0D2]/70">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 shrink-0">
                   <svg viewBox="0 0 24 24" className="w-full h-full">
@@ -440,18 +468,18 @@ export default function GoogleReviews() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="font-sans font-semibold text-gray-900 text-base">
+                  <h3 className="font-sans font-semibold text-[#183D2B] text-base">
                     Write a Review
                   </h3>
-                  <p className="text-xs text-gray-500 font-sans">
-                    Journeys by Jibu Thomas
+                  <p className="text-xs text-[#8B5E35] font-sans">
+                    Journeys by Jibu Thomas &bull; Google Business Profile
                   </p>
                 </div>
               </div>
 
               <button
                 onClick={() => setIsWriteModalOpen(false)}
-                className="p-2 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors"
+                className="p-2 rounded-full hover:bg-[#E9E0D2]/40 text-[#242424]/60 hover:text-[#183D2B] transition-colors"
                 aria-label="Close"
               >
                 <X className="w-5 h-5" />
@@ -460,13 +488,13 @@ export default function GoogleReviews() {
 
             {reviewSubmitted ? (
               <div className="py-12 text-center space-y-3">
-                <div className="w-14 h-14 rounded-full bg-green-50 text-green-600 flex items-center justify-center mx-auto">
+                <div className="w-14 h-14 rounded-full bg-[#183D2B]/10 text-[#183D2B] flex items-center justify-center mx-auto">
                   <CheckCircle2 className="w-8 h-8" />
                 </div>
-                <h4 className="text-lg font-sans font-semibold text-gray-900">
+                <h4 className="text-lg font-sans font-semibold text-[#183D2B]">
                   Thank you for your review!
                 </h4>
-                <p className="text-sm font-sans text-gray-500">
+                <p className="text-sm font-sans text-[#242424]/70">
                   Your feedback helps travelers discover authentic South Indian journeys.
                 </p>
               </div>
@@ -474,7 +502,7 @@ export default function GoogleReviews() {
               <form onSubmit={handleSubmitReview} className="space-y-4 pt-5">
                 {/* Rating Stars Selection */}
                 <div>
-                  <label className="block text-xs font-sans font-medium text-gray-700 mb-1.5">
+                  <label className="block text-xs font-sans font-medium text-[#242424]/80 mb-1.5">
                     Your Rating *
                   </label>
                   <div className="flex items-center gap-1.5">
@@ -489,14 +517,15 @@ export default function GoogleReviews() {
                         aria-label={`${star} Stars`}
                       >
                         <Star
-                          className={`w-7 h-7 ${star <= (hoverRating || newRating)
-                            ? "fill-[#FBBC05] text-[#FBBC05]"
-                            : "fill-gray-200 text-gray-200"
-                            }`}
+                          className={`w-7 h-7 ${
+                            star <= (hoverRating || newRating)
+                              ? "fill-[#FBBC05] text-[#FBBC05]"
+                              : "fill-gray-200 text-gray-200"
+                          }`}
                         />
                       </button>
                     ))}
-                    <span className="ml-2 text-xs font-sans text-gray-500 font-medium">
+                    <span className="ml-2 text-xs font-sans text-[#8B5E35] font-medium">
                       {(hoverRating || newRating)} of 5 stars
                     </span>
                   </div>
@@ -504,7 +533,7 @@ export default function GoogleReviews() {
 
                 {/* Name */}
                 <div>
-                  <label className="block text-xs font-sans font-medium text-gray-700 mb-1">
+                  <label className="block text-xs font-sans font-medium text-[#242424]/80 mb-1">
                     Your Name *
                   </label>
                   <input
@@ -513,13 +542,13 @@ export default function GoogleReviews() {
                     value={newAuthor}
                     onChange={(e) => setNewAuthor(e.target.value)}
                     placeholder="e.g. David Henderson"
-                    className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-[#1A73E8] focus:ring-2 focus:ring-[#1A73E8]/20 text-sm font-sans text-gray-800"
+                    className="w-full px-4 py-2.5 rounded-xl border border-[#E9E0D2] focus:outline-none focus:border-[#1A73E8] focus:ring-2 focus:ring-[#1A73E8]/20 text-sm font-sans text-gray-800 bg-white"
                   />
                 </div>
 
                 {/* City/Location */}
                 <div>
-                  <label className="block text-xs font-sans font-medium text-gray-700 mb-1">
+                  <label className="block text-xs font-sans font-medium text-[#242424]/80 mb-1">
                     Location / City (Optional)
                   </label>
                   <input
@@ -527,13 +556,13 @@ export default function GoogleReviews() {
                     value={newLocation}
                     onChange={(e) => setNewLocation(e.target.value)}
                     placeholder="e.g. London, UK"
-                    className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-[#1A73E8] focus:ring-2 focus:ring-[#1A73E8]/20 text-sm font-sans text-gray-800"
+                    className="w-full px-4 py-2.5 rounded-xl border border-[#E9E0D2] focus:outline-none focus:border-[#1A73E8] focus:ring-2 focus:ring-[#1A73E8]/20 text-sm font-sans text-gray-800 bg-white"
                   />
                 </div>
 
                 {/* Review Message */}
                 <div>
-                  <label className="block text-xs font-sans font-medium text-gray-700 mb-1">
+                  <label className="block text-xs font-sans font-medium text-[#242424]/80 mb-1">
                     Describe your experience *
                   </label>
                   <textarea
@@ -542,7 +571,7 @@ export default function GoogleReviews() {
                     value={newText}
                     onChange={(e) => setNewText(e.target.value)}
                     placeholder="Share details of your journey, itinerary, chauffeur service, or stays..."
-                    className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-[#1A73E8] focus:ring-2 focus:ring-[#1A73E8]/20 text-sm font-sans text-gray-800 resize-none"
+                    className="w-full px-4 py-2.5 rounded-xl border border-[#E9E0D2] focus:outline-none focus:border-[#1A73E8] focus:ring-2 focus:ring-[#1A73E8]/20 text-sm font-sans text-gray-800 resize-none bg-white"
                   />
                 </div>
 
@@ -551,13 +580,13 @@ export default function GoogleReviews() {
                   <button
                     type="button"
                     onClick={() => setIsWriteModalOpen(false)}
-                    className="px-5 py-2.5 rounded-full border border-gray-300 text-gray-600 text-sm font-sans font-medium hover:bg-gray-50 transition-colors"
+                    className="px-5 py-2.5 rounded-full border border-[#E9E0D2] text-[#242424]/70 text-sm font-sans font-medium hover:bg-[#FAF6EF] transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-6 py-2.5 rounded-full bg-[#1A73E8] hover:bg-[#1557B0] text-white text-sm font-sans font-medium shadow-sm transition-all"
+                    className="px-6 py-2.5 rounded-full bg-[#1A73E8] hover:bg-[#1557B0] text-white text-sm font-sans font-medium transition-all"
                   >
                     Post Review
                   </button>

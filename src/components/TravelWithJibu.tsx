@@ -19,6 +19,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { WhatsAppIcon } from "./WhatsAppIcon";
+import { useWebsiteContent } from "@/hooks/useWebsiteContent";
 
 export interface JourneyItem {
   id: string;
@@ -179,6 +180,12 @@ export const BESPOKE_PILLARS: BespokePillarItem[] = [
 ];
 
 export default function TravelWithJibu() {
+  const content = useWebsiteContent();
+  const signatureJourneys: JourneyItem[] =
+    content.journeys && content.journeys.length > 0
+      ? content.journeys
+      : SIGNATURE_JOURNEYS;
+
   const [activeTab, setActiveTab] = useState<"signature" | "bespoke">("signature");
   const [selectedJourney, setSelectedJourney] = useState<JourneyItem | null>(null);
   const [selectedBespoke, setSelectedBespoke] = useState<BespokePillarItem | null>(null);
@@ -215,14 +222,19 @@ export default function TravelWithJibu() {
   }, []);
 
   return (
-    <section id="journeys" className="py-16 sm:py-24 bg-[#FFFCF5] relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section id="journeys" className="pt-10 sm:pt-14 md:pt-16 pb-20 sm:pb-24 md:pb-28 bg-[#FFFCF5] relative overflow-hidden">
+      <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 pb-4 sm:pb-5 border-b border-[#E9E0D2] mb-6 sm:mb-8">
           <div className="flex items-center gap-3">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#8B5E35] shrink-0" />
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] text-[#183D2B] uppercase">
-              TRAVEL WITH <span className="text-[#8B5E35]">JIBU</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#8B5E35] to-[#B37D47] shadow-sm shrink-0" />
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] uppercase">
+              <span className="bg-gradient-to-r from-[#183D2B] via-[#1E4A35] to-[#27593D] bg-clip-text text-transparent">
+                TRAVEL WITH{" "}
+              </span>
+              <span className="bg-gradient-to-r from-[#8B5E35] via-[#B87D4B] to-[#8B5E35] bg-clip-text text-transparent">
+                JIBU
+              </span>
             </h2>
             <span className="h-[1.5px] w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent" />
           </div>
@@ -252,19 +264,19 @@ export default function TravelWithJibu() {
 
         {/* Tab 1: SIGNATURE JOURNEYS (Pure Visual Portals, Frameless) */}
         {activeTab === "signature" && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
-            {SIGNATURE_JOURNEYS.map((j) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5 sm:gap-6">
+            {signatureJourneys.map((j) => (
               <div
                 key={j.id}
                 onClick={() => setSelectedJourney(j)}
-                className="group relative h-80 sm:h-96 rounded-3xl overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-700 bg-[#183D2B] select-none"
+                className="group relative h-[440px] sm:h-[480px] lg:h-[500px] rounded-3xl overflow-hidden cursor-pointer shadow-md hover:shadow-xl hover:-translate-y-1.5 transition-all duration-500 bg-[#183D2B] select-none"
               >
                 {/* Full Image */}
                 <Image
                   src={j.image}
                   alt={j.title}
                   fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 20vw"
                   className="object-cover transition-transform duration-700 ease-out group-hover:scale-108"
                 />
 
@@ -304,13 +316,13 @@ export default function TravelWithJibu() {
 
         {/* Tab 2: BESPOKE JOURNEYS (3 Clean Cards) */}
         {activeTab === "bespoke" && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             {BESPOKE_PILLARS.map((p) => {
               const Icon = p.icon;
               return (
                 <div
                   key={p.id}
-                  className="group rounded-2xl sm:rounded-3xl bg-white border border-[#E9E0D2] shadow-sm hover:shadow-lg transition-all duration-300 p-5 sm:p-6 flex flex-col justify-between space-y-4"
+                  className="group rounded-2xl sm:rounded-3xl bg-white border border-[#E9E0D2] shadow-sm hover:shadow-xl transition-all duration-300 p-6 sm:p-8 flex flex-col justify-between space-y-6"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-3">

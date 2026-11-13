@@ -92,7 +92,7 @@ export default function ContactPage() {
 
       <main className="flex-1 pt-28 sm:pt-36 pb-20">
         {/* Breadcrumb */}
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+        <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 mb-8">
           <Link
             href="/"
             className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-[#8B5E35] hover:text-[#183D2B] transition-colors font-medium"
@@ -103,7 +103,7 @@ export default function ContactPage() {
         </div>
 
         {/* Header */}
-        <header className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 border-b border-[#E9E0D2]">
+        <header className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 pb-12 border-b border-[#E9E0D2]">
           <div className="inline-flex items-center gap-2 text-[#8B5E35] text-xs uppercase tracking-[0.25em] font-semibold mb-3">
             <span className="w-6 h-[1.5px] bg-[#8B5E35]" />
             <span>BESPOKE JOURNEY PLANNER &bull; ATELIER CONSULTATION</span>
@@ -147,7 +147,7 @@ export default function ContactPage() {
         </header>
 
         {/* Content Section: Form & Details */}
-        <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+        <section className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
             {/* Form Column */}
             <div className="lg:col-span-8">
@@ -382,7 +382,7 @@ export default function ContactPage() {
                         <span>Curating Your Enquiry...</span>
                       ) : (
                         <>
-                          <span>Submit Bespoke Journey Request</span>
+                          <span>Send My Journey Request</span>
                           <Send className="w-4 h-4" />
                         </>
                       )}

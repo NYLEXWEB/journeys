@@ -15,6 +15,7 @@ import SmoothScroll from "@/components/SmoothScroll";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import StackingSection from "@/components/StackingSection";
 import CurtainVideoReveal from "@/components/CurtainVideoReveal";
+import CurtainImageReveal from "@/components/CurtainImageReveal";
 import AssetPreloader from "@/components/AssetPreloader";
 
 // Auto-sync uploaded loading screen background image into public directory
@@ -64,6 +65,17 @@ export default function Home() {
             <CuratedExperiences />
           </StackingSection>
 
+          {/* Fixed Background Image Curtain Reveal between Curated Experiences & Travel With Jibu */}
+          <CurtainImageReveal
+            imageSrc="/images/generated/hero-kerala.jpg"
+            alt="Misty Western Ghats and Emerald Waterways of Kerala"
+            tag="Curated Perspective"
+            quote="&ldquo;Travel is the art of seeing what others only glance at.&rdquo;"
+            subQuote="Western Ghats · God's Own Country"
+            heightClass="h-[100vh] sm:h-[100vh] lg:h-[100vh]"
+            portalZIndex={6}
+          />
+
           {/* 4. TRAVEL WITH JIBU: Page 4 */}
           <StackingSection zIndex={16}>
             <TravelWithJibu />
@@ -74,18 +86,28 @@ export default function Home() {
             <OurServices />
           </StackingSection>
 
+          {/* Fixed Background Video Curtain Reveal between Our Services & Travel Journal */}
+          <CurtainVideoReveal
+            videoSrc="/video/video-4.mp4"
+            tag="The Living Chronicle"
+            quote="&ldquo;Every journey writes a story that time cannot erase.&rdquo;"
+            subQuote="Dispatches · Heritage · Slow Living"
+            heightClass="h-[100vh] sm:h-[100vh] lg:h-[100vh]"
+            portalZIndex={7}
+          />
+
           {/* 6. TRAVEL JOURNAL: Page 6 */}
           <StackingSection zIndex={20}>
             <TravelJournal />
           </StackingSection>
 
           {/* Authentic Google Reviews & Guest Stories: Page 7 */}
-          <StackingSection zIndex={22}>
+          <StackingSection zIndex={22} disableScale={true}>
             <GoogleReviews />
           </StackingSection>
 
           {/* 7. CONTACT US: Page 8 */}
-          <StackingSection zIndex={24}>
+          <StackingSection zIndex={24} disableOverlap={true}>
             <ContactUs />
           </StackingSection>
         </main>

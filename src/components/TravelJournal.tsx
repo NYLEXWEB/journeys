@@ -158,19 +158,29 @@ export default function TravelJournal() {
   const sideArticles = JOURNAL_ARTICLES.slice(1);
 
   return (
-    <section id="journal" className="py-20 sm:py-28 lg:py-32 bg-[#FFFCF5] relative overflow-hidden">
+    <section id="journal" className="pt-10 sm:pt-14 md:pt-16 pb-20 sm:pb-24 md:pb-28 bg-[#FFFCF5] relative overflow-hidden">
       <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="flex items-center gap-3 mb-8 sm:mb-12">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#8B5E35] shrink-0" />
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] text-[#183D2B] uppercase">
-            TRAVEL <span className="text-[#8B5E35]">JOURNAL</span>
-          </h2>
-          <span className="h-[1.5px] w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent" />
+        <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2 mb-6 sm:mb-8">
+          <div className="flex items-center gap-3">
+            <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#8B5E35] to-[#B37D47] shadow-sm shrink-0" />
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] uppercase">
+              <span className="bg-gradient-to-r from-[#183D2B] via-[#1E4A35] to-[#27593D] bg-clip-text text-transparent">
+                TRAVEL{" "}
+              </span>
+              <span className="bg-gradient-to-r from-[#8B5E35] via-[#B87D4B] to-[#8B5E35] bg-clip-text text-transparent">
+                GUIDE
+              </span>
+            </h2>
+            <span className="h-[1.5px] w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent" />
+          </div>
+          <span className="font-serif italic text-sm sm:text-base text-[#8B5E35] font-light">
+            The Journeys Journal &bull; Field Notes &amp; Guidance
+          </span>
         </div>
 
         {/* STYLISH EDITORIAL MAGAZINE LAYOUT */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
           {/* FEATURED LEAD DISPATCH (Left Column) */}
           <article
             onClick={() => setActiveArticle(leadArticle)}
@@ -231,7 +241,7 @@ export default function TravelJournal() {
           </article>
 
           {/* 3 COMPANION DISPATCHES (Right Column) */}
-          <div className="lg:col-span-5 flex flex-col justify-between gap-5 sm:gap-6">
+          <div className="lg:col-span-5 flex flex-col justify-between gap-4 sm:gap-5">
             {sideArticles.map((article) => (
               <article
                 key={article.id}

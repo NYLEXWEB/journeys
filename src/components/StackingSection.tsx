@@ -8,6 +8,8 @@ interface StackingSectionProps {
   zIndex: number;
   isFirst?: boolean;
   isFooter?: boolean;
+  disableOverlap?: boolean;
+  disableScale?: boolean;
   className?: string;
 }
 
@@ -16,6 +18,8 @@ export default function StackingSection({
   zIndex,
   isFirst = false,
   isFooter = false,
+  disableOverlap = false,
+  disableScale = false,
   className = "",
 }: StackingSectionProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -35,14 +39,16 @@ export default function StackingSection({
       style={{ zIndex }}
       className={`relative origin-top ${
         isFirst
-          ? "rounded-t-[2.5rem] sm:rounded-t-[3.5rem] md:rounded-t-[4.5rem] shadow-[0_-30px_70px_rgba(24,61,43,0.22)] border-t border-[#E9E0D2] bg-[#FFFCF5]"
+          ? "rounded-t-[2.5rem] sm:rounded-t-[3.5rem] md:rounded-t-[4.5rem] border-t border-[#E9E0D2] bg-[#FFFCF5]"
           : isFooter
-          ? "-mt-10 sm:-mt-14 md:-mt-16 rounded-t-[2.5rem] sm:rounded-t-[3.5rem] md:rounded-t-[4.5rem] shadow-[0_-30px_70px_rgba(0,0,0,0.35)] border-t border-[#8B5E35]/40 bg-[#183D2B]"
-          : "-mt-10 sm:-mt-14 md:-mt-16 rounded-t-[2.5rem] sm:rounded-t-[3.5rem] md:rounded-t-[4.5rem] shadow-[0_-25px_60px_rgba(24,61,43,0.18)] border-t border-[#E9E0D2] bg-[#FFFCF5]"
+          ? "-mt-10 sm:-mt-14 md:-mt-16 rounded-t-[2.5rem] sm:rounded-t-[3.5rem] md:rounded-t-[4.5rem] border-t border-[#8B5E35]/40 bg-[#183D2B]"
+          : disableOverlap
+          ? "bg-[#FFFCF5]"
+          : "-mt-10 sm:-mt-14 md:-mt-16 rounded-t-[2.5rem] sm:rounded-t-[3.5rem] md:rounded-t-[4.5rem] border-t border-[#E9E0D2] bg-[#FFFCF5]"
       } ${className}`}
     >
       <motion.div
-        style={isFooter ? undefined : { scale, opacity }}
+        style={isFooter || disableScale ? undefined : { scale, opacity }}
         className="w-full origin-top"
       >
         {children}
@@ -50,4 +56,3 @@ export default function StackingSection({
     </div>
   );
 }
-

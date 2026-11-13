@@ -19,7 +19,7 @@ export default function AboutPage() {
 
       <main className="flex-1 pt-28 sm:pt-36 pb-20">
         {/* Editorial Top Bar / Breadcrumb */}
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+        <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 mb-8">
           <Link
             href="/"
             className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-[#8B5E35] hover:text-[#183D2B] transition-colors font-medium"
@@ -30,7 +30,7 @@ export default function AboutPage() {
         </div>
 
         {/* Hero Banner */}
-        <header className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 sm:pb-20 border-b border-[#E9E0D2]">
+        <header className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 pb-16 sm:pb-20 border-b border-[#E9E0D2]">
           <div className="inline-flex items-center gap-2 text-[#8B5E35] text-xs uppercase tracking-[0.25em] font-semibold mb-3">
             <span className="w-6 h-[1.5px] bg-[#8B5E35]" />
             <span>ABOUT JOURNEYS BY JIBU THOMAS</span>
@@ -65,7 +65,7 @@ export default function AboutPage() {
         </header>
 
         {/* CHAPTER 1: OUR STORY */}
-        <section id="story" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 border-b border-[#E9E0D2] scroll-mt-28">
+        <section id="story" className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 border-b border-[#E9E0D2] scroll-mt-28">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
             <div className="lg:col-span-5 relative h-[380px] sm:h-[480px] rounded-[2rem] overflow-hidden shadow-[0_15px_40px_rgba(24,61,43,0.12)] border border-[#E9E0D2]">
               <Image
@@ -121,7 +121,7 @@ export default function AboutPage() {
         </section>
 
         {/* CHAPTER 2: MEET JIBU THOMAS */}
-        <section id="jibu" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 border-b border-[#E9E0D2] scroll-mt-28">
+        <section id="jibu" className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 border-b border-[#E9E0D2] scroll-mt-28">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
             <div className="lg:col-span-7 space-y-6 order-2 lg:order-1">
               <div className="inline-flex items-center gap-2 text-[#8B5E35] text-xs uppercase tracking-[0.25em] font-semibold">
@@ -185,7 +185,7 @@ export default function AboutPage() {
         </section>
 
         {/* CHAPTER 3: TRAVEL PHILOSOPHY */}
-        <section id="philosophy" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 border-b border-[#E9E0D2] scroll-mt-28">
+        <section id="philosophy" className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 border-b border-[#E9E0D2] scroll-mt-28">
           <div className="space-y-4 max-w-3xl mb-12">
             <div className="inline-flex items-center gap-2 text-[#8B5E35] text-xs uppercase tracking-[0.25em] font-semibold">
               <Heart className="w-4 h-4 text-[#8B5E35]" />
@@ -241,7 +241,7 @@ export default function AboutPage() {
         </section>
 
         {/* CHAPTER 4: BOUTIQUE STANDARDS */}
-        <section id="why-us" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 scroll-mt-28">
+        <section id="why-us" className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 scroll-mt-28">
           <div className="space-y-4 max-w-3xl mb-12">
             <div className="inline-flex items-center gap-2 text-[#8B5E35] text-xs uppercase tracking-[0.25em] font-semibold">
               <ShieldCheck className="w-4 h-4 text-[#8B5E35]" />

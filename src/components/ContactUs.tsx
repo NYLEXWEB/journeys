@@ -13,8 +13,13 @@ import {
   Sparkles,
 } from "lucide-react";
 import { WhatsAppIcon } from "./WhatsAppIcon";
+import { useWebsiteContent } from "@/hooks/useWebsiteContent";
+import { INITIAL_CONTACT_INFO } from "@/lib/seedData";
 
 export default function ContactUs() {
+  const content = useWebsiteContent();
+  const contact = content.contactInfo || INITIAL_CONTACT_INFO;
+
   const [formData, setFormData] = useState({
     fullName: "",
     contactInfo: "",
@@ -35,26 +40,36 @@ export default function ContactUs() {
   };
 
   return (
-    <section id="contact" className="py-20 sm:py-24 bg-[#FFFCF5] relative overflow-hidden border-t border-[#E9E0D2]">
+    <section id="contact" className="pt-10 sm:pt-14 md:pt-16 pb-20 sm:pb-24 md:pb-28 bg-[#FFFCF5] relative overflow-hidden">
       {/* Background Decor */}
       <div className="absolute top-1/4 right-0 w-96 h-96 bg-[#8B5E35]/5 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="flex items-center gap-3 mb-8 sm:mb-12">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#8B5E35] shrink-0" />
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] text-[#183D2B] uppercase">
-            CONTACT <span className="text-[#8B5E35]">US</span>
-          </h2>
-          <span className="h-[1.5px] w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent" />
+        <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2 mb-6 sm:mb-8">
+          <div className="flex items-center gap-3">
+            <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#8B5E35] to-[#B37D47] shadow-sm shrink-0" />
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] uppercase">
+              <span className="bg-gradient-to-r from-[#183D2B] via-[#1E4A35] to-[#27593D] bg-clip-text text-transparent">
+                PLAN YOUR{" "}
+              </span>
+              <span className="bg-gradient-to-r from-[#8B5E35] via-[#B87D4B] to-[#8B5E35] bg-clip-text text-transparent">
+                JOURNEY
+              </span>
+            </h2>
+            <span className="h-[1.5px] w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent" />
+          </div>
+          <p className="font-serif italic text-sm sm:text-base text-[#8B5E35]">
+            &ldquo;Your Kerala journey should feel like yours.&rdquo;
+          </p>
         </div>
 
         {/* Minimal 2-Column Compact Architecture */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
           {/* Left Column: Direct Contact & Link to Full Planner */}
-          <div className="lg:col-span-5 space-y-5">
+          <div className="lg:col-span-5 space-y-4">
             {/* Direct WhatsApp Card */}
-            <div className="p-6 rounded-[2rem] bg-white border border-[#E9E0D2] shadow-sm space-y-4">
+            <div className="p-5 sm:p-6 rounded-[2rem] bg-white border border-[#E9E0D2] shadow-sm space-y-3.5">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-[#25D366]/15 flex items-center justify-center text-[#25D366]">
                   <WhatsAppIcon className="w-5 h-5 fill-current" />
@@ -67,42 +82,42 @@ export default function ContactUs() {
                 </div>
               </div>
 
-              <p className="text-xs text-[#242424]/75 font-light leading-relaxed">
-                Connect directly with Jibu Thomas for instant advice, route feasibility, and quick date inquiries.
+              <p className="text-xs text-[#242424]/75 font-light leading-relaxed break-words">
+                {contact.consultationNote || "Connect directly with Jibu Thomas for instant advice, route feasibility, and quick date inquiries."}
               </p>
 
               <a
-                href="https://wa.me/919447000000?text=Hello%20Jibu%2C%20I%20would%20like%20to%20consult%20about%20a%20journey%20to%20Kerala."
+                href={`https://wa.me/${contact.whatsappNumber.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(contact.whatsappPrefill || "Hello Jibu, I would like to consult about a journey to Kerala.")}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-sm"
               >
                 <WhatsAppIcon className="w-4 h-4 fill-current" />
-                <span>+91 (0) 9447 000 000</span>
+                <span>{contact.displayPhone || contact.phoneNumber}</span>
               </a>
             </div>
 
             {/* Direct Telephone & Atelier Details */}
-            <div className="p-6 rounded-[2rem] bg-white border border-[#E9E0D2] shadow-sm space-y-3.5 text-xs text-[#242424]/80">
+            <div className="p-5 sm:p-6 rounded-[2rem] bg-white border border-[#E9E0D2] shadow-sm space-y-3 text-xs text-[#242424]/80">
               <div className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-[#8B5E35] shrink-0" />
-                <a href="tel:+919447000000" className="hover:text-[#183D2B] font-medium">
-                  +91 (0) 9447 000 000
+                <a href={`tel:${contact.phoneNumber.replace(/[^0-9+]/g, "")}`} className="hover:text-[#183D2B] font-medium">
+                  {contact.displayPhone || contact.phoneNumber}
                 </a>
               </div>
               <div className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-[#8B5E35] shrink-0" />
-                <a href="mailto:contact@journeysbyjibuthomas.com" className="hover:text-[#183D2B]">
-                  contact@journeysbyjibuthomas.com
+                <a href={`mailto:${contact.email}`} className="hover:text-[#183D2B] break-all">
+                  {contact.email}
                 </a>
               </div>
               <div className="flex items-center gap-3">
                 <MapPin className="w-4 h-4 text-[#8B5E35] shrink-0" />
-                <span>Kochi, Kerala &bull; South India</span>
+                <span className="break-words">{contact.address}</span>
               </div>
               <div className="flex items-center gap-3">
                 <Clock className="w-4 h-4 text-[#8B5E35] shrink-0" />
-                <span>Monday – Saturday &bull; 09:00 – 19:00 IST</span>
+                <span>{contact.officeHours}</span>
               </div>
             </div>
 
@@ -128,7 +143,7 @@ export default function ContactUs() {
 
           {/* Right Column: Streamlined 4-Field Consultation Form */}
           <div className="lg:col-span-7">
-            <div className="p-6 sm:p-8 lg:p-10 rounded-[2.2rem] bg-white border border-[#E9E0D2] shadow-[0_12px_40px_rgba(24,61,43,0.06)]">
+            <div className="p-5 sm:p-7 lg:p-8 rounded-[2.2rem] bg-white border border-[#E9E0D2] shadow-[0_12px_40px_rgba(24,61,43,0.06)]">
               {isSubmitted ? (
                 <div className="py-12 text-center space-y-4">
                   <div className="w-16 h-16 rounded-full bg-[#183D2B]/10 text-[#183D2B] flex items-center justify-center mx-auto">
@@ -216,7 +231,7 @@ export default function ContactUs() {
                         <span>Sending Request...</span>
                       ) : (
                         <>
-                          <span>Send Consultation Request</span>
+                          <span>Send My Journey Request</span>
                           <Send className="w-3.5 h-3.5" />
                         </>
                       )}

@@ -4,9 +4,11 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
+import { useWebsiteContent } from "@/hooks/useWebsiteContent";
 
 interface HeroSlide {
-  id: number;
+  id?: number;
+  slideId?: number;
   src: string;
   word: string;
   subWord: string;
@@ -15,9 +17,9 @@ interface HeroSlide {
   description: string;
 }
 
-const HERO_SLIDES: HeroSlide[] = [
+const STATIC_HERO_SLIDES: HeroSlide[] = [
   {
-    id: 1,
+    slideId: 1,
     src: "/video/video-1.mp4",
     word: "Highlands",
     subWord: "Untouched.",
@@ -27,7 +29,7 @@ const HERO_SLIDES: HeroSlide[] = [
       "Misty tea estates and tranquil hill trails carved into South India's highest peaks.",
   },
   {
-    id: 2,
+    slideId: 2,
     src: "/video/video-2.mp4",
     word: "Sanctuary",
     subWord: "Unhurried.",
@@ -37,7 +39,7 @@ const HERO_SLIDES: HeroSlide[] = [
       "Slow, sunlit canals and private luxury houseboats where time quietly dissolves into emerald backwater rhythms.",
   },
   {
-    id: 4,
+    slideId: 4,
     src: "/video/video-4.mp4",
     word: "Coastlines",
     subWord: "Timeless.",
@@ -47,7 +49,7 @@ const HERO_SLIDES: HeroSlide[] = [
       "Red laterite cliffs, golden shores, and the gentle swell of coastal breezes framed by secluded luxury hideaways.",
   },
   {
-    id: 5,
+    slideId: 5,
     src: "/video/video-5.mp4",
     word: "Traditions",
     subWord: "Living.",
@@ -61,21 +63,27 @@ const HERO_SLIDES: HeroSlide[] = [
 const SLIDE_DURATION = 5500; // 5.5 seconds per slide
 
 export default function Hero() {
+  const content = useWebsiteContent();
+  const heroSlides: HeroSlide[] =
+    content.heroSlides && content.heroSlides.length > 0
+      ? content.heroSlides
+      : STATIC_HERO_SLIDES;
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
   // Advance slides automatically
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % HERO_SLIDES.length);
+      setCurrentIndex((prev) => (prev + 1) % heroSlides.length);
     }, SLIDE_DURATION);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [heroSlides.length]);
 
   // Video playback synchronization
   useEffect(() => {
-    HERO_SLIDES.forEach((_, idx) => {
+    heroSlides.forEach((_, idx) => {
       const vid = videoRefs.current[idx];
       if (vid) {
         if (idx === currentIndex) {
@@ -85,14 +93,14 @@ export default function Hero() {
             }
           } catch {}
           vid.play().catch(() => {});
-        } else if (idx === (currentIndex + 1) % HERO_SLIDES.length) {
+        } else if (idx === (currentIndex + 1) % heroSlides.length) {
           vid.play().catch(() => {});
         }
       }
     });
-  }, [currentIndex]);
+  }, [currentIndex, heroSlides]);
 
-  const currentSlide = HERO_SLIDES[currentIndex];
+  const currentSlide = heroSlides[currentIndex] || heroSlides[0];
 
   return (
     <section
@@ -101,15 +109,15 @@ export default function Hero() {
     >
       {/* Background Videos with Seamless Cross-fade */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        {HERO_SLIDES.map((slide, idx) => {
+        {heroSlides.map((slide, idx) => {
           const isActive = idx === currentIndex;
           return (
             <video
-              key={slide.id}
+              key={slide.slideId || slide.id || idx}
               ref={(el) => {
                 videoRefs.current[idx] = el;
               }}
-              src={slide.src}
+              src={slide.src || `/video/video-${(idx % 4) + 1}.mp4`}
               muted
               playsInline
               loop
@@ -140,7 +148,7 @@ export default function Hero() {
           <div className="flex-1 flex items-center justify-start pointer-events-auto min-w-0">
             <AnimatePresence mode="wait">
               <motion.div
-                key={currentSlide.id}
+                key={currentSlide.slideId || currentSlide.id || currentIndex}
                 initial={{ opacity: 0, y: 8, filter: "blur(4px)" }}
                 animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                 exit={{ opacity: 0, y: -8, filter: "blur(4px)" }}
@@ -164,13 +172,13 @@ export default function Hero() {
             className="shrink-0 h-[48px] sm:h-[54px] w-[300px] sm:w-[500px] md:w-[560px] pointer-events-none"
           />
 
-          {/* Right: Explore Journeys CTA Button - matching height, on same line */}
+          {/* Right: Primary Plan Your Journey CTA Button - matching height, on same line */}
           <div className="flex-1 flex items-center justify-end pointer-events-auto">
             <Link
-              href="#destinations"
+              href="/contact"
               className="group inline-flex items-center gap-2 sm:gap-2.5 px-4 sm:px-6 h-[48px] sm:h-[54px] rounded-full bg-white hover:bg-[#8B5E35] text-[#183D2B] hover:text-white text-[11px] sm:text-xs font-bold tracking-wider uppercase transition-all duration-300 shadow-xl hover:scale-105 active:scale-95 whitespace-nowrap shrink-0"
             >
-              <span>Explore Journeys</span>
+              <span>Plan Your Journey</span>
               <div className="w-6 h-6 rounded-full bg-[#183D2B] group-hover:bg-white text-white group-hover:text-[#8B5E35] flex items-center justify-center transition-colors shrink-0">
                 <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </div>

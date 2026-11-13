@@ -83,22 +83,32 @@ export default function AboutUs() {
   };
 
   return (
-    <section id="about" className="py-20 sm:py-28 bg-[#FFFCF5] relative overflow-hidden border-b border-[#E9E0D2]/70 shadow-[0_20px_50px_rgba(24,61,43,0.08)]">
+    <section id="about" className="pt-10 sm:pt-14 md:pt-16 pb-20 sm:pb-24 md:pb-28 bg-[#FFFCF5] relative overflow-hidden">
       {/* Background Decor */}
       <div className="absolute top-1/4 right-0 w-[450px] h-[450px] bg-[#E9E0D2]/25 rounded-full blur-3xl pointer-events-none -mr-40" />
 
       <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="flex items-center gap-3 mb-8 sm:mb-12">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#8B5E35] shrink-0" />
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] text-[#183D2B] uppercase">
-            ABOUT <span className="text-[#8B5E35]">US</span>
-          </h2>
-          <span className="h-[1.5px] w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent" />
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 sm:mb-8">
+          <div className="flex items-center gap-3">
+            <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#8B5E35] to-[#B37D47] shadow-sm shrink-0" />
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] uppercase">
+              <span className="bg-gradient-to-r from-[#183D2B] via-[#1E4A35] to-[#27593D] bg-clip-text text-transparent">
+                ABOUT{" "}
+              </span>
+              <span className="bg-gradient-to-r from-[#8B5E35] via-[#B87D4B] to-[#8B5E35] bg-clip-text text-transparent">
+                US
+              </span>
+            </h2>
+            <span className="h-[1.5px] w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent" />
+          </div>
+          <p className="text-[11px] sm:text-xs font-sans font-medium uppercase tracking-[0.22em] text-[#8B5E35]">
+            Personally planned &bull; Locally known &bull; Privately travelled
+          </p>
         </div>
 
         {/* Tab Navigation Pill Bar */}
-        <div className="flex items-center gap-2 p-1.5 rounded-full bg-[#E9E0D2]/40 border border-[#E9E0D2] mb-12 max-w-fit overflow-x-auto no-scrollbar">
+        <div className="flex items-center gap-2 p-1.5 rounded-full bg-[#E9E0D2]/40 border border-[#E9E0D2] mb-6 sm:mb-8 max-w-fit overflow-x-auto no-scrollbar">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;

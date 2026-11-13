@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
+import { useWebsiteContent } from "@/hooks/useWebsiteContent";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -236,36 +237,42 @@ export const DESTINATIONS_DATA: DestinationItem[] = [
 ];
 
 export default function Destinations() {
+  const content = useWebsiteContent();
+  const destinationsData: DestinationItem[] =
+    content.destinations && content.destinations.length > 0
+      ? content.destinations
+      : DESTINATIONS_DATA;
+
   const [selectedDest, setSelectedDest] = useState<DestinationItem | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<DestinationCategory>("all");
   const [viewMode, setViewMode] = useState<"flow" | "grid">("flow");
 
   const categories: CategoryOption[] = useMemo(
     () => [
-      { id: "all", label: "All Destinations", count: DESTINATIONS_DATA.length },
+      { id: "all", label: "All Destinations", count: destinationsData.length },
       {
         id: "kerala",
         label: "Kerala",
-        count: DESTINATIONS_DATA.filter((d) => d.stateCategory === "kerala").length,
+        count: destinationsData.filter((d) => d.stateCategory === "kerala").length,
       },
       {
         id: "tamil-nadu",
         label: "Tamil Nadu",
-        count: DESTINATIONS_DATA.filter((d) => d.stateCategory === "tamil-nadu").length,
+        count: destinationsData.filter((d) => d.stateCategory === "tamil-nadu").length,
       },
       {
         id: "karnataka",
         label: "Karnataka",
-        count: DESTINATIONS_DATA.filter((d) => d.stateCategory === "karnataka").length,
+        count: destinationsData.filter((d) => d.stateCategory === "karnataka").length,
       },
     ],
-    []
+    [destinationsData]
   );
 
   const filteredDestinations = useMemo(() => {
-    if (selectedCategory === "all") return DESTINATIONS_DATA;
-    return DESTINATIONS_DATA.filter((d) => d.stateCategory === selectedCategory);
-  }, [selectedCategory]);
+    if (selectedCategory === "all") return destinationsData;
+    return destinationsData.filter((d) => d.stateCategory === selectedCategory);
+  }, [selectedCategory, destinationsData]);
 
   // Seamless duplicated tracks dynamically computed based on active category
   const { trackOne, trackTwo } = useMemo(() => {
@@ -406,7 +413,7 @@ export default function Destinations() {
           <span>{dest.region}</span>
         </span>
 
-        <h3 className="text-2xl sm:text-3xl font-serif text-white font-light leading-snug group-hover:text-[#E9E0D2] transition-colors duration-300">
+        <h3 className="text-2xl sm:text-3xl font-serif text-white font-light leading-snug group-hover:text-[#E9E0D2] transition-colors duration-300 break-words line-clamp-2">
           {dest.name}
         </h3>
 
@@ -421,14 +428,16 @@ export default function Destinations() {
   );
 
   return (
-    <section id="destinations" className="py-20 sm:py-28 bg-[#FFFCF5] relative overflow-hidden">
+    <section id="destinations" className="pt-10 sm:pt-14 md:pt-16 pb-20 sm:pb-24 md:pb-28 bg-[#FFFCF5] relative overflow-hidden">
       {/* Section Header */}
-      <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10 mb-8 sm:mb-12">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-[#E9E0D2]">
+      <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10 mb-6 sm:mb-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 pb-4 sm:pb-5 border-b border-[#E9E0D2]">
           <div className="flex items-center gap-3">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#8B5E35] shrink-0" />
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] text-[#183D2B] uppercase">
-              DESTINATIONS
+            <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#8B5E35] to-[#B37D47] shadow-sm shrink-0" />
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] uppercase">
+              <span className="bg-gradient-to-r from-[#183D2B] via-[#1E4A35] to-[#27593D] bg-clip-text text-transparent">
+                DESTINATIONS
+              </span>
             </h2>
             <span className="h-[1.5px] w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent" />
           </div>
@@ -467,7 +476,7 @@ export default function Destinations() {
         </div>
 
         {/* Category Filter Pills (Kerala, Tamil Nadu, Karnataka, All) */}
-        <div className="pt-6 flex items-center gap-2 sm:gap-3 overflow-x-auto no-scrollbar">
+        <div className="pt-4 sm:pt-5 flex items-center gap-2 sm:gap-3 overflow-x-auto no-scrollbar">
           {categories.map((cat) => {
             const isActive = selectedCategory === cat.id;
             return (
@@ -509,7 +518,7 @@ export default function Destinations() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="relative w-full overflow-hidden space-y-5 sm:space-y-6"
+            className="relative w-full overflow-hidden space-y-3.5 sm:space-y-4"
           >
             {/* TRACK 1 (Moving Left) */}
             <div className="flex overflow-hidden">
@@ -538,7 +547,7 @@ export default function Destinations() {
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8"
           >
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-7">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
               {filteredDestinations.map((dest) =>
                 renderDestinationCard(dest, `grid-${dest.id}`, true)
               )}
@@ -548,7 +557,7 @@ export default function Destinations() {
       </AnimatePresence>
 
       {/* Explore Full Directory CTA Button */}
-      <div className="mt-12 sm:mt-16 text-center px-4 relative z-10">
+      <div className="mt-8 sm:mt-10 text-center px-4 relative z-10">
         <Link
           href="/destinations"
           className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full bg-[#183D2B] hover:bg-[#8B5E35] text-[#FFFCF5] text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"

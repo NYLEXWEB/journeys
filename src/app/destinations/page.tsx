@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { DESTINATIONS_DATA, DestinationCategory } from "@/components/Destinations";
+import { useWebsiteContent } from "@/hooks/useWebsiteContent";
 import {
   MapPin,
   ArrowLeft,
@@ -19,12 +20,18 @@ import {
 } from "lucide-react";
 
 export default function DestinationsDirectoryPage() {
+  const content = useWebsiteContent();
+  const destinationsData =
+    content.destinations && content.destinations.length > 0
+      ? content.destinations
+      : DESTINATIONS_DATA;
+
   const [selectedCategory, setSelectedCategory] = useState<DestinationCategory>("all");
 
   const filteredDestinations =
     selectedCategory === "all"
-      ? DESTINATIONS_DATA
-      : DESTINATIONS_DATA.filter((d) => d.stateCategory === selectedCategory);
+      ? destinationsData
+      : destinationsData.filter((d: any) => d.stateCategory === selectedCategory);
 
   return (
     <div className="min-h-screen bg-[#FFFCF5] text-[#242424] flex flex-col font-sans selection:bg-[#183D2B] selection:text-[#FFFCF5]">
@@ -32,7 +39,7 @@ export default function DestinationsDirectoryPage() {
 
       <main className="flex-1 pt-28 sm:pt-36 pb-20">
         {/* Breadcrumb */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+        <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 mb-8">
           <Link
             href="/#destinations"
             className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-[#8B5E35] hover:text-[#183D2B] transition-colors font-medium"
@@ -43,7 +50,7 @@ export default function DestinationsDirectoryPage() {
         </div>
 
         {/* Directory Header */}
-        <header className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 border-b border-[#E9E0D2]">
+        <header className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 pb-12 border-b border-[#E9E0D2]">
           <div className="inline-flex items-center gap-2 text-[#8B5E35] text-xs uppercase tracking-[0.25em] font-semibold mb-3">
             <span className="w-6 h-[1.5px] bg-[#8B5E35]" />
             <span>COMPLETE DESTINATION DIRECTORY</span>
@@ -90,7 +97,7 @@ export default function DestinationsDirectoryPage() {
               <span>Quick Jump to Destination:</span>
             </div>
             <div className="flex flex-wrap gap-2">
-              {filteredDestinations.map((dest) => (
+              {filteredDestinations.map((dest: any) => (
                 <a
                   key={dest.id}
                   href={`#${dest.id}`}
@@ -104,8 +111,8 @@ export default function DestinationsDirectoryPage() {
         </header>
 
         {/* DESTINATIONS LIST - EDITORIAL SHOWCASE */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 space-y-16 sm:space-y-24">
-          {filteredDestinations.map((dest, idx) => (
+        <section className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 space-y-16 sm:space-y-24">
+          {filteredDestinations.map((dest: any, idx: number) => (
             <article
               key={dest.id}
               id={dest.id}
@@ -168,7 +175,7 @@ export default function DestinationsDirectoryPage() {
                       Curated Highlights &amp; Private Access:
                     </span>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                      {dest.highlights.map((highlight, hIdx) => (
+                      {dest.highlights.map((highlight: any, hIdx: number) => (
                         <div
                           key={hIdx}
                           className="flex items-center gap-2.5 p-3 rounded-xl bg-[#FFFCF5] border border-[#E9E0D2] text-xs text-[#242424]/85 font-medium"
@@ -208,7 +215,7 @@ export default function DestinationsDirectoryPage() {
         </section>
 
         {/* Bottom Banner */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+        <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 mt-12">
           <div className="p-8 sm:p-12 rounded-[2.5rem] bg-[#183D2B] text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
             <div className="space-y-2 text-center md:text-left">
               <span className="text-xs uppercase tracking-widest text-[#E9E0D2] font-semibold">

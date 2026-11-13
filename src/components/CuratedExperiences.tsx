@@ -20,6 +20,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { WhatsAppIcon } from "./WhatsAppIcon";
+import { useWebsiteContent } from "@/hooks/useWebsiteContent";
 
 export interface ExperienceItem {
   id: string;
@@ -156,6 +157,12 @@ export const EXPERIENCES_DATA: ExperienceItem[] = [
 ];
 
 export default function CuratedExperiences() {
+  const content = useWebsiteContent();
+  const experiencesData: ExperienceItem[] =
+    content.experiences && content.experiences.length > 0
+      ? content.experiences
+      : EXPERIENCES_DATA;
+
   const [selectedExp, setSelectedExp] = useState<ExperienceItem | null>(null);
 
   // Background Scroll Lock when modal is open
@@ -183,13 +190,18 @@ export default function CuratedExperiences() {
   }, []);
 
   return (
-    <section id="experiences" className="py-16 sm:py-28 bg-[#FFFCF5] relative overflow-visible">
+    <section id="experiences" className="pt-10 sm:pt-14 md:pt-16 pb-20 sm:pb-24 md:pb-28 bg-[#FFFCF5] relative overflow-visible">
       <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="flex items-center gap-3 mb-8 sm:mb-12">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#8B5E35] shrink-0" />
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] text-[#183D2B] uppercase">
-            CURATED <span className="text-[#8B5E35]">EXPERIENCES</span>
+        <div className="flex items-center gap-3 mb-6 sm:mb-8">
+          <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#8B5E35] to-[#B37D47] shadow-sm shrink-0" />
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] uppercase">
+            <span className="bg-gradient-to-r from-[#183D2B] via-[#1E4A35] to-[#27593D] bg-clip-text text-transparent">
+              CURATED{" "}
+            </span>
+            <span className="bg-gradient-to-r from-[#8B5E35] via-[#B87D4B] to-[#8B5E35] bg-clip-text text-transparent">
+              EXPERIENCES
+            </span>
           </h2>
           <span className="h-[1.5px] w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent" />
         </div>
@@ -198,8 +210,8 @@ export default function CuratedExperiences() {
           PURE VISUAL TILES
           Desktop / Tablet: Clean Multi-Column Luxury Grid (Completely static, no stacking)
         */}
-        <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
-          {EXPERIENCES_DATA.map((exp) => (
+        <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6">
+          {experiencesData.map((exp) => (
             <div
               key={exp.id}
               onClick={() => setSelectedExp(exp)}
@@ -242,7 +254,7 @@ export default function CuratedExperiences() {
           (Each image fixes in place, next image slides up on top and fixes)
         */}
         <div className="sm:hidden flex flex-col relative">
-          {EXPERIENCES_DATA.map((exp, idx) => (
+          {experiencesData.map((exp, idx) => (
             <div
               key={exp.id}
               onClick={() => setSelectedExp(exp)}
@@ -250,7 +262,7 @@ export default function CuratedExperiences() {
                 top: `calc(75px + ${idx * 6}px)`,
                 zIndex: idx + 5,
               }}
-              className={`sticky group relative h-[70vh] min-h-[420px] max-h-[520px] rounded-[2rem] overflow-hidden cursor-pointer shadow-[0_-8px_30px_rgba(0,0,0,0.35)] select-none bg-[#183D2B] border border-white/10 ${idx === EXPERIENCES_DATA.length - 1 ? "mb-0" : "mb-10"
+              className={`sticky group relative h-[70vh] min-h-[420px] max-h-[520px] rounded-[2rem] overflow-hidden cursor-pointer shadow-[0_-8px_30px_rgba(0,0,0,0.35)] select-none bg-[#183D2B] border border-white/10 ${idx === EXPERIENCES_DATA.length - 1 ? "mb-0" : "mb-6"
                 }`}
             >
               <Image

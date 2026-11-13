@@ -7,15 +7,16 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Clock,
   ArrowUpRight,
-  Sparkles,
-  CheckCircle2,
-  X,
   BookOpen,
+  X,
+  CheckCircle2,
+  Sparkles,
 } from "lucide-react";
 import { WhatsAppIcon } from "./WhatsAppIcon";
 
 export interface JournalArticle {
   id: string;
+  issueNumber: string;
   category: "Destination Guides" | "Travel Tips & Planning" | "Culture & Local Stories" | "Seasonal Travel Inspiration";
   categoryKey: "guides" | "tips" | "culture" | "seasons";
   title: string;
@@ -31,6 +32,7 @@ export interface JournalArticle {
 export const JOURNAL_ARTICLES: JournalArticle[] = [
   {
     id: "munnar-guide",
+    issueNumber: "Dispatch 01",
     category: "Destination Guides",
     categoryKey: "guides",
     title: "The Discerning Traveller's Guide to Munnar & The High Ranges",
@@ -53,6 +55,7 @@ export const JOURNAL_ARTICLES: JournalArticle[] = [
   },
   {
     id: "travel-tips",
+    issueNumber: "Dispatch 02",
     category: "Travel Tips & Planning",
     categoryKey: "tips",
     title: "Planning Your Kerala Holiday: Timing, Pacing & Slow Travel",
@@ -75,6 +78,7 @@ export const JOURNAL_ARTICLES: JournalArticle[] = [
   },
   {
     id: "kettuvallam-culture",
+    issueNumber: "Dispatch 03",
     category: "Culture & Local Stories",
     categoryKey: "culture",
     title: "Behind the Kettuvallam: Wooden Boat Crafting on Vembanad Lake",
@@ -97,24 +101,25 @@ export const JOURNAL_ARTICLES: JournalArticle[] = [
   },
   {
     id: "seasonal-inspiration",
+    issueNumber: "Dispatch 04",
     category: "Seasonal Travel Inspiration",
     categoryKey: "seasons",
-    title: "The Magic of Kerala Monsoons & Winter Highland Escapes",
-    subtitle: "From lush green rejuvenation to golden coastal winters: choosing your ideal season.",
+    title: "The Magic of Monsoon: Rejuvenation, Waterways & Dramatic Skies",
+    subtitle: "Why June through August is Kerala's best-kept secret for wellness and poetry.",
     readTime: "5 min read",
-    date: "Seasonal Inspiration &bull; Weather",
+    date: "Seasonality &bull; Ayurveda",
     image: "/images/generated/coastal-varkala.jpg",
     summary:
-      "Kerala is a year-round destination, but each season reveals a completely different mood. Here is our insider breakdown to help you match your holiday to the optimal month.",
+      "While many avoid rain, discerning travellers and wellness seekers arrive specifically during the Southwest monsoon (Edavappathi) when nature is radiant and Ayurveda is most potent.",
     fullContent: [
-      "The Winter Season (October to March) is the most popular time to visit South India. The skies are clear, the coastal waters are calm, and the hill stations of Munnar and Wayanad enjoy crisp, invigorating weather with sunny afternoons and cool evenings.",
-      "The Monsoon Season (June to August), known locally as Edavappathi, is Kerala's best-kept secret for wellness seekers. In traditional Ayurvedic medicine, the monsoon is the optimal time for cleansing treatments, as the pores of the skin open up and the atmosphere is dust-free and moist.",
-      "Watching torrential tropical rain transform the paddy fields into emerald mirrors from the dry veranda of your private heritage villa or houseboat is an intensely romantic, therapeutic experience that commercial brochures often overlook.",
+      "In traditional Ayurvedic medicine, the monsoon season opens the body's pores (Sweda Margas), making it the optimal physiological window for Panchakarma cleansing, herbal oil kizhi massage, and deep cellular rejuvenation.",
+      "The landscape transforms into an electric spectrum of fifty greens. Waterfalls plunge off laterite cliffs with thunderous majesty, backwater lagoons swell with fresh currents, and temperatures hover at a cool, balmy 24°C.",
+      "Sip warm spiced ginger tea on a colonial veranda while listening to rhythmic tropical downpours drumming against terracotta roof tiles — a sensation of peace unmatched anywhere else in India.",
     ],
     takeaways: [
-      "Oct – March: Ideal for sightseeing, beach retreats & hill treks",
-      "June – Aug: The golden season for authentic Ayurvedic Panchakarma",
-      "April – May: Warmer coastal days, perfect for cool highland escapes",
+      "Peak season for authentic Ayurvedic cures and Panchakarma therapies",
+      "Dramatically fewer crowds and lush emerald greenery across all regions",
+      "Exceptional rates at premium private luxury retreats and backwater resorts",
     ],
   },
 ];
@@ -149,72 +154,131 @@ export default function TravelJournal() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  const leadArticle = JOURNAL_ARTICLES[0];
+  const sideArticles = JOURNAL_ARTICLES.slice(1);
+
   return (
-    <section id="journal" className="py-20 sm:py-28 bg-[#FFFCF5] relative overflow-hidden">
+    <section id="journal" className="py-20 sm:py-28 lg:py-32 bg-[#FFFCF5] relative overflow-hidden">
       <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Minimal Section Header */}
-        <div className="max-w-3xl mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 text-[#8B5E35] text-xs uppercase tracking-[0.25em] font-semibold mb-3">
-            <span className="w-6 h-[1.5px] bg-[#8B5E35]" />
-            <span>6. TRAVEL JOURNAL</span>
-          </div>
-          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-serif text-[#183D2B] font-light tracking-tight leading-[1.12]">
-            Stories, insights &amp;{" "}
-            <span className="italic font-normal underline decoration-[#8B5E35]/40 decoration-1 underline-offset-8">
-              local wisdom.
-            </span>
+        {/* Section Header */}
+        <div className="flex items-center gap-3 mb-8 sm:mb-12">
+          <span className="w-2.5 h-2.5 rounded-full bg-[#8B5E35] shrink-0" />
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] text-[#183D2B] uppercase">
+            TRAVEL <span className="text-[#8B5E35]">JOURNAL</span>
           </h2>
-          <p className="mt-3 text-sm sm:text-base text-[#242424]/75 font-light leading-relaxed max-w-2xl">
-            Destination guides, practical planning advice, and living cultural narratives.
-          </p>
+          <span className="h-[1.5px] w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent" />
         </div>
 
-        {/* 4 Pure Visual Editorial Tiles */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
-          {JOURNAL_ARTICLES.map((article) => (
-            <div
-              key={article.id}
-              onClick={() => setActiveArticle(article)}
-              className="group relative h-[420px] sm:h-[460px] rounded-[2rem] overflow-hidden cursor-pointer shadow-[0_10px_30px_rgba(24,61,43,0.06)] hover:shadow-[0_20px_45px_rgba(24,61,43,0.18)] transition-all duration-700 bg-[#183D2B] select-none"
-            >
+        {/* STYLISH EDITORIAL MAGAZINE LAYOUT */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
+          {/* FEATURED LEAD DISPATCH (Left Column) */}
+          <article
+            onClick={() => setActiveArticle(leadArticle)}
+            className="lg:col-span-7 group rounded-[2.2rem] bg-white border border-[#E9E0D2] overflow-hidden cursor-pointer shadow-[0_12px_35px_rgba(24,61,43,0.06)] hover:shadow-[0_22px_55px_rgba(24,61,43,0.14)] transition-all duration-500 flex flex-col justify-between"
+          >
+            {/* Lead Image */}
+            <div className="relative h-[280px] sm:h-[380px] w-full overflow-hidden">
               <Image
-                src={article.image}
-                alt={article.title}
+                src={leadArticle.image}
+                alt={leadArticle.title}
                 fill
-                sizes="(max-width: 768px) 100vw, 25vw"
-                className="object-cover transition-transform duration-1000 ease-out group-hover:scale-108"
+                sizes="(max-width: 1024px) 100vw, 60vw"
+                className="object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/10 transition-opacity duration-500 group-hover:from-black/90" />
-
-              {/* Top Badges */}
-              <div className="absolute top-5 left-5 right-5 z-10 flex items-center justify-between">
-                <span className="px-3 py-1 rounded-full bg-white/90 backdrop-blur-md text-[10px] uppercase font-semibold text-[#183D2B] tracking-wider">
-                  {article.category}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+              
+              <div className="absolute top-5 left-5 right-5 flex items-center justify-between z-10">
+                <span className="px-3.5 py-1.5 rounded-full bg-white/95 backdrop-blur-md text-[10px] uppercase font-semibold text-[#183D2B] tracking-wider shadow-sm">
+                  Featured Dispatch
                 </span>
-                <span className="flex items-center gap-1 bg-black/40 px-2.5 py-1 rounded-full backdrop-blur-sm text-[10px] text-white border border-white/15">
+                <span className="flex items-center gap-1.5 bg-black/50 px-3 py-1 rounded-full text-[10px] text-white border border-white/20 backdrop-blur-sm">
                   <Clock className="w-3 h-3 text-[#E9E0D2]" />
-                  {article.readTime}
+                  <span>{leadArticle.readTime}</span>
                 </span>
               </div>
 
-              {/* Bottom Overlay: Title & Read Article */}
-              <div className="absolute inset-x-0 bottom-0 z-10 p-6 flex flex-col justify-end space-y-2.5">
-                <h3 className="text-xl sm:text-2xl font-serif text-white font-light leading-snug group-hover:text-[#E9E0D2] transition-colors duration-300 line-clamp-2">
-                  {article.title}
-                </h3>
-
-                <div className="pt-1">
-                  <span className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] font-medium text-[#E9E0D2] group-hover:text-white transition-colors duration-300">
-                    <span>Read Story</span>
-                    <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5" />
-                  </span>
-                </div>
+              <div className="absolute bottom-5 left-6 right-6 text-white">
+                <span className="text-[10px] uppercase tracking-widest text-[#E9E0D2] font-semibold">
+                  {leadArticle.category}
+                </span>
               </div>
             </div>
-          ))}
+
+            {/* Lead Editorial Copy */}
+            <div className="p-6 sm:p-8 space-y-4 flex-1 flex flex-col justify-between">
+              <div className="space-y-3">
+                <span className="text-xs uppercase tracking-widest text-[#8B5E35] font-semibold">
+                  {leadArticle.issueNumber} &bull; Highlands
+                </span>
+                <h3 className="text-2xl sm:text-3xl font-serif text-[#183D2B] font-light leading-snug group-hover:text-[#8B5E35] transition-colors">
+                  {leadArticle.title}
+                </h3>
+                <p className="text-sm text-[#242424]/75 font-light leading-relaxed line-clamp-3">
+                  {leadArticle.summary}
+                </p>
+              </div>
+
+              <div className="pt-4 border-t border-[#E9E0D2]/60 flex items-center justify-between">
+                <span className="text-xs font-serif italic text-[#8B5E35]">
+                  &ldquo;{leadArticle.subtitle}&rdquo;
+                </span>
+                <span className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-[#183D2B] font-semibold group-hover:text-[#8B5E35] transition-colors shrink-0">
+                  <span>Read Article</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </span>
+              </div>
+            </div>
+          </article>
+
+          {/* 3 COMPANION DISPATCHES (Right Column) */}
+          <div className="lg:col-span-5 flex flex-col justify-between gap-5 sm:gap-6">
+            {sideArticles.map((article) => (
+              <article
+                key={article.id}
+                onClick={() => setActiveArticle(article)}
+                className="group p-5 sm:p-6 rounded-[2rem] bg-white border border-[#E9E0D2] hover:border-[#8B5E35]/40 shadow-[0_8px_25px_rgba(24,61,43,0.05)] hover:shadow-[0_15px_35px_rgba(24,61,43,0.12)] transition-all duration-300 cursor-pointer flex flex-col sm:flex-row gap-5 items-start sm:items-center"
+              >
+                {/* Thumbnail */}
+                <div className="relative h-28 w-full sm:w-32 shrink-0 rounded-2xl overflow-hidden border border-[#E9E0D2]/50">
+                  <Image
+                    src={article.image}
+                    alt={article.title}
+                    fill
+                    sizes="(max-width: 640px) 100vw, 130px"
+                    className="object-cover transition-transform duration-700 group-hover:scale-108"
+                  />
+                  <div className="absolute inset-0 bg-black/15 group-hover:bg-transparent transition-colors" />
+                </div>
+
+                {/* Details */}
+                <div className="space-y-1.5 flex-1 min-w-0">
+                  <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-[#8B5E35] font-semibold">
+                    <span>{article.issueNumber}</span>
+                    <span>&bull;</span>
+                    <span className="text-[#242424]/60">{article.readTime}</span>
+                  </div>
+
+                  <h4 className="text-base sm:text-lg font-serif text-[#183D2B] font-light leading-snug group-hover:text-[#8B5E35] transition-colors line-clamp-2">
+                    {article.title}
+                  </h4>
+
+                  <p className="text-xs text-[#242424]/70 font-light line-clamp-2 leading-relaxed">
+                    {article.subtitle}
+                  </p>
+
+                  <div className="pt-1">
+                    <span className="inline-flex items-center gap-1 text-[11px] uppercase tracking-wider text-[#183D2B] font-medium group-hover:text-[#8B5E35] transition-colors">
+                      <span>Read Story</span>
+                      <ArrowUpRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    </span>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
 
-        {/* LUXURY EDITORIAL SPLIT MODAL (Aman / Belmond Standard) */}
+        {/* LUXURY EDITORIAL READING MODAL */}
         <AnimatePresence>
           {activeArticle && (
             <motion.div
@@ -226,117 +290,91 @@ export default function TravelJournal() {
               onClick={() => setActiveArticle(null)}
             >
               <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                initial={{ opacity: 0, scale: 0.96, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: 15 }}
+                exit={{ opacity: 0, scale: 0.96, y: 15 }}
                 transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                 onClick={(e) => e.stopPropagation()}
-                data-lenis-prevent="true"
-                className="relative max-w-4xl lg:max-w-5xl w-full max-h-[90vh] md:max-h-[85vh] rounded-[2rem] sm:rounded-[2.8rem] bg-[#FFFCF5] border border-[#E9E0D2] shadow-[0_30px_90px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col md:flex-row"
+                className="relative w-full max-w-4xl max-h-[92vh] overflow-y-auto rounded-[2.5rem] bg-[#FFFCF5] border border-[#E9E0D2] shadow-2xl p-6 sm:p-10 lg:p-12 space-y-8 no-scrollbar"
               >
-                {/* Floating Close Button */}
+                {/* Close Button */}
                 <button
                   onClick={() => setActiveArticle(null)}
-                  className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 z-30 p-2 sm:p-2.5 rounded-full bg-black/40 md:bg-black/10 hover:bg-[#183D2B] text-white md:text-[#183D2B] md:hover:text-white transition-all shadow-sm active:scale-90 backdrop-blur-sm cursor-pointer"
-                  aria-label="Close modal"
+                  className="absolute top-6 right-6 w-11 h-11 rounded-full bg-white border border-[#E9E0D2] flex items-center justify-center text-[#183D2B] hover:bg-[#183D2B] hover:text-white transition-all shadow-md z-20 cursor-pointer"
+                  aria-label="Close article"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-5 h-5" />
                 </button>
 
-                {/* Left Column: Full-Bleed Imagery */}
-                <div className="md:w-[44%] relative h-48 sm:h-64 md:h-auto min-h-[190px] sm:min-h-[260px] md:min-h-full overflow-hidden bg-[#183D2B] shrink-0">
+                {/* Article Header */}
+                <div className="space-y-4 pr-12">
+                  <div className="flex items-center gap-3 text-xs uppercase tracking-[0.25em] text-[#8B5E35] font-semibold">
+                    <span>{activeArticle.issueNumber}</span>
+                    <span>&bull;</span>
+                    <span>{activeArticle.category}</span>
+                    <span>&bull;</span>
+                    <span className="text-[#242424]/60">{activeArticle.readTime}</span>
+                  </div>
+
+                  <h2 className="text-2xl sm:text-4xl lg:text-5xl font-serif text-[#183D2B] font-light leading-tight">
+                    {activeArticle.title}
+                  </h2>
+
+                  <p className="font-serif italic text-base sm:text-lg text-[#8B5E35]">
+                    &ldquo;{activeArticle.subtitle}&rdquo;
+                  </p>
+                </div>
+
+                {/* Cover Image */}
+                <div className="relative h-64 sm:h-96 w-full rounded-2xl overflow-hidden shadow-md border border-[#E9E0D2]/60">
                   <Image
                     src={activeArticle.image}
                     alt={activeArticle.title}
                     fill
-                    sizes="(max-width: 768px) 100vw, 45vw"
+                    sizes="(max-width: 1024px) 100vw, 900px"
                     className="object-cover"
-                    priority
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/30" />
+                </div>
 
-                  {/* Top Badges */}
-                  <div className="absolute top-4 left-4 sm:top-6 sm:left-6 flex items-center gap-2">
-                    <span className="px-3 py-1 rounded-full bg-white/90 backdrop-blur-md text-[10px] uppercase font-semibold text-[#183D2B] tracking-wider">
-                      {activeArticle.category}
-                    </span>
-                    <span className="px-3 py-1 rounded-full bg-black/40 backdrop-blur-md text-[10px] uppercase font-medium text-white tracking-wider flex items-center gap-1 border border-white/15">
-                      <Clock className="w-3 h-3 text-[#E9E0D2]" />
-                      {activeArticle.readTime}
-                    </span>
-                  </div>
+                {/* Full Article Prose */}
+                <div className="space-y-4 text-sm sm:text-base text-[#242424]/85 font-light leading-relaxed">
+                  {activeArticle.fullContent.map((paragraph, pIdx) => (
+                    <p key={pIdx}>{paragraph}</p>
+                  ))}
+                </div>
 
-                  {/* Bottom Image Info */}
-                  <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 text-white space-y-1">
-                    <p className="font-serif italic text-xs sm:text-sm text-[#E9E0D2]">
-                      &ldquo;{activeArticle.subtitle}&rdquo;
-                    </p>
+                {/* Key Takeaways */}
+                <div className="p-6 rounded-2xl bg-white border border-[#E9E0D2] shadow-sm space-y-3">
+                  <span className="text-xs uppercase tracking-wider text-[#183D2B] font-semibold block">
+                    Discerning Traveller Notes:
+                  </span>
+                  <div className="space-y-2">
+                    {activeArticle.takeaways.map((note, nIdx) => (
+                      <div key={nIdx} className="flex items-start gap-2.5 text-xs sm:text-sm text-[#242424]/80">
+                        <CheckCircle2 className="w-4 h-4 text-[#8B5E35] shrink-0 mt-0.5" />
+                        <span>{note}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
-                {/* Right Column: Editorial Text & Insights */}
-                <div
-                  data-lenis-prevent="true"
-                  className="md:w-[56%] p-6 sm:p-9 lg:p-11 flex flex-col justify-between overflow-y-auto no-scrollbar space-y-6"
-                >
-                  <div className="space-y-4 pt-1 sm:pt-0">
-                    <div className="inline-flex items-center gap-2 text-[#8B5E35] text-[10px] sm:text-xs uppercase tracking-[0.22em] font-semibold">
-                      <BookOpen className="w-3.5 h-3.5 text-[#8B5E35]" />
-                      <span>{activeArticle.date}</span>
-                    </div>
-
-                    <h3 className="font-serif text-2xl sm:text-3xl text-[#183D2B] font-light leading-snug">
-                      {activeArticle.title}
-                    </h3>
-
-                    <div className="space-y-3 pt-2 text-xs sm:text-sm text-[#242424]/80 font-light leading-relaxed font-sans">
-                      {activeArticle.fullContent.map((para, idx) => (
-                        <p key={idx}>{para}</p>
-                      ))}
-                    </div>
-
-                    {/* Key Travel Insights Box */}
-                    <div className="pt-4 border-t border-[#E9E0D2] space-y-2.5">
-                      <h5 className="text-[11px] uppercase tracking-widest text-[#183D2B] font-semibold flex items-center gap-2">
-                        <Sparkles className="w-3.5 h-3.5 text-[#8B5E35]" />
-                        <span>Key Travel Insights:</span>
-                      </h5>
-                      <div className="space-y-2">
-                        {activeArticle.takeaways.map((item, i) => (
-                          <div key={i} className="flex items-start gap-2.5 text-xs text-[#242424]/85 font-light">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-[#8B5E35] shrink-0 mt-0.5" />
-                            <span>{item}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                {/* Action Footer */}
+                <div className="pt-4 border-t border-[#E9E0D2] flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="text-xs text-[#242424]/70 font-serif italic text-center sm:text-left">
+                    Curated by Journeys by Jibu Thomas &bull; Kerala, South India
                   </div>
-
-                  {/* Bottom Action Footer with WhatsApp Enquiry */}
-                  <div className="pt-5 border-t border-[#E9E0D2] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div className="text-[11px] text-[#242424]/60 font-serif italic">
-                      Tailored journeys across Kerala
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Link
-                        href="#contact"
-                        onClick={() => setActiveArticle(null)}
-                        className="text-[11px] uppercase tracking-wider text-[#183D2B]/75 hover:text-[#183D2B] font-medium hidden sm:inline"
-                      >
-                        Enquiry Form
-                      </Link>
-                      <a
-                        href={`https://wa.me/919447000000?text=${encodeURIComponent(
-                          `Hello Jibu, I was reading about "${activeArticle.title}" and would love to plan a tailored journey.`
-                        )}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-2.5 px-6 py-3 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 active:scale-95"
-                      >
-                        <WhatsAppIcon className="w-4 h-4 fill-current" />
-                        <span>WhatsApp Enquiry</span>
-                      </a>
-                    </div>
+                  <div className="flex items-center gap-3">
+                    <a
+                      href={`https://wa.me/919447000000?text=${encodeURIComponent(
+                        `Hello Jibu, I was reading "${activeArticle.title}" and would like to consult about planning this.`
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white text-xs uppercase tracking-widest font-semibold transition-all shadow-md"
+                    >
+                      <WhatsAppIcon className="w-4 h-4 fill-current" />
+                      <span>Discuss with Jibu</span>
+                    </a>
                   </div>
                 </div>
               </motion.div>

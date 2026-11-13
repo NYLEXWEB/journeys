@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowDown, ArrowUpRight, Compass, Pause, Play } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 interface HeroSlide {
   id: number;
@@ -21,17 +21,17 @@ const HERO_SLIDES: HeroSlide[] = [
     src: "/video/video-1.mp4",
     word: "Highlands",
     subWord: "Untouched.",
-    tag: "01 · Highlands",
+    tag: "Highlands",
     location: "Munnar & Western Ghats",
     description:
-      "Misty tea estates and tranquil hill trails carved into South India's highest peaks. Privately traversed at your own cadence.",
+      "Misty tea estates and tranquil hill trails carved into South India's highest peaks.",
   },
   {
     id: 2,
     src: "/video/video-2.mp4",
     word: "Sanctuary",
     subWord: "Unhurried.",
-    tag: "02 · Waterways",
+    tag: "Waterways",
     location: "Alleppey & Kumarakom",
     description:
       "Slow, sunlit canals and private luxury houseboats where time quietly dissolves into emerald backwater rhythms.",
@@ -41,7 +41,7 @@ const HERO_SLIDES: HeroSlide[] = [
     src: "/video/video-4.mp4",
     word: "Coastlines",
     subWord: "Timeless.",
-    tag: "03 · Shores",
+    tag: "Shores",
     location: "Varkala & Arabian Sea",
     description:
       "Red laterite cliffs, golden shores, and the gentle swell of coastal breezes framed by secluded luxury hideaways.",
@@ -51,30 +51,27 @@ const HERO_SLIDES: HeroSlide[] = [
     src: "/video/video-5.mp4",
     word: "Traditions",
     subWord: "Living.",
-    tag: "04 · Heritage",
+    tag: "Heritage",
     location: "Fort Kochi & Malabar",
     description:
       "Centuries of ritual arts, spice trail architecture, and authentic local encounters far beyond commercial guidebooks.",
   },
 ];
 
-const SLIDE_DURATION = 5500; // 5.5 seconds per slide for a comfortable reading rhythm
+const SLIDE_DURATION = 5500; // 5.5 seconds per slide
 
 export default function Hero() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
-  // Advance slides automatically unless paused
+  // Advance slides automatically
   useEffect(() => {
-    if (isPaused) return;
-
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % HERO_SLIDES.length);
     }, SLIDE_DURATION);
 
     return () => clearInterval(timer);
-  }, [isPaused]);
+  }, []);
 
   // Video playback synchronization
   useEffect(() => {
@@ -100,7 +97,7 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-[100dvh] flex items-center justify-center overflow-hidden bg-[#183D2B]"
+      className="relative min-h-[100dvh] w-full overflow-hidden bg-[#183D2B]"
     >
       {/* Background Videos with Seamless Cross-fade */}
       <div className="absolute inset-0 z-0 overflow-hidden">
@@ -124,114 +121,62 @@ export default function Hero() {
           );
         })}
 
-        {/* Editorial Atmospheric Gradients */}
-        <div className="absolute inset-0 z-20 bg-gradient-to-t from-[#183D2B] via-[#183D2B]/35 to-black/60 pointer-events-none" />
-        <div className="absolute inset-0 z-20 bg-black/25 pointer-events-none" />
-        {/* Subtle radial warmth for depth */}
-        <div className="absolute inset-0 z-20 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.45)_100%)] pointer-events-none" />
+        {/* Editorial Atmospheric Gradients - keeping center view open */}
+        <div className="absolute inset-0 z-20 bg-gradient-to-t from-black/85 via-black/20 to-black/35 pointer-events-none" />
+        <div className="absolute inset-0 z-20 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,0.5)_100%)] pointer-events-none" />
       </div>
 
-      {/* Hero Content with Smooth Synchronized Transitions */}
-      <div className="relative z-30 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-[#FFFCF5] pt-28 pb-24 sm:pt-36 sm:pb-32 flex flex-col items-center justify-center min-h-[100dvh]">
-        {/* Animated Slide Content */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentSlide.id}
-            initial={{ opacity: 0, y: 24, filter: "blur(6px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            exit={{ opacity: 0, y: -20, filter: "blur(6px)" }}
-            transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col items-center text-center max-w-4xl"
-          >
-            {/* Single-Word Punchy Headline with Italic Accent */}
-            <h1 className="text-[34px] sm:text-6xl md:text-8xl lg:text-9xl font-serif font-light tracking-tight leading-[1.05] sm:leading-[0.95] mb-3 sm:mb-7 text-[#FFFCF5] drop-shadow-lg select-none">
-              {currentSlide.word}
-              <span className="italic font-normal text-[#E9E0D2] font-serif ml-2 sm:ml-4">
-                {currentSlide.subWord}
-              </span>
-            </h1>
-
-            {/* 1-2 Line Poetic Description */}
-            <p className="max-w-xl sm:max-w-2xl text-xs sm:text-base md:text-xl font-light text-[#FFFCF5]/90 leading-relaxed font-sans tracking-wide drop-shadow-sm mb-6 sm:mb-11 px-2 sm:px-0">
-              {currentSlide.description}
-            </p>
-
-            {/* Action Buttons with Premium Hover Effects */}
-            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-5 w-full sm:w-auto">
-              <Link
-                href="#travel-with-jibu"
-                className="group relative inline-flex items-center justify-center gap-3 px-6 sm:px-8 py-3.5 sm:py-4 rounded-full bg-[#FFFCF5] text-[#183D2B] text-xs sm:text-sm font-medium tracking-wider uppercase shadow-xl hover:shadow-[0_12px_30px_rgba(0,0,0,0.35)] transition-all duration-300 hover:scale-105 active:scale-95 w-full sm:w-auto"
+      {/* 
+        BOTTOM BAR CONTENT:
+        1. Left: Heading (Compact, bold, aligned on the exact same horizontal line)
+        2. Center: Invisible Anchor / Spacer where the floating Navbar capsule sits
+        3. Right: Explore Journeys action button (matching height, on the exact same line)
+        All 3 on the exact same line, moving up together on scroll!
+      */}
+      <div className="absolute bottom-6 sm:bottom-8 lg:bottom-10 inset-x-0 z-30 px-4 sm:px-8 lg:px-12 pointer-events-none">
+        <div className="w-full max-w-[1600px] mx-auto flex items-center justify-between gap-3 sm:gap-4">
+          
+          {/* Left: Heading - compact & bold, vertically centered */}
+          <div className="flex-1 flex items-center justify-start pointer-events-auto min-w-0">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentSlide.id}
+                initial={{ opacity: 0, y: 8, filter: "blur(4px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                exit={{ opacity: 0, y: -8, filter: "blur(4px)" }}
+                transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                className="flex items-center gap-2 h-[48px] sm:h-[54px]"
               >
-                <span>Explore Journeys</span>
-                <div className="p-1 rounded-full bg-[#183D2B] text-[#FFFCF5] transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5">
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </div>
-              </Link>
-            </div>
-          </motion.div>
-        </AnimatePresence>
-      </div>
-
-      {/* Interactive Bottom Progress Indicator & Video Switcher */}
-      <div className="absolute bottom-4 sm:bottom-10 left-0 right-0 z-30 px-3 sm:px-8 pr-16 sm:pr-8">
-        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
-          {/* Slide Navigation Tabs */}
-          <div className="flex items-center gap-1.5 sm:gap-3 w-full sm:w-auto justify-center max-w-full overflow-x-auto no-scrollbar py-1">
-            {HERO_SLIDES.map((slide, idx) => {
-              const isActive = idx === currentIndex;
-              return (
-                <button
-                  key={slide.id}
-                  onClick={() => setCurrentIndex(idx)}
-                  className={`group relative text-left py-1.5 sm:py-2 px-2.5 sm:px-4 rounded-full transition-all duration-300 flex items-center gap-1.5 sm:gap-2.5 shrink-0 ${
-                    isActive
-                      ? "bg-white/15 backdrop-blur-md border border-white/30 text-white"
-                      : "text-white/60 hover:text-white/90 hover:bg-white/5 border border-transparent"
-                  }`}
-                  aria-label={`Jump to ${slide.word} slide`}
-                >
-                  <span className="text-[10px] sm:text-[11px] font-sans uppercase tracking-wider font-medium">
-                    <span className="sm:hidden">{slide.tag.split("·")[0].trim()}</span>
-                    <span className="hidden sm:inline">{slide.tag}</span>
+                <span className="w-2 h-2 rounded-full bg-[#8B5E35] shrink-0" />
+                <h1 className="text-sm sm:text-base md:text-lg lg:text-xl font-sans font-extrabold tracking-tight text-white leading-none select-none whitespace-nowrap drop-shadow-md">
+                  {currentSlide.word}{" "}
+                  <span className="italic font-normal font-serif text-[#E9E0D2]">
+                    {currentSlide.subWord}
                   </span>
+                </h1>
+              </motion.div>
+            </AnimatePresence>
+          </div>
 
-                  {/* Animated Progress Bar on Active Tab */}
-                  {isActive && (
-                    <span className="relative w-5 sm:w-12 h-1 bg-white/20 rounded-full overflow-hidden block">
-                      <motion.span
-                        key={`bar-${currentIndex}`}
-                        initial={{ width: "0%" }}
-                        animate={{ width: isPaused ? "100%" : "100%" }}
-                        transition={{
-                          duration: SLIDE_DURATION / 1000,
-                          ease: "linear",
-                        }}
-                        className="absolute inset-y-0 left-0 bg-[#E9E0D2] rounded-full"
-                      />
-                    </span>
-                  )}
-                </button>
-              );
-            })}
+          {/* Center: Invisible Anchor / Spacer for the floating Navbar capsule */}
+          <div
+            id="hero-navbar-anchor"
+            className="shrink-0 h-[48px] sm:h-[54px] w-[300px] sm:w-[500px] md:w-[560px] pointer-events-none"
+          />
 
-            {/* Play/Pause Toggle */}
-            <button
-              onClick={() => setIsPaused(!isPaused)}
-              className="p-1.5 sm:p-2 rounded-full bg-white/10 hover:bg-white/20 text-white/80 transition-colors backdrop-blur-sm ml-0.5 sm:ml-1 shrink-0"
-              aria-label={isPaused ? "Play slide progression" : "Pause slide progression"}
-              title={isPaused ? "Play slides" : "Pause slides"}
+          {/* Right: Explore Journeys CTA Button - matching height, on same line */}
+          <div className="flex-1 flex items-center justify-end pointer-events-auto">
+            <Link
+              href="#destinations"
+              className="group inline-flex items-center gap-2 sm:gap-2.5 px-4 sm:px-6 h-[48px] sm:h-[54px] rounded-full bg-white hover:bg-[#8B5E35] text-[#183D2B] hover:text-white text-[11px] sm:text-xs font-bold tracking-wider uppercase transition-all duration-300 shadow-xl hover:scale-105 active:scale-95 whitespace-nowrap shrink-0"
             >
-              {isPaused ? <Play className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> : <Pause className="w-3 h-3 sm:w-3.5 sm:h-3.5" />}
-            </button>
+              <span>Explore Journeys</span>
+              <div className="w-6 h-6 rounded-full bg-[#183D2B] group-hover:bg-white text-white group-hover:text-[#8B5E35] flex items-center justify-center transition-colors shrink-0">
+                <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </div>
+            </Link>
           </div>
 
-          {/* Gentle Scroll Indicator */}
-          <div className="hidden md:flex items-center gap-2 text-white/70">
-            <span className="text-[11px] font-sans uppercase tracking-[0.25em] text-[#E9E0D2]">
-              Scroll to explore
-            </span>
-            <ArrowDown className="w-3.5 h-3.5 animate-bounce text-[#E9E0D2]" />
-          </div>
         </div>
       </div>
     </section>

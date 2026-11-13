@@ -367,9 +367,9 @@ export default function Destinations() {
     indexKey: string,
     isGrid: boolean = false
   ) => (
-    <div
+    <Link
       key={indexKey}
-      onClick={() => setSelectedDest(dest)}
+      href={`/destinations#${dest.id}`}
       className={`group relative ${
         isGrid
           ? "w-full h-[380px] sm:h-[420px]"
@@ -417,7 +417,7 @@ export default function Destinations() {
           </span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 
   return (
@@ -425,31 +425,16 @@ export default function Destinations() {
       {/* Section Header */}
       <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10 mb-8 sm:mb-12">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-[#E9E0D2]">
-          <div className="max-w-2xl space-y-3">
-            <div className="inline-flex items-center gap-2 text-[#8B5E35] text-xs uppercase tracking-[0.25em] font-semibold">
-              <span className="w-6 h-[1.5px] bg-[#8B5E35]" />
-              <span>2. DESTINATIONS</span>
-            </div>
-            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-serif text-[#183D2B] font-light tracking-tight leading-[1.12]">
-              {headerInfo.countPhrase}{" "}
-              <span className="italic font-normal underline decoration-[#8B5E35]/40 decoration-1 underline-offset-8">
-                privately curated.
-              </span>
+          <div className="flex items-center gap-3">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#8B5E35] shrink-0" />
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] text-[#183D2B] uppercase">
+              DESTINATIONS
             </h2>
-            <p className="text-sm sm:text-base text-[#242424]/75 font-light leading-relaxed pt-1">
-              {headerInfo.subText}
-            </p>
+            <span className="h-[1.5px] w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent" />
           </div>
 
           <div className="flex flex-wrap items-center gap-3 self-start md:self-end">
-            {/* Hover card to pause badge (when in flow mode) */}
-            {viewMode === "flow" && (
-              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#E9E0D2]/40 border border-[#E9E0D2] text-[11px] text-[#183D2B] uppercase tracking-wider font-medium">
-                <span className="w-2 h-2 rounded-full bg-[#25D366] animate-pulse" />
-                <span className="hidden sm:inline">Hover card to pause</span>
-                <span className="sm:hidden">Tap card to explore</span>
-              </div>
-            )}
+
 
             {/* View Mode Toggle: Flow vs Grid */}
             <div className="flex items-center p-1 rounded-full bg-[#E9E0D2]/40 border border-[#E9E0D2]">
@@ -561,6 +546,17 @@ export default function Destinations() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Explore Full Directory CTA Button */}
+      <div className="mt-12 sm:mt-16 text-center px-4 relative z-10">
+        <Link
+          href="/destinations"
+          className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full bg-[#183D2B] hover:bg-[#8B5E35] text-[#FFFCF5] text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
+        >
+          <span>View the Full Destinations Directory</span>
+          <ArrowUpRight className="w-4 h-4" />
+        </Link>
+      </div>
 
       {/* Modal: Destination Details (Luxury Editorial Split Modal with WhatsApp Enquiry) */}
       <AnimatePresence>

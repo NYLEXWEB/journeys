@@ -14,6 +14,7 @@ import Footer from "@/components/Footer";
 import SmoothScroll from "@/components/SmoothScroll";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import StackingSection from "@/components/StackingSection";
+import CurtainVideoReveal from "@/components/CurtainVideoReveal";
 import AssetPreloader from "@/components/AssetPreloader";
 
 // Auto-sync uploaded loading screen background image into public directory
@@ -40,8 +41,8 @@ export default function Home() {
 
         {/* Main Content Flow */}
         <main className="flex-1 relative">
-          {/* HOME Cover: Cinematic Hero (Sticky Pin Curtain) */}
-          <div className="sticky top-0 z-0 h-screen w-full overflow-hidden">
+          {/* HOME Cover: Cinematic Hero */}
+          <div className="relative z-0 min-h-screen w-full overflow-hidden">
             <Hero />
           </div>
 
@@ -49,6 +50,9 @@ export default function Home() {
           <StackingSection zIndex={10} isFirst={true}>
             <AboutUs />
           </StackingSection>
+
+          {/* Fixed Background Video Curtain Reveal between About Us & Destinations */}
+          <CurtainVideoReveal videoSrc="/video/video-1.mp4" />
 
           {/* 2. DESTINATIONS: Page 2 */}
           <StackingSection zIndex={12}>

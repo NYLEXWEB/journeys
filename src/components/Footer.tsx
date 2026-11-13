@@ -3,220 +3,196 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Mail, Phone, MapPin, ArrowUpRight, MessageSquare, Compass, Sparkles } from "lucide-react";
+import { Mail, Phone, MapPin, ArrowUpRight } from "lucide-react";
 import { WhatsAppIcon } from "./WhatsAppIcon";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#183D2B] text-[#FFFCF5] pt-20 pb-12 border-t border-[#8B5E35]/30 relative overflow-hidden">
-      {/* Background Glow */}
-      <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#8B5E35]/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-10 w-96 h-96 bg-black/20 rounded-full blur-3xl pointer-events-none" />
-
+    <footer className="bg-[#183D2B] text-[#FFFCF5] py-12 sm:py-16 border-t border-[#8B5E35]/30 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Top Callout Banner */}
-        <div className="pb-16 mb-16 border-b border-white/10 flex flex-col lg:flex-row items-center justify-between gap-8">
-          <div className="space-y-2 text-center lg:text-left">
-            <span className="text-xs uppercase tracking-widest text-[#E9E0D2] font-semibold">
-              Boutique Travel Design &bull; Kerala &amp; South India
-            </span>
-            <h3 className="font-serif text-3xl sm:text-4xl text-white font-light">
-              Ready to begin crafting your private journey?
-            </h3>
-            <p className="text-xs sm:text-sm text-[#FFFCF5]/75 font-light">
-              Connect directly with Jibu Thomas to curate an unhurried, soul-stirring South Indian escape.
-            </p>
-          </div>
-          <Link
-            href="#contact"
-            className="px-8 py-4 rounded-full bg-[#8B5E35] text-[#FFFCF5] text-xs uppercase tracking-widest font-semibold hover:bg-[#a06d3f] transition-all shadow-xl hover:scale-105 active:scale-95 whitespace-nowrap flex items-center gap-2"
-          >
-            <span>PLAN YOUR JOURNEY</span>
-            <ArrowUpRight className="w-4 h-4" />
-          </Link>
-        </div>
-
-        {/* Structured Sitemap Columns matching the 7 Core Pillars */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-12 pb-16 border-b border-white/10">
-          {/* Brand Info */}
-          <div className="lg:col-span-4 space-y-5">
-            <Link href="#hero" className="inline-block">
-              <div className="relative h-14 sm:h-16 w-56 sm:w-64">
+        {/* Top Header Row: Brand Identity & Quick WhatsApp Consultation */}
+        <div className="pb-10 border-b border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+          <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+            <Link href="/" className="inline-block">
+              <div className="relative h-11 sm:h-12 w-48 sm:w-52">
                 <Image
                   src="/images/logo.png"
                   alt="Journeys by Jibu Thomas"
                   fill
-                  sizes="(max-width: 768px) 240px, 280px"
+                  sizes="210px"
                   className="object-contain object-left brightness-0 invert opacity-95"
                 />
               </div>
             </Link>
-
-            <p className="font-serif italic text-lg text-[#E9E0D2]">
-              Travel, Tailored Around You.
+            <div className="hidden sm:block w-[1px] h-8 bg-white/20" />
+            <p className="font-serif italic text-sm text-[#E9E0D2]">
+              South India, tailored around your pace.
             </p>
+          </div>
 
-            <p className="text-xs font-sans text-[#FFFCF5]/80 font-light leading-relaxed">
-              Boutique travel design and destination management company based in Kerala, India.
-              Specialising in personalised holidays, privately curated journeys, and authentic travel
-              experiences across Kerala, Tamil Nadu, and Karnataka.
+          <div className="flex items-center gap-3">
+            <a
+              href="https://wa.me/919447000000?text=Hello%20Jibu%2C%20I%20would%20like%20to%20plan%20a%20journey%20to%20Kerala."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white text-xs uppercase tracking-wider font-semibold transition-all duration-300 shadow-md"
+            >
+              <WhatsAppIcon className="w-4 h-4 fill-current" />
+              <span>WhatsApp Jibu</span>
+            </a>
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-[#FFFCF5] text-xs uppercase tracking-wider font-medium border border-white/15 transition-all"
+            >
+              <span>Plan Journey</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+        </div>
+
+        {/* Compact 4-Column Directory Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 py-10 border-b border-white/10 text-xs">
+          {/* Column 1: Atelier Contact */}
+          <div className="space-y-3">
+            <span className="text-[11px] font-sans uppercase tracking-[0.2em] text-[#E9E0D2] font-semibold block">
+              Kerala Atelier
+            </span>
+            <p className="text-[#FFFCF5]/75 font-light leading-relaxed">
+              Boutique destination management company based in Kerala, India. Privately curated holidays across South India.
             </p>
-
-            <div className="pt-2 text-xs space-y-2 text-[#E9E0D2]">
+            <div className="space-y-1.5 pt-1 text-[#E9E0D2] font-light">
               <p className="flex items-center gap-2">
-                <MapPin className="w-3.5 h-3.5 text-[#8B5E35]" />
+                <MapPin className="w-3.5 h-3.5 text-[#8B5E35] shrink-0" />
                 <span>Kochi, Kerala &bull; South India</span>
               </p>
               <p className="flex items-center gap-2">
-                <WhatsAppIcon className="w-3.5 h-3.5 text-[#25D366]" />
-                <a
-                  href="https://wa.me/919447000000?text=Hello%20Jibu%2C%20I%20would%20like%20to%20plan%20a%20journey%20to%20Kerala."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-white transition-colors text-[#25D366]"
-                >
-                  WhatsApp: +91 (0) 9447 000 000
-                </a>
-              </p>
-              <p className="flex items-center gap-2">
-                <Phone className="w-3.5 h-3.5 text-[#8B5E35]" />
+                <Phone className="w-3.5 h-3.5 text-[#8B5E35] shrink-0" />
                 <a href="tel:+919447000000" className="hover:text-white transition-colors">
                   +91 (0) 9447 000 000
                 </a>
               </p>
               <p className="flex items-center gap-2">
-                <Mail className="w-3.5 h-3.5 text-[#8B5E35]" />
-                <a href="mailto:contact@journeysbyjibuthomas.com" className="hover:text-white transition-colors">
+                <Mail className="w-3.5 h-3.5 text-[#8B5E35] shrink-0" />
+                <a href="mailto:contact@journeysbyjibuthomas.com" className="hover:text-white transition-colors truncate">
                   contact@journeysbyjibuthomas.com
                 </a>
               </p>
             </div>
           </div>
 
-          {/* 1. ABOUT US & 2. DESTINATIONS */}
-          <div className="lg:col-span-3 space-y-6">
-            <div>
-              <h4 className="text-[11px] font-sans uppercase tracking-[0.2em] text-[#E9E0D2] font-semibold mb-3">
-                1. About Us
-              </h4>
-              <ul className="space-y-1.5 text-xs text-[#FFFCF5]/80 font-light">
-                <li><Link href="#about" className="hover:text-[#E9E0D2] transition-colors">Our Story</Link></li>
-                <li><Link href="#about" className="hover:text-[#E9E0D2] transition-colors">Meet Jibu Thomas</Link></li>
-                <li><Link href="#about" className="hover:text-[#E9E0D2] transition-colors">Our Travel Philosophy</Link></li>
-                <li><Link href="#about" className="hover:text-[#E9E0D2] transition-colors">Why Travel With Us</Link></li>
-              </ul>
-            </div>
-
-            <div className="pt-2">
-              <h4 className="text-[11px] font-sans uppercase tracking-[0.2em] text-[#E9E0D2] font-semibold mb-3">
-                2. Destinations
-              </h4>
-              <div className="space-y-2 text-xs text-[#FFFCF5]/80 font-light">
-                <div>
-                  <span className="text-[#8B5E35] font-semibold block text-[10px] uppercase">Kerala (8)</span>
-                  <p className="text-[11px] text-[#FFFCF5]/70">
-                    Munnar &bull; Wayanad &bull; Thekkady &bull; Alleppey &bull; Kumarakom &bull; Fort Kochi &bull; Varkala &bull; Kovalam
-                  </p>
-                </div>
-                <div>
-                  <span className="text-[#8B5E35] font-semibold block text-[10px] uppercase">Tamil Nadu (4)</span>
-                  <p className="text-[11px] text-[#FFFCF5]/70">
-                    Ooty &bull; Kodaikanal &bull; Madurai &bull; Rameswaram
-                  </p>
-                </div>
-                <div>
-                  <span className="text-[#8B5E35] font-semibold block text-[10px] uppercase">Karnataka (4)</span>
-                  <p className="text-[11px] text-[#FFFCF5]/70">
-                    Coorg &bull; Mysore &bull; Chikmagalur &bull; Hampi
-                  </p>
-                </div>
-              </div>
-            </div>
+          {/* Column 2: Navigation Links */}
+          <div className="space-y-3">
+            <span className="text-[11px] font-sans uppercase tracking-[0.2em] text-[#E9E0D2] font-semibold block">
+              Explore
+            </span>
+            <ul className="space-y-2 text-[#FFFCF5]/75 font-light">
+              <li>
+                <Link href="/about" className="hover:text-[#E9E0D2] transition-colors flex items-center justify-between">
+                  <span>About Our Story &amp; Jibu</span>
+                  <ArrowUpRight className="w-3 h-3 opacity-60" />
+                </Link>
+              </li>
+              <li>
+                <Link href="/destinations" className="hover:text-[#E9E0D2] transition-colors flex items-center justify-between">
+                  <span>Complete Destination Directory</span>
+                  <ArrowUpRight className="w-3 h-3 opacity-60" />
+                </Link>
+              </li>
+              <li>
+                <Link href="/#experiences" className="hover:text-[#E9E0D2] transition-colors">
+                  Curated Experiences
+                </Link>
+              </li>
+              <li>
+                <Link href="/#services" className="hover:text-[#E9E0D2] transition-colors">
+                  Bespoke Services
+                </Link>
+              </li>
+              <li>
+                <Link href="/#journal" className="hover:text-[#E9E0D2] transition-colors">
+                  Travel Field Notes
+                </Link>
+              </li>
+            </ul>
           </div>
 
-          {/* 3. CURATED EXPERIENCES & 4. TRAVEL WITH JIBU */}
-          <div className="lg:col-span-3 space-y-6">
-            <div>
-              <h4 className="text-[11px] font-sans uppercase tracking-[0.2em] text-[#E9E0D2] font-semibold mb-3">
-                3. Curated Experiences
-              </h4>
-              <ul className="space-y-1.5 text-xs text-[#FFFCF5]/80 font-light">
-                <li><Link href="#experiences" className="hover:text-[#E9E0D2] transition-colors">Backwater &amp; Houseboat</Link></li>
-                <li><Link href="#experiences" className="hover:text-[#E9E0D2] transition-colors">Hill Stations &amp; Plantation Trails</Link></li>
-                <li><Link href="#experiences" className="hover:text-[#E9E0D2] transition-colors">Nature &amp; Wildlife Experiences</Link></li>
-                <li><Link href="#experiences" className="hover:text-[#E9E0D2] transition-colors">Culture &amp; Heritage Journeys</Link></li>
-                <li><Link href="#experiences" className="hover:text-[#E9E0D2] transition-colors">Beaches &amp; Coastal Escapes</Link></li>
-                <li><Link href="#experiences" className="hover:text-[#E9E0D2] transition-colors">Culinary &amp; Local Food</Link></li>
-                <li><Link href="#experiences" className="hover:text-[#E9E0D2] transition-colors">Village &amp; Community Experiences</Link></li>
-              </ul>
-            </div>
-
-            <div className="pt-2">
-              <h4 className="text-[11px] font-sans uppercase tracking-[0.2em] text-[#E9E0D2] font-semibold mb-3">
-                4. Travel With Jibu
-              </h4>
-              <ul className="space-y-1 text-xs text-[#FFFCF5]/80 font-light">
-                <li className="text-[10px] text-[#8B5E35] uppercase font-semibold">Signature Journeys</li>
-                <li><Link href="#travel-with-jibu" className="hover:text-[#E9E0D2] transition-colors">Kerala Discovery &bull; Romantic Escapes</Link></li>
-                <li><Link href="#travel-with-jibu" className="hover:text-[#E9E0D2] transition-colors">Family &bull; Wildlife &bull; South India Heritage</Link></li>
-                <li className="text-[10px] text-[#8B5E35] uppercase font-semibold pt-1">Bespoke Journeys</li>
-                <li><Link href="#travel-with-jibu" className="hover:text-[#E9E0D2] transition-colors">Personalised Planning &bull; Custom Itinerary Design</Link></li>
-              </ul>
-            </div>
+          {/* Column 3: Regions & Coverage */}
+          <div className="space-y-3">
+            <span className="text-[11px] font-sans uppercase tracking-[0.2em] text-[#E9E0D2] font-semibold block">
+              Regions Traversed
+            </span>
+            <ul className="space-y-2 text-[#FFFCF5]/75 font-light">
+              <li>
+                <Link href="/destinations#munnar" className="hover:text-[#E9E0D2] transition-colors">
+                  Kerala &bull; Western Ghats Highlands
+                </Link>
+              </li>
+              <li>
+                <Link href="/destinations#alleppey" className="hover:text-[#E9E0D2] transition-colors">
+                  Kerala &bull; Vembanad Backwaters
+                </Link>
+              </li>
+              <li>
+                <Link href="/destinations#madurai" className="hover:text-[#E9E0D2] transition-colors">
+                  Tamil Nadu &bull; Temple Architecture
+                </Link>
+              </li>
+              <li>
+                <Link href="/destinations#coorg" className="hover:text-[#E9E0D2] transition-colors">
+                  Karnataka &bull; Coffee &amp; Heritage
+                </Link>
+              </li>
+              <li>
+                <Link href="/destinations#hampi" className="hover:text-[#E9E0D2] transition-colors">
+                  UNESCO &bull; Vijayanagara Empire
+                </Link>
+              </li>
+            </ul>
           </div>
 
-          {/* 5. SERVICES, 6. JOURNAL & 7. CONTACT */}
-          <div className="lg:col-span-2 space-y-6">
-            <div>
-              <h4 className="text-[11px] font-sans uppercase tracking-[0.2em] text-[#E9E0D2] font-semibold mb-3">
-                5. Our Services
-              </h4>
-              <ul className="space-y-1.5 text-xs text-[#FFFCF5]/80 font-light">
-                <li><Link href="#services" className="hover:text-[#E9E0D2] transition-colors">Private Chauffeurs</Link></li>
-                <li><Link href="#services" className="hover:text-[#E9E0D2] transition-colors">Handpicked Stays</Link></li>
-                <li><Link href="#services" className="hover:text-[#E9E0D2] transition-colors">Family &amp; Senior Friendly</Link></li>
-                <li><Link href="#services" className="hover:text-[#E9E0D2] transition-colors">Special Interest Travel</Link></li>
-                <li><Link href="#services" className="hover:text-[#E9E0D2] transition-colors">End-to-End Coordination</Link></li>
-              </ul>
-            </div>
-
-            <div className="pt-2">
-              <h4 className="text-[11px] font-sans uppercase tracking-[0.2em] text-[#E9E0D2] font-semibold mb-3">
-                6. Travel Journal &amp; Reviews
-              </h4>
-              <ul className="space-y-1.5 text-xs text-[#FFFCF5]/80 font-light">
-                <li><Link href="#journal" className="hover:text-[#E9E0D2] transition-colors">Destination Guides</Link></li>
-                <li><Link href="#journal" className="hover:text-[#E9E0D2] transition-colors">Travel Tips &amp; Planning</Link></li>
-                <li><Link href="#journal" className="hover:text-[#E9E0D2] transition-colors">Culture &amp; Local Stories</Link></li>
-                <li><Link href="#reviews" className="hover:text-[#E9E0D2] transition-colors flex items-center gap-1.5 text-[#E9E0D2] font-medium"><span>Google Reviews</span><span className="text-[#FBBC05] text-[10px]">★★★★★ 5.0</span></Link></li>
-              </ul>
-            </div>
-
-            <div className="pt-2">
-              <h4 className="text-[11px] font-sans uppercase tracking-[0.2em] text-[#E9E0D2] font-semibold mb-3">
-                7. Contact Us
-              </h4>
-              <ul className="space-y-1.5 text-xs text-[#FFFCF5]/80 font-light">
-                <li><Link href="#contact" className="hover:text-[#E9E0D2] transition-colors">Contact Details</Link></li>
-                <li><Link href="#contact" className="hover:text-[#E9E0D2] transition-colors">Enquiry Form</Link></li>
-              </ul>
-            </div>
+          {/* Column 4: Discerning Boutique Standards */}
+          <div className="space-y-3">
+            <span className="text-[11px] font-sans uppercase tracking-[0.2em] text-[#E9E0D2] font-semibold block">
+              Boutique Standards
+            </span>
+            <ul className="space-y-2 text-[#FFFCF5]/75 font-light">
+              <li className="flex items-center gap-1.5">
+                <span className="w-1 h-1 rounded-full bg-[#E9E0D2]" />
+                <span>Direct personal oversight by Jibu</span>
+              </li>
+              <li className="flex items-center gap-1.5">
+                <span className="w-1 h-1 rounded-full bg-[#E9E0D2]" />
+                <span>Pristine AC fleet with private chauffeurs</span>
+              </li>
+              <li className="flex items-center gap-1.5">
+                <span className="w-1 h-1 rounded-full bg-[#E9E0D2]" />
+                <span>Zero commission shopping stops</span>
+              </li>
+              <li className="flex items-center gap-1.5">
+                <span className="w-1 h-1 rounded-full bg-[#E9E0D2]" />
+                <span>24/7 on-ground Kerala concierge</span>
+              </li>
+              <li className="flex items-center gap-1.5">
+                <span className="w-1 h-1 rounded-full bg-[#E9E0D2]" />
+                <span>100% custom-tailored itineraries</span>
+              </li>
+            </ul>
           </div>
         </div>
 
-        {/* Copyright & Bottom Bar */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-[#FFFCF5]/60 font-light gap-4 text-center sm:text-left">
+        {/* Bottom Bar: Copyright & Legal */}
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-[11px] text-[#FFFCF5]/60 font-light gap-3 text-center sm:text-left">
           <p>&copy; 2026 Journeys by Jibu Thomas. All rights reserved.</p>
-          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6">
-            <Link href="#about" className="hover:text-white transition-colors">
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <Link href="/about" className="hover:text-white transition-colors">
               Privacy Policy
             </Link>
             <span>&bull;</span>
-            <Link href="#about" className="hover:text-white transition-colors">
+            <Link href="/about" className="hover:text-white transition-colors">
               Terms of Service
             </Link>
             <span>&bull;</span>
-            <Link href="#contact" className="hover:text-white transition-colors">
+            <Link href="/contact" className="hover:text-white transition-colors">
               Plan Your Journey
             </Link>
           </div>

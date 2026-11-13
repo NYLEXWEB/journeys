@@ -5,6 +5,7 @@ import { WhatsAppIcon } from "./WhatsAppIcon";
 
 export default function FloatingWhatsApp() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPastHero, setIsPastHero] = useState(false);
 
   useEffect(() => {
     const checkModal = () => {
@@ -15,20 +16,39 @@ export default function FloatingWhatsApp() {
       setIsModalOpen(locked);
     };
 
+    const handleScroll = () => {
+      const onSubpage = window.location.pathname !== "/";
+      const pastHero = window.scrollY > window.innerHeight * 0.8 || onSubpage;
+      setIsPastHero(pastHero);
+    };
+
+    checkModal();
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+
     const observer = new MutationObserver(checkModal);
     observer.observe(document.body, { attributes: true, attributeFilter: ["class", "style"] });
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class", "style"] });
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
   }, []);
+
+  // WhatsApp only appears once scrolled past Hero into About Us (or on subpages)
+  const isVisible = isPastHero && !isModalOpen;
 
   return (
     <aside
       aria-label="Direct WhatsApp Concierge"
-      className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 transition-all duration-500 ${
-        isModalOpen
-          ? "opacity-0 pointer-events-none translate-y-6 scale-90"
-          : "opacity-100 pointer-events-auto translate-y-0 scale-100"
+      className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 transition-all duration-700 ease-out ${
+        isVisible
+          ? "opacity-100 pointer-events-auto translate-y-0 scale-100"
+          : "opacity-0 pointer-events-none translate-y-8 scale-90"
       }`}
     >
       <a
@@ -43,7 +63,7 @@ export default function FloatingWhatsApp() {
           <WhatsAppIcon className="w-5 h-5 fill-current" />
         </div>
 
-        {/* Minimalist Editorial Text - hidden on compact mobile, shown on sm+ */}
+        {/* Minimalist Editorial Text */}
         <div className="hidden sm:flex flex-col text-left pl-2.5">
           <span className="text-[10px] uppercase tracking-widest text-[#E9E0D2] font-semibold leading-tight">
             WhatsApp Enquiry

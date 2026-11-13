@@ -219,20 +219,12 @@ export default function TravelWithJibu() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
-          <div className="max-w-xl space-y-2">
-            <div className="inline-flex items-center gap-2 text-[#8B5E35] text-xs uppercase tracking-[0.25em] font-semibold">
-              <span className="w-6 h-[1.5px] bg-[#8B5E35]" />
-              <span>4. TRAVEL WITH JIBU</span>
-            </div>
-            <h2 className="text-3xl sm:text-5xl font-serif text-[#183D2B] font-light tracking-tight">
-              Signature &amp; Bespoke{" "}
-              <span className="italic font-normal underline decoration-[#8B5E35]/40 decoration-1 underline-offset-8">
-                Journeys.
-              </span>
+          <div className="flex items-center gap-3">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#8B5E35] shrink-0" />
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] text-[#183D2B] uppercase">
+              TRAVEL WITH <span className="text-[#8B5E35]">JIBU</span>
             </h2>
-            <p className="text-sm sm:text-base text-[#242424]/75 font-light leading-relaxed pt-1">
-              Handpicked travel experiences that showcase the best of Kerala and beyond.
-            </p>
+            <span className="h-[1.5px] w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent" />
           </div>
 
           {/* Tab Selector */}

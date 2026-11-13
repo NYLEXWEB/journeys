@@ -83,26 +83,18 @@ export default function AboutUs() {
   };
 
   return (
-    <section id="about" className="py-20 sm:py-28 bg-[#FFFCF5] relative overflow-hidden">
+    <section id="about" className="py-20 sm:py-28 bg-[#FFFCF5] relative overflow-hidden border-b border-[#E9E0D2]/70 shadow-[0_20px_50px_rgba(24,61,43,0.08)]">
       {/* Background Decor */}
       <div className="absolute top-1/4 right-0 w-[450px] h-[450px] bg-[#E9E0D2]/25 rounded-full blur-3xl pointer-events-none -mr-40" />
 
       <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Minimal Section Header */}
-        <div className="max-w-3xl mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 text-[#8B5E35] text-xs uppercase tracking-[0.25em] font-semibold mb-3">
-            <span className="w-6 h-[1.5px] bg-[#8B5E35]" />
-            <span>1. ABOUT US</span>
-          </div>
-          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-serif text-[#183D2B] font-light tracking-tight leading-[1.12]">
-            Kerala, experienced with{" "}
-            <span className="italic font-normal underline decoration-[#8B5E35]/40 decoration-1 underline-offset-8">
-              soul &amp; intention.
-            </span>
+        {/* Section Header */}
+        <div className="flex items-center gap-3 mb-8 sm:mb-12">
+          <span className="w-2.5 h-2.5 rounded-full bg-[#8B5E35] shrink-0" />
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] text-[#183D2B] uppercase">
+            ABOUT <span className="text-[#8B5E35]">US</span>
           </h2>
-          <p className="mt-3 text-sm sm:text-base text-[#242424]/75 font-light leading-relaxed max-w-2xl">
-            Boutique travel design across Kerala and South India. Unhurried moments, private discoveries, and genuine local warmth.
-          </p>
+          <span className="h-[1.5px] w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent" />
         </div>
 
         {/* Tab Navigation Pill Bar */}
@@ -170,13 +162,13 @@ export default function AboutUs() {
                 </p>
 
                 <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                  <button
-                    onClick={() => setModalTopic("story")}
+                  <Link
+                    href="/about#story"
                     className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-[#183D2B] hover:bg-[#8B5E35] text-[#FFFCF5] text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-md active:scale-95 cursor-pointer"
                   >
                     <span>View More Details</span>
                     <ArrowUpRight className="w-3.5 h-3.5" />
-                  </button>
+                  </Link>
                   <Link
                     href="#contact"
                     className="inline-flex items-center justify-center gap-1.5 px-5 py-3 rounded-full border border-[#183D2B]/20 text-[#183D2B] text-xs uppercase tracking-widest font-semibold hover:bg-[#183D2B]/5 transition-all"
@@ -244,13 +236,13 @@ export default function AboutUs() {
                 </div>
 
                 <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                  <button
-                    onClick={() => setModalTopic("jibu")}
+                  <Link
+                    href="/about#jibu"
                     className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-[#183D2B] hover:bg-[#8B5E35] text-[#FFFCF5] text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-md active:scale-95 cursor-pointer"
                   >
                     <span>View More Details</span>
                     <ArrowUpRight className="w-3.5 h-3.5" />
-                  </button>
+                  </Link>
                   <Link
                     href="#contact"
                     className="inline-flex items-center justify-center gap-1.5 px-5 py-3 rounded-full border border-[#183D2B]/20 text-[#183D2B] text-xs uppercase tracking-widest font-semibold hover:bg-[#183D2B]/5 transition-all"
@@ -288,13 +280,13 @@ export default function AboutUs() {
               </div>
 
               <div className="flex items-center justify-between pt-2">
-                <button
-                  onClick={() => setModalTopic("philosophy")}
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#183D2B] hover:bg-[#8B5E35] text-[#FFFCF5] text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-md active:scale-95 cursor-pointer"
-                >
-                  <span>View More Details</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </button>
+                <Link
+                    href="/about#philosophy"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#183D2B] hover:bg-[#8B5E35] text-[#FFFCF5] text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-md active:scale-95 cursor-pointer"
+                  >
+                    <span>View More Details</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </Link>
               </div>
             </motion.div>
           )}
@@ -326,13 +318,13 @@ export default function AboutUs() {
               </div>
 
               <div className="flex items-center justify-between pt-2">
-                <button
-                  onClick={() => setModalTopic("whyUs")}
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#183D2B] hover:bg-[#8B5E35] text-[#FFFCF5] text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-md active:scale-95 cursor-pointer"
-                >
-                  <span>View More Details</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </button>
+                <Link
+                    href="/about#why-us"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#183D2B] hover:bg-[#8B5E35] text-[#FFFCF5] text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-md active:scale-95 cursor-pointer"
+                  >
+                    <span>View More Details</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </Link>
               </div>
             </motion.div>
           )}

@@ -191,21 +191,13 @@ export default function GoogleReviews() {
     <section id="reviews" className="py-20 sm:py-28 bg-[#FFFCF5] relative border-t border-[#E9E0D2]/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* Minimal Section Header */}
-        <div className="max-w-3xl mb-10 sm:mb-14">
-          <div className="inline-flex items-center gap-2 text-[#8B5E35] text-xs uppercase tracking-[0.25em] font-semibold mb-3">
-            <span className="w-6 h-[1.5px] bg-[#8B5E35]" />
-            <span>GUEST EXPERIENCES &bull; 5.0 VERIFIED RATING</span>
-          </div>
-          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-serif text-[#183D2B] font-light tracking-tight leading-[1.12]">
-            Words from travelers who{" "}
-            <span className="italic font-normal underline decoration-[#8B5E35]/40 decoration-1 underline-offset-8">
-              journeyed with us.
-            </span>
+        {/* Section Header */}
+        <div className="flex items-center gap-3 mb-8 sm:mb-12">
+          <span className="w-2.5 h-2.5 rounded-full bg-[#8B5E35] shrink-0" />
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] text-[#183D2B] uppercase">
+            GOOGLE <span className="text-[#8B5E35]">REVIEWS</span>
           </h2>
-          <p className="mt-3 text-sm sm:text-base text-[#242424]/75 font-light leading-relaxed max-w-2xl">
-            Real encounters, genuine memories, and verified feedback from guests across the globe.
-          </p>
+          <span className="h-[1.5px] w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent" />
         </div>
 
         {/* Authentic Google Review Header Card */}

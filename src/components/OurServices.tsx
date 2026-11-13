@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -11,7 +11,7 @@ import {
   Camera,
   ShieldCheck,
   ArrowUpRight,
-  X,
+  ChevronDown,
   Check,
   Sparkles,
 } from "lucide-react";
@@ -112,213 +112,185 @@ export const SERVICES_DATA: ServiceItem[] = [
 ];
 
 export default function OurServices() {
-  const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
+  const [activeServiceId, setActiveServiceId] = useState<string>("private-chauffeur");
 
-  // Background Scroll Lock (Lenis + Body Freeze)
-  useEffect(() => {
-    if (selectedService) {
-      document.body.style.overflow = "hidden";
-      document.body.classList.add("modal-open");
-      document.documentElement.classList.add("modal-open");
-    } else {
-      document.body.style.overflow = "";
-      document.body.classList.remove("modal-open");
-      document.documentElement.classList.remove("modal-open");
-    }
-    return () => {
-      document.body.style.overflow = "";
-      document.body.classList.remove("modal-open");
-      document.documentElement.classList.remove("modal-open");
-    };
-  }, [selectedService]);
-
-  // Close on Escape key press
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setSelectedService(null);
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  const toggleService = (id: string) => {
+    setActiveServiceId((prev) => (prev === id ? "" : id));
+  };
 
   return (
-    <section id="services" className="py-20 sm:py-28 bg-[#FFFCF5] relative overflow-hidden">
-      <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Minimal Section Header */}
-        <div className="max-w-3xl mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 text-[#8B5E35] text-xs uppercase tracking-[0.25em] font-semibold mb-3">
-            <span className="w-6 h-[1.5px] bg-[#8B5E35]" />
-            <span>5. OUR SERVICES</span>
-          </div>
-          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-serif text-[#183D2B] font-light tracking-tight leading-[1.12]">
-            Five pillars of{" "}
-            <span className="italic font-normal underline decoration-[#8B5E35]/40 decoration-1 underline-offset-8">
-              bespoke care.
-            </span>
-          </h2>
-          <p className="mt-3 text-sm sm:text-base text-[#242424]/75 font-light leading-relaxed max-w-2xl">
-            Every transfer, reservation, and encounter is coordinated by our in-house team in Kerala.
-          </p>
-        </div>
+    <section id="services" className="py-20 sm:py-28 lg:py-32 bg-[#FFFCF5] relative overflow-hidden">
+      <div className="max-w-[1580px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Split Editorial Architecture */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          {/* Left Column: Fixed / Sticky Editorial Overview */}
+          <div className="lg:col-span-5 lg:sticky lg:top-32 space-y-6">
+            <div className="flex items-center gap-3 mb-6">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#8B5E35] shrink-0" />
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] text-[#183D2B] uppercase">
+                OUR <span className="text-[#8B5E35]">SERVICES</span>
+              </h2>
+              <span className="h-[1.5px] w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent" />
+            </div>
 
-        {/* LUXURY EDITORIAL TILES - Spacious 3+2 Centered Responsive Grid */}
-        <div className="flex flex-wrap justify-center gap-6 lg:gap-8 max-w-[1440px] mx-auto">
-          {SERVICES_DATA.map((srv) => {
-            return (
-              <div
-                key={srv.id}
-                onClick={() => setSelectedService(srv)}
-                className="group relative w-full sm:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)] xl:w-[420px] h-[430px] sm:h-[480px] md:h-[510px] lg:h-[530px] rounded-[2rem] sm:rounded-[2.4rem] overflow-hidden cursor-pointer shadow-[0_12px_35px_rgba(24,61,43,0.08)] hover:shadow-[0_24px_55px_rgba(24,61,43,0.22)] hover:-translate-y-1.5 transition-all duration-500 bg-[#183D2B] select-none border border-[#E9E0D2]/30"
-              >
-                <Image
-                  src={srv.image}
-                  alt={srv.title}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 420px"
-                  className="object-cover object-top transition-transform duration-1000 ease-out group-hover:scale-106"
-                />
-
-                {/* Subtle soft gradient only at the bottom for the action pill */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent transition-opacity duration-500 group-hover:from-black/85" />
-
-                {/* Bottom Overlay: Pillar Number & Minimalist View Details Button */}
-                <div className="absolute inset-x-0 bottom-0 z-10 p-5 sm:p-6 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#E9E0D2]" />
-                    <span className="font-serif italic text-sm text-[#E9E0D2] tracking-wide">
-                      Pillar {srv.number}
-                    </span>
-                  </div>
-
-                  <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/20 hover:bg-[#183D2B] text-white text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-medium backdrop-blur-md border border-white/30 transition-all duration-300 group-hover:bg-[#183D2B] group-hover:border-[#E9E0D2]/60 group-hover:scale-105 shadow-sm">
-                    <span>View Details</span>
-                    <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                  </span>
-                </div>
+            {/* Boutique Standards Badge */}
+            <div className="p-5 sm:p-6 rounded-2xl bg-white border border-[#E9E0D2] shadow-sm space-y-3">
+              <div className="flex items-center gap-2 text-xs uppercase tracking-wider text-[#8B5E35] font-semibold">
+                <Sparkles className="w-4 h-4 text-[#8B5E35]" />
+                <span>The Boutique Promise</span>
               </div>
-            );
-          })}
-        </div>
-
-        {/* LUXURY EDITORIAL SPLIT MODAL (Aman / Belmond Standard) */}
-        <AnimatePresence>
-          {selectedService && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 lg:p-8 bg-black/85 backdrop-blur-2xl"
-              onClick={() => setSelectedService(null)}
-            >
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: 15 }}
-                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                onClick={(e) => e.stopPropagation()}
-                data-lenis-prevent="true"
-                className="relative max-w-4xl lg:max-w-5xl w-full max-h-[90vh] md:max-h-[85vh] rounded-[2rem] sm:rounded-[2.8rem] bg-[#FFFCF5] border border-[#E9E0D2] shadow-[0_30px_90px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col md:flex-row"
-              >
-                {/* Floating Close Button */}
-                <button
-                  onClick={() => setSelectedService(null)}
-                  className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 z-30 p-2 sm:p-2.5 rounded-full bg-black/40 md:bg-black/10 hover:bg-[#183D2B] text-white md:text-[#183D2B] md:hover:text-white transition-all shadow-sm active:scale-90 backdrop-blur-sm cursor-pointer"
-                  aria-label="Close modal"
+              <p className="text-xs sm:text-sm text-[#242424]/75 font-light leading-relaxed">
+                Direct personal accountability with Jibu Thomas. Real-time on-ground assistance and complete peace of mind.
+              </p>
+              <div className="pt-2 flex items-center gap-3">
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider text-[#183D2B] font-semibold hover:text-[#8B5E35] transition-colors"
                 >
-                  <X className="w-4 h-4" />
-                </button>
+                  <span>Consult with Jibu</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </Link>
+                <span className="text-[#E9E0D2]">&bull;</span>
+                <a
+                  href="https://wa.me/919447000000?text=Hello%20Jibu%2C%20I%20would%20like%20to%20learn%20more%20about%20your%20services."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs uppercase tracking-wider text-[#25D366] font-semibold hover:underline flex items-center gap-1"
+                >
+                  <WhatsAppIcon className="w-3.5 h-3.5 fill-current" />
+                  <span>WhatsApp</span>
+                </a>
+              </div>
+            </div>
+          </div>
 
-                {/* Left Column: Full-Bleed Imagery */}
-                <div className="md:w-[46%] relative h-56 sm:h-72 md:h-auto min-h-[220px] sm:min-h-[280px] md:min-h-full overflow-hidden bg-[#183D2B] shrink-0">
-                  <Image
-                    src={selectedService.image}
-                    alt={selectedService.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 45vw"
-                    className="object-cover object-top"
-                    priority
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20 pointer-events-none" />
+          {/* Right Column: Architectural Interactive Service Rows */}
+          <div className="lg:col-span-7 space-y-4">
+            {SERVICES_DATA.map((srv) => {
+              const isOpen = activeServiceId === srv.id;
+              const IconComponent = srv.icon;
 
-                  {/* Top Badge */}
-                  <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-10">
-                    <span className="px-3.5 py-1.5 rounded-full bg-black/50 backdrop-blur-md text-[10px] uppercase font-semibold text-[#E9E0D2] tracking-wider border border-white/20">
-                      Pillar {selectedService.number}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Right Column: Editorial Narrative & Inclusions */}
+              return (
                 <div
-                  data-lenis-prevent="true"
-                  className="md:w-[54%] p-6 sm:p-9 lg:p-11 flex flex-col justify-between overflow-y-auto no-scrollbar space-y-6"
+                  key={srv.id}
+                  className={`rounded-[1.8rem] transition-all duration-500 border ${
+                    isOpen
+                      ? "bg-white border-[#8B5E35]/40 shadow-[0_15px_40px_rgba(24,61,43,0.08)]"
+                      : "bg-white/60 hover:bg-white border-[#E9E0D2] hover:border-[#8B5E35]/30 shadow-none"
+                  }`}
                 >
-                  <div className="space-y-4 pt-1 sm:pt-0">
-                    <div className="inline-flex items-center gap-2 text-[#8B5E35] text-[10px] sm:text-xs uppercase tracking-[0.22em] font-semibold">
-                      <Sparkles className="w-3.5 h-3.5 text-[#8B5E35]" />
-                      <span>Bespoke Service Standard &bull; Kerala</span>
-                    </div>
-
-                    <h3 className="font-serif text-2xl sm:text-3xl text-[#183D2B] font-light leading-snug">
-                      {selectedService.title}
-                    </h3>
-
-                    <p className="font-serif italic text-xs sm:text-sm text-[#8B5E35]">
-                      &ldquo;{selectedService.shortVibe}&rdquo;
-                    </p>
-
-                    <p className="text-xs sm:text-sm text-[#242424]/80 font-light leading-relaxed font-sans pt-1">
-                      {selectedService.description}
-                    </p>
-
-                    {/* Inclusions */}
-                    <div className="pt-4 border-t border-[#E9E0D2] space-y-2.5">
-                      <h5 className="text-[11px] uppercase tracking-widest text-[#183D2B] font-semibold">
-                        Service Standards &amp; Inclusions:
-                      </h5>
-                      <div className="space-y-2">
-                        {selectedService.points.map((pt, i) => (
-                          <div key={i} className="flex items-start gap-2.5 text-xs text-[#242424]/85 font-light">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#8B5E35] mt-1.5 shrink-0" />
-                            <span>{pt}</span>
-                          </div>
-                        ))}
+                  {/* Row Header - Clickable to expand */}
+                  <button
+                    onClick={() => toggleService(srv.id)}
+                    className="w-full p-6 sm:p-7 flex items-center justify-between text-left cursor-pointer group"
+                  >
+                    <div className="flex items-center gap-4 sm:gap-6 pr-4">
+                      <span className="font-serif italic text-xl sm:text-2xl text-[#8B5E35] font-light shrink-0">
+                        {srv.number}
+                      </span>
+                      <div>
+                        <h3 className="text-xl sm:text-2xl font-serif text-[#183D2B] font-light group-hover:text-[#8B5E35] transition-colors leading-snug">
+                          {srv.title}
+                        </h3>
+                        <p className="text-xs sm:text-sm text-[#242424]/70 font-light mt-1">
+                          {srv.shortVibe}
+                        </p>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Bottom Action Footer with WhatsApp Enquiry */}
-                  <div className="pt-5 border-t border-[#E9E0D2] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div className="text-[11px] text-[#242424]/60 font-serif italic">
-                      Coordinated by our Kerala Desk
+                    <div
+                      className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 border transition-all duration-300 ${
+                        isOpen
+                          ? "bg-[#183D2B] text-white border-[#183D2B] rotate-180"
+                          : "bg-white text-[#183D2B] border-[#E9E0D2] group-hover:border-[#183D2B]"
+                      }`}
+                    >
+                      <ChevronDown className="w-4 h-4" />
                     </div>
-                    <div className="flex items-center gap-3">
-                      <Link
-                        href="#contact"
-                        onClick={() => setSelectedService(null)}
-                        className="text-[11px] uppercase tracking-wider text-[#183D2B]/75 hover:text-[#183D2B] font-medium hidden sm:inline"
+                  </button>
+
+                  {/* Expanded Content Drawer */}
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                        className="overflow-hidden"
                       >
-                        Enquiry Form
-                      </Link>
-                      <a
-                        href={`https://wa.me/919447000000?text=${encodeURIComponent(
-                          `Hello Jibu, I am enquiring about your ${selectedService.title} service.`
-                        )}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-2.5 px-6 py-3 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 active:scale-95"
-                      >
-                        <WhatsAppIcon className="w-4 h-4 fill-current" />
-                        <span>WhatsApp Enquiry</span>
-                      </a>
-                    </div>
-                  </div>
+                        <div className="px-6 pb-7 sm:px-7 sm:pb-8 pt-2 border-t border-[#E9E0D2]/60 space-y-6">
+                          {/* Rich Service Photograph */}
+                          <div className="relative h-56 sm:h-72 w-full rounded-2xl overflow-hidden shadow-inner border border-[#E9E0D2]/50">
+                            <Image
+                              src={srv.image}
+                              alt={srv.title}
+                              fill
+                              sizes="(max-width: 1024px) 100vw, 50vw"
+                              className="object-cover"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                            <div className="absolute bottom-4 left-4 text-white">
+                              <span className="text-[10px] uppercase tracking-widest text-[#E9E0D2] font-semibold flex items-center gap-1.5">
+                                <IconComponent className="w-3.5 h-3.5 text-[#E9E0D2]" />
+                                <span>Pillar {srv.number} &bull; Verified Standard</span>
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Description */}
+                          <p className="text-sm text-[#242424]/85 font-light leading-relaxed">
+                            {srv.description}
+                          </p>
+
+                          {/* Curated Key Points */}
+                          <div className="space-y-2.5">
+                            <span className="text-[11px] uppercase tracking-wider text-[#183D2B] font-semibold block">
+                              What is included:
+                            </span>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                              {srv.points.map((pt, pIdx) => (
+                                <div
+                                  key={pIdx}
+                                  className="flex items-start gap-2 text-xs text-[#242424]/80 font-light"
+                                >
+                                  <Check className="w-3.5 h-3.5 text-[#8B5E35] shrink-0 mt-0.5" />
+                                  <span>{pt}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Action Button */}
+                          <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                            <a
+                              href={`https://wa.me/919447000000?text=${encodeURIComponent(
+                                `Hello Jibu, I would like to consult about ${srv.title}.`
+                              )}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white text-xs uppercase tracking-wider font-semibold shadow-sm transition-all"
+                            >
+                              <WhatsAppIcon className="w-3.5 h-3.5 fill-current" />
+                              <span>Enquire About This Service</span>
+                            </a>
+                            <Link
+                              href="/contact"
+                              className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-full border border-[#183D2B]/30 text-[#183D2B] text-xs uppercase tracking-wider font-semibold hover:bg-[#183D2B] hover:text-white transition-all text-center"
+                            >
+                              <span>Plan Your Journey</span>
+                              <ArrowUpRight className="w-3.5 h-3.5" />
+                            </Link>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </section>
   );

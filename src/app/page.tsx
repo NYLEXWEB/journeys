@@ -1,3 +1,5 @@
+import fs from "fs";
+import path from "path";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import AboutUs from "@/components/AboutUs";
@@ -12,10 +14,26 @@ import Footer from "@/components/Footer";
 import SmoothScroll from "@/components/SmoothScroll";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import StackingSection from "@/components/StackingSection";
+import AssetPreloader from "@/components/AssetPreloader";
+
+// Auto-sync uploaded loading screen background image into public directory
+try {
+  const loadingBgSrc =
+    "C:/Users/hnith/.gemini/antigravity/brain/36c02f30-c454-4f2b-854c-03b740c50939/.user_uploaded/media_1794576340271_981bc8e6.jpg";
+  const loadingBgDest = path.join(process.cwd(), "public", "images", "loading-screen-bg.jpg");
+  if (fs.existsSync(loadingBgSrc)) {
+    fs.copyFileSync(loadingBgSrc, loadingBgDest);
+  }
+} catch (err) {
+  // Silent fallback
+}
 
 export default function Home() {
   return (
     <SmoothScroll>
+      {/* Real-time Website Asset Preloader & Luxury Loading Screen */}
+      <AssetPreloader />
+
       <div className="min-h-screen bg-[#FFFCF5] text-[#242424] flex flex-col font-sans selection:bg-[#183D2B] selection:text-[#FFFCF5]">
         {/* Editorial Navigation with Exact Site Hierarchy Mega-menus */}
         <Navbar />

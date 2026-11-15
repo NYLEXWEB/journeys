@@ -16,18 +16,30 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Journeys by Jibu Thomas | Boutique Travel Design & Destination Management",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://journeysbyjibuthomas.com"),
+  title: {
+    default: "Journeys by Jibu Thomas | Bespoke Travel Design & Kerala Destination Management",
+    template: "%s | Journeys by Jibu Thomas",
+  },
   description:
-    "Boutique travel design and destination management company based in Kerala, India. Specialising in personalised holidays, privately curated journeys and authentic travel experiences across Kerala and South India. Travel, Tailored Around You.",
+    "Boutique travel design and destination management atelier based in Kerala, India. Specialising in personalised holidays, privately curated journeys, and authentic travel experiences across Kerala and South India. Travel, Tailored Around You.",
   keywords: [
     "Kerala luxury travel",
     "Journeys by Jibu Thomas",
-    "Boutique travel Kerala",
-    "Personalised South India tours",
-    "Munnar bespoke itinerary",
-    "Alleppey private houseboat",
-    "Kerala private chauffeur holidays",
+    "Bespoke Kerala holidays",
+    "Personalised South India itineraries",
+    "Munnar boutique tea retreats",
+    "Alleppey private luxury houseboat",
+    "Kerala private chauffeur tours",
+    "Wayanad rainforest stays",
+    "Kochi heritage walking journeys",
   ],
+  authors: [{ name: "Jibu Thomas", url: "https://journeysbyjibuthomas.com" }],
+  creator: "Jibu Thomas",
+  publisher: "Journeys by Jibu Thomas",
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: "Journeys by Jibu Thomas | Travel, Tailored Around You",
     description:
@@ -36,7 +48,91 @@ export const metadata: Metadata = {
     siteName: "Journeys by Jibu Thomas",
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "/images/loading-screen-bg.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Journeys by Jibu Thomas - Kerala bespoke travel",
+      },
+    ],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Journeys by Jibu Thomas | Bespoke Kerala Travel",
+    description:
+      "Founder-led bespoke travel design and boutique destination management across Kerala and South India.",
+    images: ["/images/loading-screen-bg.jpg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["TravelAgency", "LocalBusiness"],
+      "@id": "https://journeysbyjibuthomas.com/#organization",
+      name: "Journeys by Jibu Thomas",
+      url: "https://journeysbyjibuthomas.com",
+      logo: "https://journeysbyjibuthomas.com/images/loading-screen-bg.jpg",
+      image: "https://journeysbyjibuthomas.com/images/loading-screen-bg.jpg",
+      description:
+        "Boutique travel design and bespoke destination management company based in Kerala, India. Specialising in personalised holidays, private itineraries, and authentic experiences across Kerala and South India.",
+      founder: {
+        "@type": "Person",
+        name: "Jibu Thomas",
+        jobTitle: "Founder & Bespoke Travel Designer",
+      },
+      telephone: "+91 94471 23456",
+      email: "hello@journeysbyjibuthomas.com",
+      address: {
+        "@type": "PostalAddress",
+        addressRegion: "Kerala",
+        addressCountry: "IN",
+      },
+      areaServed: [
+        { "@type": "AdministrativeArea", name: "Kerala" },
+        { "@type": "AdministrativeArea", name: "Tamil Nadu" },
+        { "@type": "AdministrativeArea", name: "Karnataka" },
+        { "@type": "Country", name: "India" },
+      ],
+      priceRange: "$$$$",
+      openingHoursSpecification: {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday",
+        ],
+        opens: "08:00",
+        closes: "20:00",
+      },
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://journeysbyjibuthomas.com/#website",
+      url: "https://journeysbyjibuthomas.com",
+      name: "Journeys by Jibu Thomas",
+      publisher: {
+        "@id": "https://journeysbyjibuthomas.com/#organization",
+      },
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -45,10 +141,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      className={`${inter.variable} antialiased`}
-    >
+    <html lang="en" className={`${inter.variable} antialiased`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="min-h-screen bg-[#FFFCF5] text-[#242424] font-sans font-light selection:bg-[#183D2B] selection:text-[#FFFCF5] tracking-[-0.015em]">
         {children}
       </body>

@@ -18,7 +18,9 @@ import {
   Sparkles,
   ShieldCheck,
   Check,
+  AlertCircle,
 } from "lucide-react";
+import { trackEnquirySubmitted, trackWhatsAppClick, trackPhoneCallClick } from "@/lib/analytics";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -34,10 +36,12 @@ export default function ContactPage() {
     accommodationTier: "Heritage Bungalows & Luxury Boutique",
     dietaryNotes: "",
     message: "",
+    hpWebsite: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   // Auto-fill destination if passed via URL query
   useEffect(() => {
@@ -76,14 +80,71 @@ export default function ContactPage() {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage("");
+
+    if (!formData.fullName.trim()) {
+      setErrorMessage("Please enter your full name.");
+      return;
+    }
+    if (!formData.email.trim() || !formData.email.includes("@")) {
+      setErrorMessage("Please enter a valid email address.");
+      return;
+    }
+    if (!formData.phone.trim()) {
+      setErrorMessage("Please enter a contact number.");
+      return;
+    }
+
     setIsSubmitting(true);
-    setTimeout(() => {
+
+    try {
+      const fullMessage = [
+        formData.message ? `Notes: ${formData.message}` : "",
+        formData.dietaryNotes ? `Dietary / Special Needs: ${formData.dietaryNotes}` : "",
+        formData.states.length ? `States of Interest: ${formData.states.join(", ")}` : "",
+      ]
+        .filter(Boolean)
+        .join("\n\n");
+
+      const res = await fetch("/api/enquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: formData.fullName,
+          email: formData.email,
+          phone: formData.phone,
+          countryOrCity: formData.country,
+          travelDates: formData.travelMonth,
+          approximateDays: formData.duration,
+          guestsCount: formData.travellers,
+          accommodationStyle: formData.accommodationTier,
+          specialInterests: formData.experiences,
+          message: fullMessage,
+          website: formData.hpWebsite,
+          preferredContactMethod: "whatsapp",
+        }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        setIsSubmitted(true);
+        trackEnquirySubmitted({
+          fullName: formData.fullName,
+          travelDates: formData.travelMonth,
+          guestsCount: formData.travellers,
+        });
+        window.scrollTo({ top: 200, behavior: "smooth" });
+      } else {
+        setErrorMessage(data.error || "Failed to submit. Please contact Jibu directly on WhatsApp.");
+      }
+    } catch {
+      setErrorMessage("Connection issue. Please reach Jibu Thomas directly on WhatsApp.");
+    } finally {
       setIsSubmitting(false);
-      setIsSubmitted(true);
-      window.scrollTo({ top: 200, behavior: "smooth" });
-    }, 800);
+    }
   };
 
   return (
@@ -182,6 +243,26 @@ export default function ContactPage() {
                   onSubmit={handleSubmit}
                   className="p-6 sm:p-10 lg:p-12 rounded-[2.5rem] bg-white border border-[#E9E0D2] shadow-[0_15px_45px_rgba(24,61,43,0.06)] space-y-8"
                 >
+                  {/* Honeypot field */}
+                  <div className="hidden" aria-hidden="true">
+                    <label htmlFor="website-hp-contact">Website</label>
+                    <input
+                      id="website-hp-contact"
+                      type="text"
+                      name="website"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={formData.hpWebsite}
+                      onChange={(e) => setFormData({ ...formData, hpWebsite: e.target.value })}
+                    />
+                  </div>
+
+                  {errorMessage && (
+                    <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-xs text-red-700 flex items-center gap-2">
+                      <AlertCircle className="w-4 h-4 shrink-0 text-red-500" />
+                      <span>{errorMessage}</span>
+                    </div>
+                  )}
                   {/* Step 1: Contact Details */}
                   <div className="space-y-4">
                     <span className="text-xs uppercase tracking-[0.2em] text-[#8B5E35] font-semibold block">

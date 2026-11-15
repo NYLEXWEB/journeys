@@ -10,11 +10,16 @@ import {
   MapPin,
   Clock,
   ArrowUpRight,
-  Sparkles,
+  AlertCircle,
 } from "lucide-react";
 import { WhatsAppIcon } from "./WhatsAppIcon";
 import { useWebsiteContent } from "@/hooks/useWebsiteContent";
 import { INITIAL_CONTACT_INFO } from "@/lib/seedData";
+import {
+  trackEnquirySubmitted,
+  trackWhatsAppClick,
+  trackPhoneCallClick,
+} from "@/lib/analytics";
 
 export default function ContactUs() {
   const content = useWebsiteContent();
@@ -25,18 +30,63 @@ export default function ContactUs() {
     contactInfo: "",
     travelDates: "",
     message: "",
+    hpWebsite: "", // Anti-spam honeypot
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage("");
+
+    if (!formData.fullName.trim()) {
+      setErrorMessage("Please enter your name.");
+      return;
+    }
+    if (!formData.contactInfo.trim()) {
+      setErrorMessage("Please provide a WhatsApp number or email address.");
+      return;
+    }
+
     setIsSubmitting(true);
-    setTimeout(() => {
+
+    try {
+      const isEmail = formData.contactInfo.includes("@");
+      const email = isEmail ? formData.contactInfo.trim() : `guest-${Date.now()}@journeysbyjibu.in`;
+      const phone = !isEmail ? formData.contactInfo.trim() : "Provided via email";
+
+      const res = await fetch("/api/enquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: formData.fullName,
+          email,
+          phone,
+          travelDates: formData.travelDates,
+          message: formData.message,
+          website: formData.hpWebsite, // Honeypot field
+          preferredContactMethod: isEmail ? "email" : "whatsapp",
+        }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        setIsSubmitted(true);
+        trackEnquirySubmitted({
+          fullName: formData.fullName,
+          travelDates: formData.travelDates,
+        });
+      } else {
+        setErrorMessage(data.error || "Failed to submit enquiry. Please reach out via WhatsApp.");
+      }
+    } catch {
+      setErrorMessage("Connection issue. Please reach Jibu directly on WhatsApp.");
+    } finally {
       setIsSubmitting(false);
-      setIsSubmitted(true);
-    }, 700);
+    }
   };
 
   return (
@@ -90,6 +140,7 @@ export default function ContactUs() {
                 href={`https://wa.me/${contact.whatsappNumber.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(contact.whatsappPrefill || "Hello Jibu, I would like to consult about a journey to Kerala.")}`}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackWhatsAppClick("homepage_contact_section", contact.whatsappPrefill)}
                 className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-sm"
               >
                 <WhatsAppIcon className="w-4 h-4 fill-current" />
@@ -101,7 +152,11 @@ export default function ContactUs() {
             <div className="p-5 sm:p-6 rounded-[2rem] bg-white border border-[#E9E0D2] shadow-sm space-y-3 text-xs text-[#242424]/80">
               <div className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-[#8B5E35] shrink-0" />
-                <a href={`tel:${contact.phoneNumber.replace(/[^0-9+]/g, "")}`} className="hover:text-[#183D2B] font-medium">
+                <a
+                  href={`tel:${contact.phoneNumber.replace(/[^0-9+]/g, "")}`}
+                  onClick={() => trackPhoneCallClick(contact.phoneNumber, "homepage_contact_section")}
+                  className="hover:text-[#183D2B] font-medium"
+                >
                   {contact.displayPhone || contact.phoneNumber}
                 </a>
               </div>
@@ -141,7 +196,7 @@ export default function ContactUs() {
             </div>
           </div>
 
-          {/* Right Column: Streamlined 4-Field Consultation Form */}
+          {/* Right Column: Streamlined Consultation Form */}
           <div className="lg:col-span-7">
             <div className="p-5 sm:p-7 lg:p-8 rounded-[2.2rem] bg-white border border-[#E9E0D2] shadow-[0_12px_40px_rgba(24,61,43,0.06)]">
               {isSubmitted ? (
@@ -151,12 +206,12 @@ export default function ContactUs() {
                   </div>
                   <h3 className="text-2xl font-serif text-[#183D2B]">Thank You</h3>
                   <p className="text-sm text-[#242424]/75 font-light max-w-md mx-auto leading-relaxed">
-                    Your enquiry has been delivered directly to Jibu Thomas. We will respond within two hours with preliminary ideas.
+                    Your enquiry has been received directly by Jibu Thomas. We will review your preliminary ideas and connect shortly via your preferred channel.
                   </p>
                   <button
                     onClick={() => {
                       setIsSubmitted(false);
-                      setFormData({ fullName: "", contactInfo: "", travelDates: "", message: "" });
+                      setFormData({ fullName: "", contactInfo: "", travelDates: "", message: "", hpWebsite: "" });
                     }}
                     className="inline-flex items-center gap-2 text-xs uppercase tracking-wider text-[#8B5E35] hover:underline font-semibold pt-2"
                   >
@@ -165,6 +220,27 @@ export default function ContactUs() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
+                  {/* Anti-spam honeypot - invisible to human users */}
+                  <div className="hidden" aria-hidden="true">
+                    <label htmlFor="website-hp">Website</label>
+                    <input
+                      id="website-hp"
+                      type="text"
+                      name="website"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={formData.hpWebsite}
+                      onChange={(e) => setFormData({ ...formData, hpWebsite: e.target.value })}
+                    />
+                  </div>
+
+                  {errorMessage && (
+                    <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-xs text-red-700 flex items-center gap-2">
+                      <AlertCircle className="w-4 h-4 shrink-0 text-red-500" />
+                      <span>{errorMessage}</span>
+                    </div>
+                  )}
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="text-xs uppercase tracking-wider text-[#183D2B] font-semibold block mb-1.5">
@@ -228,7 +304,7 @@ export default function ContactUs() {
                       className="w-full py-4 rounded-full bg-[#183D2B] hover:bg-[#8B5E35] text-[#FFFCF5] text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
                     >
                       {isSubmitting ? (
-                        <span>Sending Request...</span>
+                        <span>Submitting to Jibu Thomas...</span>
                       ) : (
                         <>
                           <span>Send My Journey Request</span>
@@ -237,7 +313,7 @@ export default function ContactUs() {
                       )}
                     </button>
                     <p className="text-[11px] text-center text-[#242424]/60 font-light mt-2.5">
-                      No spam, no automated cold calls. Direct consultation with Jibu Thomas.
+                      No automated cold calls. Direct personal consultation with Jibu Thomas.
                     </p>
                   </div>
                 </form>

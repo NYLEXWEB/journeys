@@ -71,3 +71,6 @@ export async function connectToDatabase(): Promise<typeof mongoose | null> {
 
   return cached.conn;
 }
+
+export const connectDB = connectToDatabase;
+

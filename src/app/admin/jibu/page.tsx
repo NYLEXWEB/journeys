@@ -22,6 +22,9 @@ import {
   LayoutTemplate,
   X,
   Share2,
+  Inbox,
+  MessageSquare,
+  RefreshCw,
 } from "lucide-react";
 
 type ActiveTab =
@@ -30,6 +33,7 @@ type ActiveTab =
   | "experiences"
   | "journeys"
   | "reviews"
+  | "enquiries"
   | "contact"
   | "footer";
 
@@ -43,6 +47,11 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<ActiveTab>("destinations");
   const [content, setContent] = useState<any>(null);
   const [isLoadingContent, setIsLoadingContent] = useState(false);
+
+  // Guest Enquiries state
+  const [enquiries, setEnquiries] = useState<any[]>([]);
+  const [isLoadingEnquiries, setIsLoadingEnquiries] = useState(false);
+  const [enquiryStatusFilter, setEnquiryStatusFilter] = useState("all");
 
   // Notification Toast state
   const [toast, setToast] = useState<{ type: "success" | "error"; message: string } | null>(null);
@@ -101,11 +110,67 @@ export default function AdminPage() {
     }
   }, []);
 
+  // Fetch enquiries
+  const loadEnquiries = useCallback(async (status = "all") => {
+    setIsLoadingEnquiries(true);
+    try {
+      const res = await fetch(`/api/enquiries?status=${status}`);
+      if (res.ok) {
+        const data = await res.json();
+        setEnquiries(data.enquiries || []);
+      } else {
+        showToast("Failed to fetch customer enquiries.", "error");
+      }
+    } catch {
+      showToast("Network error while fetching enquiries.", "error");
+    } finally {
+      setIsLoadingEnquiries(false);
+    }
+  }, []);
+
   useEffect(() => {
     if (isAuthenticated) {
       loadContent();
+      loadEnquiries();
     }
-  }, [isAuthenticated, loadContent]);
+  }, [isAuthenticated, loadContent, loadEnquiries]);
+
+  // Update Enquiry Status
+  const handleUpdateEnquiryStatus = async (id: string, newStatus: string) => {
+    try {
+      const res = await fetch(`/api/enquiries/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: newStatus }),
+      });
+      if (res.ok) {
+        showToast(`Enquiry marked as ${newStatus}`);
+        loadEnquiries(enquiryStatusFilter);
+      } else {
+        showToast("Failed to update enquiry status", "error");
+      }
+    } catch {
+      showToast("Network error updating enquiry", "error");
+    }
+  };
+
+  // Delete Enquiry
+  const handleDeleteEnquiry = async (id: string) => {
+    if (!confirm("Are you sure you want to permanently delete this customer enquiry?")) return;
+    try {
+      const res = await fetch(`/api/enquiries/${id}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        showToast("Enquiry deleted successfully");
+        loadEnquiries(enquiryStatusFilter);
+      } else {
+        showToast("Failed to delete enquiry", "error");
+      }
+    } catch {
+      showToast("Network error deleting enquiry", "error");
+    }
+  };
 
   // Login Handler
   const handleLogin = async (e: React.FormEvent) => {
@@ -462,6 +527,11 @@ export default function AdminPage() {
               { id: "experiences", label: "Experiences", icon: Waves },
               { id: "journeys", label: "Journeys", icon: Compass },
               { id: "reviews", label: "Reviews", icon: Star },
+              {
+                id: "enquiries",
+                label: `Enquiries (${enquiries.filter((e) => e.status === "new").length > 0 ? `${enquiries.filter((e) => e.status === "new").length} New` : enquiries.length})`,
+                icon: Inbox,
+              },
               { id: "hero", label: "Hero", icon: LayoutTemplate },
               { id: "contact", label: "Contact", icon: Phone },
               { id: "footer", label: "Footer", icon: Share2 },
@@ -921,6 +991,223 @@ export default function AdminPage() {
                       </div>
                     ))}
                   </div>
+                </div>
+              )}
+
+              {/* SECTION: ENQUIRIES & LEADS */}
+              {activeTab === "enquiries" && (
+                <div className="space-y-6">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-[#E9E0D2]">
+                    <div>
+                      <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#183D2B]">
+                        Guest Enquiries &amp; Journey Leads
+                      </h2>
+                      <p className="text-xs text-[#242424]/70 font-light">
+                        Review, manage, and follow up with travellers who submitted bespoke journey requests.
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => loadEnquiries(enquiryStatusFilter)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#E9E0D2] text-[#183D2B] text-xs font-semibold hover:bg-[#183D2B]/5 transition-all cursor-pointer"
+                      >
+                        <RefreshCw className={`w-3.5 h-3.5 ${isLoadingEnquiries ? "animate-spin" : ""}`} />
+                        <span>Refresh</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Filter Badges */}
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    {[
+                      { id: "all", label: "All Enquiries" },
+                      { id: "new", label: "New" },
+                      { id: "in-progress", label: "In Progress" },
+                      { id: "contacted", label: "Contacted" },
+                      { id: "confirmed", label: "Confirmed" },
+                      { id: "archived", label: "Archived" },
+                    ].map((f) => (
+                      <button
+                        key={f.id}
+                        onClick={() => {
+                          setEnquiryStatusFilter(f.id);
+                          loadEnquiries(f.id);
+                        }}
+                        className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
+                          enquiryStatusFilter === f.id
+                            ? "bg-[#183D2B] text-white shadow-sm"
+                            : "bg-[#FFFCF5] border border-[#E9E0D2] text-[#242424]/70 hover:border-[#183D2B]"
+                        }`}
+                      >
+                        {f.label}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Enquiries Listing */}
+                  {isLoadingEnquiries ? (
+                    <div className="py-16 text-center text-xs text-[#183D2B] font-semibold">
+                      <div className="w-6 h-6 rounded-full border-2 border-[#183D2B] border-t-transparent animate-spin mx-auto mb-2" />
+                      Loading guest enquiries...
+                    </div>
+                  ) : enquiries.length === 0 ? (
+                    <div className="p-10 rounded-2xl bg-[#FFFCF5] border border-[#E9E0D2] text-center space-y-2">
+                      <Inbox className="w-8 h-8 text-[#8B5E35] mx-auto opacity-60" />
+                      <h4 className="text-sm font-serif font-bold text-[#183D2B]">
+                        No Enquiries Found
+                      </h4>
+                      <p className="text-xs text-[#242424]/60 max-w-sm mx-auto font-light">
+                        When travellers submit requests through the Plan Your Journey forms, their details and travel preferences will appear here.
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {enquiries.map((enq) => {
+                        const cleanPhone = (enq.phone || "").replace(/[^0-9]/g, "");
+                        const waLink = cleanPhone
+                          ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(`Hello ${enq.fullName}, this is Jibu Thomas from Journeys by Jibu. I received your bespoke journey request and would love to consult with you.`)}`
+                          : null;
+
+                        return (
+                          <div
+                            key={enq._id}
+                            className="p-5 sm:p-6 rounded-2xl border border-[#E9E0D2] bg-[#FFFCF5] hover:border-[#8B5E35]/40 transition-all shadow-sm space-y-4"
+                          >
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#E9E0D2]">
+                              <div>
+                                <div className="flex items-center gap-2">
+                                  <h3 className="text-base font-bold text-[#183D2B]">
+                                    {enq.fullName}
+                                  </h3>
+                                  <span
+                                    className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                                      enq.status === "new"
+                                        ? "bg-emerald-100 text-emerald-800 border border-emerald-300"
+                                        : enq.status === "contacted"
+                                        ? "bg-amber-100 text-amber-800 border border-amber-300"
+                                        : enq.status === "confirmed"
+                                        ? "bg-blue-100 text-blue-800 border border-blue-300"
+                                        : "bg-stone-100 text-stone-700 border border-stone-300"
+                                    }`}
+                                  >
+                                    {enq.status}
+                                  </span>
+                                </div>
+                                <span className="text-[11px] text-[#242424]/60 font-light">
+                                  Received {new Date(enq.createdAt).toLocaleString()}
+                                </span>
+                              </div>
+
+                              <div className="flex flex-wrap items-center gap-2">
+                                {waLink && (
+                                  <a
+                                    href={waLink}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white text-xs font-semibold shadow-sm transition-all"
+                                  >
+                                    <MessageSquare className="w-3.5 h-3.5 fill-current" />
+                                    <span>Reply on WhatsApp</span>
+                                  </a>
+                                )}
+                                <a
+                                  href={`mailto:${enq.email}`}
+                                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full border border-[#E9E0D2] bg-white hover:bg-[#183D2B] text-[#183D2B] hover:text-white text-xs font-medium transition-all"
+                                >
+                                  <span>Email</span>
+                                </a>
+                                <select
+                                  value={enq.status}
+                                  onChange={(e) => handleUpdateEnquiryStatus(enq._id, e.target.value)}
+                                  className="px-2.5 py-1.5 rounded-full border border-[#E9E0D2] bg-white text-xs text-[#183D2B] font-medium outline-none cursor-pointer"
+                                >
+                                  <option value="new">Mark New</option>
+                                  <option value="in-progress">In Progress</option>
+                                  <option value="contacted">Mark Contacted</option>
+                                  <option value="confirmed">Mark Confirmed</option>
+                                  <option value="archived">Archive</option>
+                                </select>
+                                <button
+                                  onClick={() => handleDeleteEnquiry(enq._id)}
+                                  className="p-1.5 rounded-lg text-red-600 hover:bg-red-50 transition-colors"
+                                  title="Delete Enquiry"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                              </div>
+                            </div>
+
+                            {/* Details Grid */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+                              <div className="p-3 rounded-xl bg-white border border-[#E9E0D2]">
+                                <span className="text-[10px] uppercase font-semibold text-[#8B5E35] block">
+                                  Contact Phone / WhatsApp
+                                </span>
+                                <span className="text-[#183D2B] font-medium block mt-0.5">
+                                  {enq.phone || "Not specified"}
+                                </span>
+                              </div>
+                              <div className="p-3 rounded-xl bg-white border border-[#E9E0D2]">
+                                <span className="text-[10px] uppercase font-semibold text-[#8B5E35] block">
+                                  Email Address
+                                </span>
+                                <span className="text-[#183D2B] font-medium block mt-0.5 break-all">
+                                  {enq.email || "Not specified"}
+                                </span>
+                              </div>
+                              <div className="p-3 rounded-xl bg-white border border-[#E9E0D2]">
+                                <span className="text-[10px] uppercase font-semibold text-[#8B5E35] block">
+                                  Travel Dates &amp; Days
+                                </span>
+                                <span className="text-[#183D2B] font-medium block mt-0.5">
+                                  {enq.travelDates || "Flexible"}{" "}
+                                  {enq.approximateDays ? `(${enq.approximateDays})` : ""}
+                                </span>
+                              </div>
+                              <div className="p-3 rounded-xl bg-white border border-[#E9E0D2]">
+                                <span className="text-[10px] uppercase font-semibold text-[#8B5E35] block">
+                                  Guests / Party
+                                </span>
+                                <span className="text-[#183D2B] font-medium block mt-0.5">
+                                  {enq.guestsCount || `${enq.adultCount || 2} Adults`}
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Additional preferences */}
+                            {(enq.accommodationStyle || enq.specialInterests?.length > 0) && (
+                              <div className="flex flex-wrap items-center gap-2 pt-1 text-xs">
+                                {enq.accommodationStyle && (
+                                  <span className="px-2.5 py-1 rounded-lg bg-[#183D2B]/5 text-[#183D2B] border border-[#183D2B]/10">
+                                    <strong>Stay:</strong> {enq.accommodationStyle}
+                                  </span>
+                                )}
+                                {enq.specialInterests?.map((item: string) => (
+                                  <span
+                                    key={item}
+                                    className="px-2.5 py-1 rounded-lg bg-[#8B5E35]/10 text-[#8B5E35] border border-[#8B5E35]/20 font-medium"
+                                  >
+                                    {item}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
+
+                            {/* Guest Message */}
+                            {enq.message && (
+                              <div className="p-3.5 rounded-xl bg-white border border-[#E9E0D2] text-xs text-[#242424]/85 leading-relaxed">
+                                <span className="text-[10px] uppercase tracking-wider text-[#8B5E35] font-semibold block mb-1">
+                                  Guest Note &amp; Vision:
+                                </span>
+                                <p className="whitespace-pre-wrap">{enq.message}</p>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
               )}
 

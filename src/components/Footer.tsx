@@ -57,7 +57,7 @@ export default function Footer() {
               <span>WhatsApp Jibu</span>
             </a>
             <Link
-              href="/contact"
+              href="/plan-your-journey"
               className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-[#FFFCF5] text-xs uppercase tracking-wider font-medium border border-white/15 transition-all"
             >
               <span>Plan Journey</span>
@@ -132,19 +132,19 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/#travel-with-jibu" className="hover:text-[#E9E0D2] transition-colors flex items-center justify-between">
+                <Link href="/journeys" className="hover:text-[#E9E0D2] transition-colors flex items-center justify-between">
                   <span>Signature Journeys</span>
                   <ArrowUpRight className="w-3 h-3 opacity-60" />
                 </Link>
               </li>
               <li>
-                <Link href="/#experiences" className="hover:text-[#E9E0D2] transition-colors flex items-center justify-between">
+                <Link href="/experiences" className="hover:text-[#E9E0D2] transition-colors flex items-center justify-between">
                   <span>Curated Experiences</span>
                   <ArrowUpRight className="w-3 h-3 opacity-60" />
                 </Link>
               </li>
               <li>
-                <Link href="/#journal" className="hover:text-[#E9E0D2] transition-colors flex items-center justify-between">
+                <Link href="/journal" className="hover:text-[#E9E0D2] transition-colors flex items-center justify-between">
                   <span>Travel Guide &amp; Journal</span>
                   <ArrowUpRight className="w-3 h-3 opacity-60" />
                 </Link>
@@ -169,7 +169,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-[#E9E0D2] transition-colors">
+                <Link href="/plan-your-journey" className="hover:text-[#E9E0D2] transition-colors">
                   How we plan your journey
                 </Link>
               </li>

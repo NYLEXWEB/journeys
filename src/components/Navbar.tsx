@@ -73,27 +73,27 @@ export const SITE_STRUCTURE: NavItem[] = [
     id: "journeys",
     name: "Journeys",
     fullName: "Journeys, Never Packages",
-    href: "/#travel-with-jibu",
+    href: "/journeys",
     groups: [
       {
         groupTitle: "Journey Ideas",
         items: [
-          { name: "Classic Kerala", href: "/#travel-with-jibu" },
-          { name: "Slow Kerala", href: "/#travel-with-jibu" },
-          { name: "Kerala Beyond the Usual", href: "/#travel-with-jibu" },
-          { name: "Nature & Wildlife", href: "/#travel-with-jibu" },
-          { name: "Culture & Cuisine", href: "/#travel-with-jibu" },
-          { name: "South India Journeys", href: "/#travel-with-jibu" },
+          { name: "Classic Kerala", href: "/journeys#classic-kerala" },
+          { name: "Slow Kerala", href: "/journeys#slow-kerala" },
+          { name: "Kerala Beyond the Usual", href: "/journeys#beyond-usual" },
+          { name: "Nature & Wildlife", href: "/journeys#nature-wildlife" },
+          { name: "Culture & Cuisine", href: "/journeys#culture-cuisine" },
+          { name: "South India Journeys", href: "/journeys#south-india" },
         ],
       },
       {
         groupTitle: "Who are you travelling with?",
         items: [
-          { name: "Couples", href: "/#travel-with-jibu" },
-          { name: "Families", href: "/#travel-with-jibu" },
-          { name: "Senior travellers", href: "/#services" },
-          { name: "Multi-generational families", href: "/#services" },
-          { name: "Friends / small groups", href: "/#travel-with-jibu" },
+          { name: "Couples", href: "/journeys" },
+          { name: "Families", href: "/journeys" },
+          { name: "Senior travellers", href: "/journeys" },
+          { name: "Multi-generational families", href: "/journeys" },
+          { name: "Friends / small groups", href: "/journeys" },
         ],
       },
     ],
@@ -102,17 +102,17 @@ export const SITE_STRUCTURE: NavItem[] = [
     id: "experiences",
     name: "Experiences",
     fullName: "Curated Local Knowledge",
-    href: "/#experiences",
+    href: "/experiences",
     items: [
-      { name: "Food & Cuisine", href: "/#experiences" },
-      { name: "Culture & Heritage", href: "/#experiences" },
-      { name: "Wildlife & Nature", href: "/#experiences" },
-      { name: "Walking & Hiking", href: "/#experiences" },
-      { name: "Tea & Plantations", href: "/#experiences" },
-      { name: "Backwaters", href: "/#experiences" },
-      { name: "Village Life", href: "/#experiences" },
-      { name: "Arts & Traditions", href: "/#experiences" },
-      { name: "Wellness & Ayurveda", href: "/#experiences" },
+      { name: "Food & Cuisine", href: "/experiences#culinary" },
+      { name: "Culture & Heritage", href: "/experiences#heritage" },
+      { name: "Wildlife & Nature", href: "/experiences#wildlife" },
+      { name: "Walking & Hiking", href: "/experiences#nature" },
+      { name: "Tea & Plantations", href: "/experiences#plantations" },
+      { name: "Backwaters", href: "/experiences#backwaters" },
+      { name: "Village Life", href: "/experiences#village" },
+      { name: "Arts & Traditions", href: "/experiences#arts" },
+      { name: "Wellness & Ayurveda", href: "/experiences#wellness" },
     ],
   },
   {
@@ -123,7 +123,7 @@ export const SITE_STRUCTURE: NavItem[] = [
     items: [
       { name: "Meet Jibu", href: "/about#jibu" },
       { name: "Why travel with us", href: "/about#why-us" },
-      { name: "How we plan your journey", href: "/contact#how-it-works" },
+      { name: "How we plan your journey", href: "/plan-your-journey#how-it-works" },
       { name: "Traveller stories & reviews", href: "/#reviews" },
       { name: "Responsible travel", href: "/about#philosophy" },
       { name: "Our local network", href: "/about#story" },
@@ -133,26 +133,26 @@ export const SITE_STRUCTURE: NavItem[] = [
     id: "travel-guide",
     name: "Travel Guide",
     fullName: "The Journeys Journal",
-    href: "/#journal",
+    href: "/journal",
     groups: [
       {
         groupTitle: "Planning questions",
         items: [
-          { name: "Best time to visit Kerala", href: "/#journal" },
-          { name: "How many days in Kerala?", href: "/#journal" },
-          { name: "First trip to Kerala", href: "/#journal" },
-          { name: "Getting around Kerala", href: "/#services" },
-          { name: "Where to stay", href: "/#services" },
+          { name: "Best time to visit Kerala", href: "/journal#best-time" },
+          { name: "How many days in Kerala?", href: "/journal#duration" },
+          { name: "First trip to Kerala", href: "/journal#first-time" },
+          { name: "Getting around Kerala", href: "/journal#transport" },
+          { name: "Where to stay", href: "/journal#stays" },
         ],
       },
       {
         groupTitle: "Useful comparisons",
         items: [
-          { name: "Munnar vs Wayanad", href: "/#journal" },
-          { name: "Houseboat: day cruise or overnight?", href: "/#journal" },
-          { name: "Kerala with children", href: "/#journal" },
-          { name: "Kerala for senior travellers", href: "/#journal" },
-          { name: "Food, culture & practical advice", href: "/#journal" },
+          { name: "Munnar vs Wayanad", href: "/journal#munnar-vs-wayanad" },
+          { name: "Houseboat: day cruise or overnight?", href: "/journal#houseboat" },
+          { name: "Kerala with children", href: "/journal#families" },
+          { name: "Kerala for senior travellers", href: "/journal#seniors" },
+          { name: "Food, culture & practical advice", href: "/journal#culture" },
         ],
       },
     ],
@@ -248,20 +248,24 @@ export default function Navbar() {
 
     updatePosition();
 
-    // High-frequency tracking using RAF loop for 120fps smooth momentum sync
-    const loop = () => {
-      updatePosition();
-      rafId = requestAnimationFrame(loop);
+    // Performant ticking RAF listener to prevent layout thrashing and maintain 120fps smooth scrolling
+    let ticking = false;
+    const onScrollOrResize = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updatePosition();
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
-    rafId = requestAnimationFrame(loop);
 
-    window.addEventListener("scroll", updatePosition, { passive: true });
-    window.addEventListener("resize", updatePosition);
+    window.addEventListener("scroll", onScrollOrResize, { passive: true });
+    window.addEventListener("resize", onScrollOrResize, { passive: true });
 
     return () => {
-      cancelAnimationFrame(rafId);
-      window.removeEventListener("scroll", updatePosition);
-      window.removeEventListener("resize", updatePosition);
+      window.removeEventListener("scroll", onScrollOrResize);
+      window.removeEventListener("resize", onScrollOrResize);
     };
   }, [isHomepage]);
 
@@ -297,7 +301,7 @@ export default function Navbar() {
         >
           {/* Brand Logo */}
           <Link
-            href="/#hero"
+            href="/"
             className="flex items-center gap-2 group transition-transform duration-300 hover:scale-[1.01] shrink-0 pl-0.5 sm:pl-1"
           >
             <div
@@ -463,7 +467,7 @@ export default function Navbar() {
           {isDocked && (
             <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
               <Link
-                href="/contact"
+                href="/plan-your-journey"
                 className="inline-flex items-center gap-1 sm:gap-1.5 transition-all duration-300 uppercase tracking-widest font-semibold shadow-md hover:shadow-xl hover:scale-105 active:scale-95 whitespace-nowrap px-3 sm:px-5 py-1.5 sm:py-2 rounded-full text-[10px] sm:text-xs bg-[#183D2B] text-[#FFFCF5] hover:bg-[#8B5E35]"
               >
                 <span className="hidden sm:inline">PLAN YOUR JOURNEY</span>
@@ -577,7 +581,7 @@ export default function Navbar() {
 
             <div className="max-w-lg mx-auto w-full pt-4 space-y-3">
               <Link
-                href="/contact"
+                href="/plan-your-journey"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="w-full py-4 rounded-full bg-[#8B5E35] text-[#FFFCF5] text-xs uppercase tracking-widest font-semibold flex items-center justify-center gap-2 shadow-xl hover:bg-[#a06d3f] transition-all"
               >

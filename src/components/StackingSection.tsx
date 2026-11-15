@@ -37,7 +37,7 @@ export default function StackingSection({
     <div
       ref={containerRef}
       style={{ zIndex }}
-      className={`relative origin-top ${
+      className={`relative origin-top transform-gpu ${
         isFirst
           ? "rounded-t-[2.5rem] sm:rounded-t-[3.5rem] md:rounded-t-[4.5rem] border-t border-[#E9E0D2] bg-[#FFFCF5]"
           : isFooter
@@ -49,7 +49,7 @@ export default function StackingSection({
     >
       <motion.div
         style={isFooter || disableScale ? undefined : { scale, opacity }}
-        className="w-full origin-top"
+        className="w-full origin-top will-change-transform"
       >
         {children}
       </motion.div>

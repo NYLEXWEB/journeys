@@ -140,3 +140,4 @@ export function trackJourneyView(journeyId: string, title: string): void {
     item_category: "Bespoke Journey",
   });
 }
+

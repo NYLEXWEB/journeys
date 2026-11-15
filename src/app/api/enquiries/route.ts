@@ -125,7 +125,7 @@ export async function POST(req: NextRequest) {
       preferredContactMethod: ["whatsapp", "email", "phone"].includes(preferredContactMethod)
         ? preferredContactMethod
         : "whatsapp",
-      status: "new",
+      status: "new" as const,
       ipAddress: ip,
       userAgent: req.headers.get("user-agent") || "",
       createdAt: new Date().toISOString(),

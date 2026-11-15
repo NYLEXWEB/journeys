@@ -64,3 +64,4 @@ const EnquirySchema = new Schema<IEnquiry>(
 
 export const EnquiryModel: Model<IEnquiry> =
   mongoose.models.Enquiry || mongoose.model<IEnquiry>("Enquiry", EnquirySchema);
+

@@ -11,6 +11,7 @@ import {
   INITIAL_FOOTER_CONTENT,
   INITIAL_SERVICES,
   INITIAL_JOURNAL,
+  INITIAL_ABOUT,
 } from "@/lib/seedData";
 
 let globalContentCache: any = null;
@@ -34,6 +35,7 @@ export function useWebsiteContent() {
       footerContent: INITIAL_FOOTER_CONTENT,
       services: INITIAL_SERVICES,
       journal: INITIAL_JOURNAL,
+      about: INITIAL_ABOUT,
     }
   );
 

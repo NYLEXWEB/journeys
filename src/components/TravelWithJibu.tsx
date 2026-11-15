@@ -1,24 +1,16 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
 import {
-  Compass,
-  Sparkles,
   ArrowUpRight,
   Clock,
   MapPin,
-  X,
-  Check,
   CalendarCheck,
   Map,
   HandHeart,
-  Sliders,
-  ShieldCheck,
 } from "lucide-react";
-import { WhatsAppIcon } from "./WhatsAppIcon";
 import { useWebsiteContent } from "@/hooks/useWebsiteContent";
 
 export interface JourneyItem {
@@ -187,39 +179,6 @@ export default function TravelWithJibu() {
       : SIGNATURE_JOURNEYS;
 
   const [activeTab, setActiveTab] = useState<"signature" | "bespoke">("signature");
-  const [selectedJourney, setSelectedJourney] = useState<JourneyItem | null>(null);
-  const [selectedBespoke, setSelectedBespoke] = useState<BespokePillarItem | null>(null);
-
-  // Background Scroll Lock
-  useEffect(() => {
-    const isAnyOpen = selectedJourney || selectedBespoke;
-    if (isAnyOpen) {
-      document.body.style.overflow = "hidden";
-      document.body.classList.add("modal-open");
-      document.documentElement.classList.add("modal-open");
-    } else {
-      document.body.style.overflow = "";
-      document.body.classList.remove("modal-open");
-      document.documentElement.classList.remove("modal-open");
-    }
-    return () => {
-      document.body.style.overflow = "";
-      document.body.classList.remove("modal-open");
-      document.documentElement.classList.remove("modal-open");
-    };
-  }, [selectedJourney, selectedBespoke]);
-
-  // Close on Escape key
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setSelectedJourney(null);
-        setSelectedBespoke(null);
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
 
   return (
     <section id="journeys" className="pt-10 sm:pt-14 md:pt-16 pb-20 sm:pb-24 md:pb-28 bg-[#FFFCF5] relative overflow-hidden">
@@ -245,10 +204,11 @@ export default function TravelWithJibu() {
               type="button"
               suppressHydrationWarning
               onClick={() => setActiveTab("signature")}
-              className={`px-4 sm:px-5 py-2 rounded-full text-xs font-sans transition-all cursor-pointer ${activeTab === "signature"
+              className={`px-4 sm:px-5 py-2 rounded-full text-xs font-sans transition-all cursor-pointer ${
+                activeTab === "signature"
                   ? "bg-[#183D2B] text-white shadow-sm font-medium"
                   : "text-[#242424]/75 hover:text-[#183D2B]"
-                }`}
+              }`}
             >
               Signature Journeys (5)
             </button>
@@ -256,10 +216,11 @@ export default function TravelWithJibu() {
               type="button"
               suppressHydrationWarning
               onClick={() => setActiveTab("bespoke")}
-              className={`px-4 sm:px-5 py-2 rounded-full text-xs font-sans transition-all cursor-pointer ${activeTab === "bespoke"
+              className={`px-4 sm:px-5 py-2 rounded-full text-xs font-sans transition-all cursor-pointer ${
+                activeTab === "bespoke"
                   ? "bg-[#183D2B] text-white shadow-sm font-medium"
                   : "text-[#242424]/75 hover:text-[#183D2B]"
-                }`}
+              }`}
             >
               Bespoke Journeys (3)
             </button>
@@ -270,10 +231,10 @@ export default function TravelWithJibu() {
         {activeTab === "signature" && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5 sm:gap-6">
             {signatureJourneys.map((j) => (
-              <div
+              <Link
                 key={j.id}
-                onClick={() => setSelectedJourney(j)}
-                className="group relative h-[440px] sm:h-[480px] lg:h-[500px] rounded-3xl overflow-hidden cursor-pointer border border-white/10 hover:border-[#8B5E35]/60 hover:-translate-y-2 transition-all duration-500 bg-[#183D2B] select-none hover:shadow-[0_12px_28px_rgba(24,61,43,0.08)]"
+                href="/journeys"
+                className="group relative h-[440px] sm:h-[480px] lg:h-[500px] rounded-3xl overflow-hidden cursor-pointer border border-white/10 hover:border-[#8B5E35]/60 hover:-translate-y-2 transition-all duration-500 bg-[#183D2B] select-none hover:shadow-[0_12px_28px_rgba(24,61,43,0.08)] block"
               >
                 {/* Full Image */}
                 <Image
@@ -313,7 +274,7 @@ export default function TravelWithJibu() {
                     </span>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         )}
@@ -342,233 +303,18 @@ export default function TravelWithJibu() {
                   </div>
 
                   {/* VIEW MORE DETAILS BUTTON */}
-                  <button
-                    type="button"
-                    suppressHydrationWarning
-                    onClick={() => setSelectedBespoke(p)}
+                  <Link
+                    href="/journeys"
                     className="w-full py-2 px-3 rounded-full bg-[#183D2B]/5 hover:bg-[#183D2B] text-[#183D2B] hover:text-white text-[11px] uppercase tracking-wider font-medium transition-all duration-200 flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
                   >
                     <span>View More Details</span>
                     <ArrowUpRight className="w-3 h-3" />
-                  </button>
+                  </Link>
                 </div>
               );
             })}
           </div>
         )}
-
-        {/* Modal: Signature Journey Details (Luxury Split Modal) */}
-        <AnimatePresence>
-          {selectedJourney && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 lg:p-8 bg-black/85 backdrop-blur-2xl"
-              onClick={() => setSelectedJourney(null)}
-            >
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: 15 }}
-                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                onClick={(e) => e.stopPropagation()}
-                data-lenis-prevent="true"
-                className="relative max-w-4xl lg:max-w-5xl w-full max-h-[90vh] md:max-h-[85vh] rounded-[2rem] sm:rounded-[2.8rem] bg-[#FFFCF5] border border-[#E9E0D2] shadow-[0_30px_90px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col md:flex-row"
-              >
-                {/* Close Button */}
-                <button
-                  type="button"
-                  suppressHydrationWarning
-                  onClick={() => setSelectedJourney(null)}
-                  className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 z-30 p-2 sm:p-2.5 rounded-full bg-black/40 md:bg-black/10 hover:bg-[#183D2B] text-white md:text-[#183D2B] md:hover:text-white transition-all shadow-sm active:scale-90 backdrop-blur-sm cursor-pointer"
-                  aria-label="Close modal"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-
-                {/* Left Column: Full-Bleed Image */}
-                <div className="md:w-[46%] relative h-48 sm:h-64 md:h-auto min-h-[190px] sm:min-h-[260px] md:min-h-full overflow-hidden bg-[#183D2B] shrink-0">
-                  <Image
-                    src={selectedJourney.image}
-                    alt={selectedJourney.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 45vw"
-                    className="object-cover"
-                    priority
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/30" />
-
-                  <div className="absolute top-4 left-4 sm:top-6 sm:left-6">
-                    <span className="px-3 py-1 rounded-full bg-white/90 backdrop-blur-md text-[10px] uppercase font-semibold text-[#183D2B] tracking-wider flex items-center gap-1">
-                      <Clock className="w-3 h-3 text-[#8B5E35]" />
-                      {selectedJourney.duration}
-                    </span>
-                  </div>
-
-                  <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 text-white space-y-1">
-                    <p className="text-[11px] font-sans text-[#E9E0D2] tracking-wider uppercase flex items-center gap-1">
-                      <MapPin className="w-3 h-3 text-[#E9E0D2]" />
-                      {selectedJourney.route}
-                    </p>
-                    <h3 className="font-serif text-2xl sm:text-3xl leading-snug font-light text-white">
-                      {selectedJourney.title}
-                    </h3>
-                  </div>
-                </div>
-
-                {/* Right Column: Editorial Overview & Inclusions */}
-                <div
-                  data-lenis-prevent="true"
-                  className="md:w-[54%] p-6 sm:p-9 lg:p-11 flex flex-col justify-between overflow-y-auto no-scrollbar space-y-6"
-                >
-                  <div className="space-y-4 pt-1 sm:pt-0">
-                    <div className="inline-flex items-center gap-2 text-[#8B5E35] text-[10px] sm:text-xs uppercase tracking-[0.22em] font-semibold">
-                      <Sparkles className="w-3.5 h-3.5 text-[#8B5E35]" />
-                      <span>Signature Journey &bull; South India</span>
-                    </div>
-
-                    <h3 className="font-serif text-2xl sm:text-3xl text-[#183D2B] font-light leading-snug">
-                      {selectedJourney.title}
-                    </h3>
-
-                    <p className="font-serif italic text-xs sm:text-sm text-[#8B5E35]">
-                      &ldquo;{selectedJourney.shortVibe}&rdquo;
-                    </p>
-
-                    <p className="text-xs sm:text-sm text-[#242424]/80 font-light leading-relaxed font-sans pt-1">
-                      {selectedJourney.overview}
-                    </p>
-
-                    {/* Inclusions */}
-                    <div className="pt-4 border-t border-[#E9E0D2] space-y-2.5">
-                      <h5 className="text-[11px] uppercase tracking-widest text-[#183D2B] font-semibold">
-                        Signature Inclusions We Arrange:
-                      </h5>
-                      <div className="space-y-2">
-                        {selectedJourney.highlights.map((h, i) => (
-                          <div key={i} className="flex items-start gap-2.5 text-xs text-[#242424]/85 font-light">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#8B5E35] mt-1.5 shrink-0" />
-                            <span>{h}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Bottom Action Footer with WhatsApp Enquiry */}
-                  <div className="pt-5 border-t border-[#E9E0D2] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div className="text-[11px] text-[#242424]/60 font-serif italic">
-                      Fully customizable for your dates
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Link
-                        href="#contact"
-                        onClick={() => setSelectedJourney(null)}
-                        className="text-[11px] uppercase tracking-wider text-[#183D2B]/75 hover:text-[#183D2B] font-medium hidden sm:inline"
-                      >
-                        Enquiry Form
-                      </Link>
-                      <a
-                        href={`https://wa.me/919447000000?text=${encodeURIComponent(
-                          `Hello Jibu, I would like to enquire about the ${selectedJourney.title} itinerary (${selectedJourney.duration}).`
-                        )}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-2.5 px-6 py-3 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 active:scale-95"
-                      >
-                        <WhatsAppIcon className="w-4 h-4 fill-current" />
-                        <span>WhatsApp Enquiry</span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Modal: Bespoke Pillar Details */}
-        <AnimatePresence>
-          {selectedBespoke && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 lg:p-8 bg-black/85 backdrop-blur-2xl"
-              onClick={() => setSelectedBespoke(null)}
-            >
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: 15 }}
-                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                onClick={(e) => e.stopPropagation()}
-                data-lenis-prevent="true"
-                className="relative max-w-xl w-full max-h-[85vh] overflow-y-auto no-scrollbar rounded-[2.5rem] bg-[#FFFCF5] border border-[#E9E0D2] shadow-2xl p-6 sm:p-9 space-y-5"
-              >
-                <button
-                  type="button"
-                  suppressHydrationWarning
-                  onClick={() => setSelectedBespoke(null)}
-                  className="absolute top-5 right-5 p-2.5 rounded-full bg-black/10 hover:bg-[#183D2B] text-[#183D2B] hover:text-white transition-all shadow-sm active:scale-90"
-                  aria-label="Close modal"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-
-                <div>
-                  <span className="text-[10px] sm:text-xs uppercase tracking-widest text-[#8B5E35] font-semibold">
-                    Bespoke Pillar {selectedBespoke.number}
-                  </span>
-                  <h3 className="text-2xl sm:text-3xl font-serif text-[#183D2B] mt-1">
-                    {selectedBespoke.title}
-                  </h3>
-                  <p className="font-serif italic text-xs sm:text-sm text-[#8B5E35] mt-1">
-                    &ldquo;{selectedBespoke.shortVibe}&rdquo;
-                  </p>
-                </div>
-
-                <p className="text-xs sm:text-sm text-[#242424]/85 font-light leading-relaxed">
-                  {selectedBespoke.overview}
-                </p>
-
-                <div className="pt-3 border-t border-[#E9E0D2] space-y-2.5">
-                  <span className="text-[11px] uppercase tracking-widest text-[#183D2B] font-semibold block">
-                    What We Take Care Of:
-                  </span>
-                  <div className="space-y-2">
-                    {selectedBespoke.details.map((d, i) => (
-                      <div key={i} className="flex items-center gap-2.5 text-xs text-[#242424]/85 font-light">
-                        <Check className="w-3.5 h-3.5 text-[#8B5E35] shrink-0" />
-                        <span>{d}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="pt-4 border-t border-[#E9E0D2] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <span className="text-xs text-[#242424]/60 font-serif italic">
-                    Direct WhatsApp with Jibu Thomas
-                  </span>
-                  <a
-                    href={`https://wa.me/919447000000?text=${encodeURIComponent(
-                      `Hello Jibu, I would like to consult with you regarding ${selectedBespoke.title}.`
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white text-xs uppercase tracking-widest font-semibold transition-all shadow-md active:scale-95"
-                  >
-                    <WhatsAppIcon className="w-3.5 h-3.5 fill-current" />
-                    <span>WhatsApp Jibu</span>
-                  </a>
-                </div>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
     </section>
   );

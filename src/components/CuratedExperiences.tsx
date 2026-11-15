@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
 import {
   Waves,
   Mountain,
@@ -13,13 +12,7 @@ import {
   UtensilsCrossed,
   Users2,
   ArrowUpRight,
-  X,
-  Check,
-  MapPin,
-  Clock,
-  Sparkles,
 } from "lucide-react";
-import { WhatsAppIcon } from "./WhatsAppIcon";
 import { useWebsiteContent } from "@/hooks/useWebsiteContent";
 
 export interface ExperienceItem {
@@ -163,47 +156,31 @@ export default function CuratedExperiences() {
       ? content.experiences
       : EXPERIENCES_DATA;
 
-  const [selectedExp, setSelectedExp] = useState<ExperienceItem | null>(null);
-
-  // Background Scroll Lock when modal is open
-  useEffect(() => {
-    if (selectedExp) {
-      document.body.style.overflow = "hidden";
-      document.body.classList.add("modal-open");
-    } else {
-      document.body.style.overflow = "";
-      document.body.classList.remove("modal-open");
-    }
-    return () => {
-      document.body.style.overflow = "";
-      document.body.classList.remove("modal-open");
-    };
-  }, [selectedExp]);
-
-  // Close on Escape key press
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setSelectedExp(null);
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
-
   return (
     <section id="experiences" className="pt-10 sm:pt-14 md:pt-16 pb-20 sm:pb-24 md:pb-28 bg-[#FFFCF5] relative overflow-visible">
       <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="flex items-center gap-3 mb-6 sm:mb-8">
-          <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#8B5E35] to-[#B37D47] shadow-sm shrink-0" />
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] uppercase">
-            <span className="bg-gradient-to-r from-[#183D2B] via-[#1E4A35] to-[#27593D] bg-clip-text text-transparent">
-              CURATED{" "}
-            </span>
-            <span className="bg-gradient-to-r from-[#8B5E35] via-[#B87D4B] to-[#8B5E35] bg-clip-text text-transparent">
-              EXPERIENCES
-            </span>
-          </h2>
-          <span className="h-[1.5px] w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent" />
+        <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-4 mb-6 sm:mb-8">
+          <div className="flex items-center gap-3">
+            <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#8B5E35] to-[#B37D47] shadow-sm shrink-0" />
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] uppercase">
+              <span className="bg-gradient-to-r from-[#183D2B] via-[#1E4A35] to-[#27593D] bg-clip-text text-transparent">
+                CURATED{" "}
+              </span>
+              <span className="bg-gradient-to-r from-[#8B5E35] via-[#B87D4B] to-[#8B5E35] bg-clip-text text-transparent">
+                EXPERIENCES
+              </span>
+            </h2>
+            <span className="h-[1.5px] w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent" />
+          </div>
+
+          <Link
+            href="/experiences"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#E9E0D2] bg-white/80 hover:bg-[#183D2B] text-[#183D2B] hover:text-white text-xs font-semibold uppercase tracking-wider transition-all duration-300 shadow-sm self-start sm:self-auto"
+          >
+            <span>Explore All Experiences</span>
+            <ArrowUpRight className="w-3.5 h-3.5" />
+          </Link>
         </div>
 
         {/* 
@@ -212,10 +189,10 @@ export default function CuratedExperiences() {
         */}
         <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6">
           {experiencesData.map((exp) => (
-            <div
+            <Link
               key={exp.id}
-              onClick={() => setSelectedExp(exp)}
-              className="group relative h-[480px] lg:h-[520px] rounded-[2rem] sm:rounded-[2.4rem] overflow-hidden cursor-pointer border border-white/10 hover:border-[#8B5E35]/60 hover:-translate-y-2 transition-all duration-500 select-none bg-[#183D2B] hover:shadow-[0_12px_30px_rgba(24,61,43,0.08)]"
+              href="/experiences"
+              className="group relative h-[480px] lg:h-[520px] rounded-[2rem] sm:rounded-[2.4rem] overflow-hidden cursor-pointer border border-white/10 hover:border-[#8B5E35]/60 hover:-translate-y-2 transition-all duration-500 select-none bg-[#183D2B] hover:shadow-[0_12px_30px_rgba(24,61,43,0.08)] block"
             >
               <Image
                 src={exp.image}
@@ -245,25 +222,25 @@ export default function CuratedExperiences() {
                   </span>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
         {/* 
           MOBILE ONLY: Sticky Stacking Card Deck
-          (Each image fixes in place, next image slides up on top and fixes)
         */}
         <div className="sm:hidden flex flex-col relative">
           {experiencesData.map((exp, idx) => (
-            <div
+            <Link
               key={exp.id}
-              onClick={() => setSelectedExp(exp)}
+              href="/experiences"
               style={{
                 top: `calc(75px + ${idx * 6}px)`,
                 zIndex: idx + 5,
               }}
-              className={`sticky group relative h-[70vh] min-h-[420px] max-h-[520px] rounded-[2rem] overflow-hidden cursor-pointer shadow-[0_-4px_20px_rgba(0,0,0,0.18)] select-none bg-[#183D2B] border border-white/15 ${idx === experiencesData.length - 1 ? "mb-0" : "mb-6"
-                }`}
+              className={`sticky group relative h-[70vh] min-h-[420px] max-h-[520px] rounded-[2rem] overflow-hidden cursor-pointer shadow-[0_-4px_20px_rgba(0,0,0,0.18)] select-none bg-[#183D2B] border border-white/15 block ${
+                idx === experiencesData.length - 1 ? "mb-0" : "mb-6"
+              }`}
             >
               <Image
                 src={exp.image}
@@ -293,145 +270,9 @@ export default function CuratedExperiences() {
                   </span>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
-
-        {/* 
-          LUXURY EDITORIAL SPLIT MODAL (Aman / Belmond Standard)
-          High-end two-column presentation with zero background scroll leakage
-        */}
-        <AnimatePresence>
-          {selectedExp && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 lg:p-8 bg-black/85 backdrop-blur-2xl"
-              onClick={() => setSelectedExp(null)}
-            >
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: 15 }}
-                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                onClick={(e) => e.stopPropagation()}
-                data-lenis-prevent="true"
-                className="relative max-w-4xl lg:max-w-5xl w-full max-h-[90vh] md:max-h-[85vh] rounded-[2rem] sm:rounded-[2.8rem] bg-[#FFFCF5] border border-[#E9E0D2] shadow-[0_30px_90px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col md:flex-row"
-              >
-                {/* Floating Close Button */}
-                <button
-                  type="button"
-                  suppressHydrationWarning
-                  onClick={() => setSelectedExp(null)}
-                  className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 z-30 p-2 sm:p-2.5 rounded-full bg-black/40 md:bg-black/10 hover:bg-[#183D2B] text-white md:text-[#183D2B] md:hover:text-white transition-all shadow-sm active:scale-90 backdrop-blur-sm cursor-pointer"
-                  aria-label="Close modal"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-
-                {/* Left Column: Breathtaking Full-Bleed Portrait Image */}
-                <div className="md:w-[46%] relative h-48 sm:h-64 md:h-auto min-h-[190px] sm:min-h-[260px] md:min-h-full overflow-hidden bg-[#183D2B] shrink-0">
-                  <Image
-                    src={selectedExp.image}
-                    alt={selectedExp.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 45vw"
-                    className="object-cover"
-                    priority
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/30" />
-
-                  {/* Top Badge */}
-                  <div className="absolute top-4 left-4 sm:top-6 sm:left-6 flex items-center gap-2">
-                    <span className="px-3 py-1 rounded-full bg-white/90 backdrop-blur-md text-[10px] uppercase font-semibold text-[#183D2B] tracking-wider">
-                      Theme {selectedExp.number}
-                    </span>
-                    <span className="px-3 py-1 rounded-full bg-black/40 backdrop-blur-md text-[10px] uppercase font-medium text-white tracking-wider flex items-center gap-1 border border-white/15">
-                      <Clock className="w-3 h-3 text-[#E9E0D2]" />
-                      {selectedExp.idealDuration}
-                    </span>
-                  </div>
-
-                  {/* Bottom Image Info */}
-                  <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 text-white space-y-1">
-                    <span className="text-[10px] uppercase tracking-widest text-[#E9E0D2] font-semibold flex items-center gap-1">
-                      <MapPin className="w-3 h-3 text-[#E9E0D2]" />
-                      Key Locations
-                    </span>
-                    <p className="text-xs sm:text-sm font-sans text-white/90 tracking-wide font-light">
-                      {selectedExp.locations}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Right Column: Editorial Narrative & Inclusions */}
-                <div
-                  data-lenis-prevent="true"
-                  className="md:w-[54%] p-6 sm:p-9 lg:p-11 flex flex-col justify-between overflow-y-auto no-scrollbar space-y-6"
-                >
-                  <div className="space-y-4 pt-1 sm:pt-0">
-                    <div className="inline-flex items-center gap-2 text-[#8B5E35] text-[10px] sm:text-xs uppercase tracking-[0.22em] font-semibold">
-                      <Sparkles className="w-3.5 h-3.5 text-[#8B5E35]" />
-                      <span>Curated Experiences &bull; South India</span>
-                    </div>
-
-                    <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#183D2B] font-light leading-snug">
-                      {selectedExp.title}
-                    </h3>
-
-                    <p className="text-xs sm:text-sm text-[#242424]/80 font-light leading-relaxed font-sans pt-1">
-                      {selectedExp.description}
-                    </p>
-
-                    {/* Curated Inclusions */}
-                    <div className="pt-4 border-t border-[#E9E0D2] space-y-2.5">
-                      <h5 className="text-[11px] uppercase tracking-widest text-[#183D2B] font-semibold">
-                        Bespoke Inclusions We Arrange:
-                      </h5>
-                      <div className="space-y-2">
-                        {selectedExp.highlights.map((h, i) => (
-                          <div key={i} className="flex items-start gap-2.5 text-xs text-[#242424]/85 font-light">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#8B5E35] mt-1.5 shrink-0" />
-                            <span>{h}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Bottom Action Footer with Official WhatsApp Enquiry */}
-                  <div className="pt-5 border-t border-[#E9E0D2] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div className="text-[11px] text-[#242424]/60 font-serif italic">
-                      Privately tailored around your dates &amp; pace.
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Link
-                        href="#contact"
-                        onClick={() => setSelectedExp(null)}
-                        className="text-[11px] uppercase tracking-wider text-[#183D2B]/75 hover:text-[#183D2B] font-medium hidden sm:inline"
-                      >
-                        Enquiry Form
-                      </Link>
-                      <a
-                        href={`https://wa.me/919447000000?text=${encodeURIComponent(
-                          `Hello Jibu, I would like to enquire about the ${selectedExp.title} experience (${selectedExp.locations}).`
-                        )}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-2.5 px-6 py-3 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 active:scale-95"
-                      >
-                        <WhatsAppIcon className="w-4 h-4 fill-current" />
-                        <span>WhatsApp Enquiry</span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
     </section>
   );

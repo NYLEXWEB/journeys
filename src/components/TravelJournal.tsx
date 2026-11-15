@@ -125,35 +125,6 @@ export const JOURNAL_ARTICLES: JournalArticle[] = [
 ];
 
 export default function TravelJournal() {
-  const [activeArticle, setActiveArticle] = useState<JournalArticle | null>(null);
-
-  // Background Scroll Lock (Lenis + Body Freeze)
-  useEffect(() => {
-    if (activeArticle) {
-      document.body.style.overflow = "hidden";
-      document.body.classList.add("modal-open");
-      document.documentElement.classList.add("modal-open");
-    } else {
-      document.body.style.overflow = "";
-      document.body.classList.remove("modal-open");
-      document.documentElement.classList.remove("modal-open");
-    }
-    return () => {
-      document.body.style.overflow = "";
-      document.body.classList.remove("modal-open");
-      document.documentElement.classList.remove("modal-open");
-    };
-  }, [activeArticle]);
-
-  // Close on Escape key
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setActiveArticle(null);
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
-
   const leadArticle = JOURNAL_ARTICLES[0];
   const sideArticles = JOURNAL_ARTICLES.slice(1);
 
@@ -191,8 +162,7 @@ export default function TravelJournal() {
         {/* STYLISH EDITORIAL MAGAZINE LAYOUT */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
           {/* FEATURED LEAD DISPATCH (Left Column) */}
-          <article
-            onClick={() => setActiveArticle(leadArticle)}
+          <Link href={`/blog/${leadArticle.id}`}
             className="lg:col-span-7 group rounded-[2.2rem] bg-white border border-[#E9E0D2] overflow-hidden cursor-pointer shadow-[0_12px_35px_rgba(24,61,43,0.06)] hover:shadow-[0_22px_55px_rgba(24,61,43,0.14)] transition-all duration-500 flex flex-col justify-between"
           >
             {/* Lead Image */}
@@ -247,14 +217,12 @@ export default function TravelJournal() {
                 </span>
               </div>
             </div>
-          </article>
+          </Link>
 
           {/* 3 COMPANION DISPATCHES (Right Column) */}
           <div className="lg:col-span-5 flex flex-col justify-between gap-4 sm:gap-5">
             {sideArticles.map((article) => (
-              <article
-                key={article.id}
-                onClick={() => setActiveArticle(article)}
+              <Link key={article.id} href={`/blog/${article.id}`}
                 className="group p-5 sm:p-6 rounded-[2rem] bg-white border border-[#E9E0D2] hover:border-[#8B5E35]/40 shadow-[0_8px_25px_rgba(24,61,43,0.05)] hover:shadow-[0_15px_35px_rgba(24,61,43,0.12)] transition-all duration-300 cursor-pointer flex flex-col sm:flex-row gap-5 items-start sm:items-center"
               >
                 {/* Thumbnail */}
@@ -292,7 +260,7 @@ export default function TravelJournal() {
                     </span>
                   </div>
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
         </div>
@@ -308,112 +276,7 @@ export default function TravelJournal() {
           </Link>
         </div>
 
-        {/* LUXURY EDITORIAL READING MODAL */}
-        <AnimatePresence>
-          {activeArticle && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 lg:p-8 bg-black/85 backdrop-blur-2xl"
-              onClick={() => setActiveArticle(null)}
-            >
-              <motion.div
-                initial={{ opacity: 0, scale: 0.96, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.96, y: 15 }}
-                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                onClick={(e) => e.stopPropagation()}
-                className="relative w-full max-w-4xl max-h-[92vh] overflow-y-auto rounded-[2.5rem] bg-[#FFFCF5] border border-[#E9E0D2] shadow-2xl p-6 sm:p-10 lg:p-12 space-y-8 no-scrollbar"
-              >
-                {/* Close Button */}
-                <button
-                  type="button"
-                  suppressHydrationWarning
-                  onClick={() => setActiveArticle(null)}
-                  className="absolute top-6 right-6 w-11 h-11 rounded-full bg-white border border-[#E9E0D2] flex items-center justify-center text-[#183D2B] hover:bg-[#183D2B] hover:text-white transition-all shadow-md z-20 cursor-pointer"
-                  aria-label="Close article"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-
-                {/* Article Header */}
-                <div className="space-y-4 pr-12">
-                  <div className="flex items-center gap-3 text-xs uppercase tracking-[0.25em] text-[#8B5E35] font-semibold">
-                    <span>{activeArticle.issueNumber}</span>
-                    <span>&bull;</span>
-                    <span>{activeArticle.category}</span>
-                    <span>&bull;</span>
-                    <span className="text-[#242424]/60">{activeArticle.readTime}</span>
-                  </div>
-
-                  <h2 className="text-2xl sm:text-4xl lg:text-5xl font-serif text-[#183D2B] font-light leading-tight">
-                    {activeArticle.title}
-                  </h2>
-
-                  <p className="font-serif italic text-base sm:text-lg text-[#8B5E35]">
-                    &ldquo;{activeArticle.subtitle}&rdquo;
-                  </p>
-                </div>
-
-                {/* Cover Image */}
-                <div className="relative h-64 sm:h-96 w-full rounded-2xl overflow-hidden shadow-md border border-[#E9E0D2]/60">
-                  <Image
-                    src={activeArticle.image}
-                    alt={activeArticle.title}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 900px"
-                    className="object-cover"
-                  />
-                </div>
-
-                {/* Full Article Prose */}
-                <div className="space-y-4 text-sm sm:text-base text-[#242424]/85 font-light leading-relaxed">
-                  {activeArticle.fullContent.map((paragraph, pIdx) => (
-                    <p key={pIdx}>{paragraph}</p>
-                  ))}
-                </div>
-
-                {/* Key Takeaways */}
-                <div className="p-6 rounded-2xl bg-white border border-[#E9E0D2] shadow-sm space-y-3">
-                  <span className="text-xs uppercase tracking-wider text-[#183D2B] font-semibold block">
-                    Discerning Traveller Notes:
-                  </span>
-                  <div className="space-y-2">
-                    {activeArticle.takeaways.map((note, nIdx) => (
-                      <div key={nIdx} className="flex items-start gap-2.5 text-xs sm:text-sm text-[#242424]/80">
-                        <CheckCircle2 className="w-4 h-4 text-[#8B5E35] shrink-0 mt-0.5" />
-                        <span>{note}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Action Footer */}
-                <div className="pt-4 border-t border-[#E9E0D2] flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <div className="text-xs text-[#242424]/70 font-serif italic text-center sm:text-left">
-                    Curated by Journeys by Jibu Thomas &bull; Kerala, South India
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <a
-                      href={`https://wa.me/919447000000?text=${encodeURIComponent(
-                        `Hello Jibu, I was reading "${activeArticle.title}" and would like to consult about planning this.`
-                      )}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white text-xs uppercase tracking-widest font-semibold transition-all shadow-md"
-                    >
-                      <WhatsAppIcon className="w-4 h-4 fill-current" />
-                      <span>Discuss with Jibu</span>
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+        </div>
     </section>
   );
 }

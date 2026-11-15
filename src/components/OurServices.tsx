@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { useWebsiteContent } from "@/hooks/useWebsiteContent";
 
 export interface ServiceItem {
   id: string;
@@ -94,10 +95,16 @@ export const SERVICES_DATA: ServiceItem[] = [
 ];
 
 export default function OurServices() {
+  const content = useWebsiteContent();
+  const servicesList: ServiceItem[] =
+    content.services && content.services.length > 0
+      ? content.services
+      : SERVICES_DATA;
+
   const [activeId, setActiveId] = useState<string>("private-chauffeur");
 
   const activeService =
-    SERVICES_DATA.find((item) => item.id === activeId) || SERVICES_DATA[0];
+    servicesList.find((item) => item.id === activeId) || servicesList[0];
 
   return (
     <section
@@ -110,10 +117,10 @@ export default function OurServices() {
           <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#8B5E35] to-[#B37D47] shadow-sm shrink-0" />
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] uppercase">
             <span className="bg-gradient-to-r from-[#183D2B] via-[#1E4A35] to-[#27593D] bg-clip-text text-transparent">
-              OUR{" "}
+              WAYS TO{" "}
             </span>
             <span className="bg-gradient-to-r from-[#8B5E35] via-[#B87D4B] to-[#8B5E35] bg-clip-text text-transparent">
-              SERVICES
+              TRAVEL &amp; STAYS
             </span>
           </h2>
           <span className="h-[1.5px] w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent" />
@@ -122,7 +129,7 @@ export default function OurServices() {
         {/* Mobile / Tablet Horizontal Navigation (< lg) */}
         <div className="lg:hidden mb-5">
           <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 -mx-4 px-4">
-            {SERVICES_DATA.map((srv) => {
+            {servicesList.map((srv) => {
               const isActive = srv.id === activeId;
               return (
                 <button
@@ -148,7 +155,7 @@ export default function OurServices() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
           {/* Left Column: Architectural Services Directory (Desktop >= lg) */}
           <div className="hidden lg:flex lg:col-span-5 flex-col justify-between border-y border-[#E9E0D2]/70 divide-y divide-[#E9E0D2]/60">
-            {SERVICES_DATA.map((srv) => {
+            {servicesList.map((srv) => {
               const isActive = srv.id === activeId;
               return (
                 <button

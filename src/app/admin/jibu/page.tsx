@@ -33,13 +33,21 @@ import {
   Eye,
   Smartphone,
   Monitor,
+  Upload,
+  UserCheck,
+  Bed,
+  Sparkles,
+  ShieldCheck,
+  Heart,
 } from "lucide-react";
 
 type ActiveTab =
   | "hero"
+  | "about"
   | "destinations"
   | "experiences"
   | "journeys"
+  | "services"
   | "journal"
   | "reviews"
   | "enquiries"
@@ -57,6 +65,7 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<ActiveTab>("destinations");
   const [content, setContent] = useState<any>(null);
   const [isLoadingContent, setIsLoadingContent] = useState(false);
+  const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
 
   // Guest Enquiries state
   const [enquiries, setEnquiries] = useState<any[]>([]);
@@ -68,14 +77,14 @@ export default function AdminPage() {
 
   // Delete modal state
   const [deleteModal, setDeleteModal] = useState<{
-    type: "destination" | "experience" | "journey" | "review" | "journal";
+    type: "destination" | "experience" | "journey" | "service" | "review" | "journal";
     id: string;
     title: string;
   } | null>(null);
 
   // Modal edit/create forms
   const [editModal, setEditModal] = useState<{
-    section: "destination" | "experience" | "journey" | "review" | "hero" | "journal";
+    section: "destination" | "experience" | "journey" | "service" | "review" | "hero" | "journal" | "about";
     isNew: boolean;
     data: any;
   } | null>(null);
@@ -83,6 +92,36 @@ export default function AdminPage() {
   const showToast = (message: string, type: "success" | "error" = "success") => {
     setToast({ message, type });
     setTimeout(() => setToast(null), 4000);
+  };
+
+  const handleUploadImageFile = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    onUploaded: (url: string) => void
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploadingPhoto(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (res.ok && data.url) {
+        onUploaded(data.url);
+        showToast("Photo uploaded successfully!");
+      } else {
+        showToast(data.error || "Failed to upload photo.", "error");
+      }
+    } catch {
+      showToast("Network error uploading photo.", "error");
+    } finally {
+      setIsUploadingPhoto(false);
+      e.target.value = "";
+    }
   };
 
   // Check current session
@@ -239,10 +278,15 @@ export default function AdminPage() {
       url = isNew ? "/api/content/experiences" : `/api/content/experiences/${data.id}`;
     } else if (section === "journey") {
       url = isNew ? "/api/content/journeys" : `/api/content/journeys/${data.id}`;
+    } else if (section === "service") {
+      url = isNew ? "/api/content/services" : `/api/content/services/${data.id || data._id}`;
     } else if (section === "review") {
       url = isNew ? "/api/content/reviews" : `/api/content/reviews/${data._id || data.id}`;
     } else if (section === "journal") {
       url = isNew ? "/api/content/journal" : `/api/content/journal/${data.id || data._id}`;
+    } else if (section === "about") {
+      url = "/api/content/about";
+      method = "PUT";
     } else if (section === "hero") {
       url = "/api/content/hero";
       method = "PUT";
@@ -279,6 +323,7 @@ export default function AdminPage() {
     if (type === "destination") url = `/api/content/destinations/${id}`;
     if (type === "experience") url = `/api/content/experiences/${id}`;
     if (type === "journey") url = `/api/content/journeys/${id}`;
+    if (type === "service") url = `/api/content/services/${id}`;
     if (type === "review") url = `/api/content/reviews/${id}`;
     if (type === "journal") url = `/api/content/journal/${id}`;
 
@@ -536,20 +581,22 @@ export default function AdminPage() {
           </span>
           <nav className="flex md:flex-col gap-1.5 md:space-y-1 overflow-x-auto no-scrollbar pb-1 md:pb-0">
             {[
-              { id: "destinations", label: "Destinations (16)", icon: MapPin },
-              { id: "experiences", label: "Experiences", icon: Waves },
-              { id: "journeys", label: "Journeys", icon: Compass },
-              { id: "journal", label: "Blog & Journal", icon: BookOpen },
-              { id: "reviews", label: "Reviews", icon: Star },
+              { id: "hero", label: "Hero Slideshow", icon: LayoutTemplate },
+              { id: "about", label: "About Atelier & Jibu", icon: UserCheck },
+              { id: "destinations", label: `Destinations (${content?.destinations?.length || 16})`, icon: MapPin },
+              { id: "experiences", label: `Experiences (${content?.experiences?.length || 8})`, icon: Waves },
+              { id: "journeys", label: `Signature Journeys (${content?.journeys?.length || 5})`, icon: Compass },
+              { id: "services", label: `Ways to Travel / Stays (${content?.services?.length || 5})`, icon: Bed },
+              { id: "journal", label: `Blog & Journal (${content?.journal?.length || 2})`, icon: BookOpen },
+              { id: "reviews", label: `Google Reviews (${content?.reviews?.length || 6})`, icon: Star },
               {
                 id: "enquiries",
-                label: `Enquiries (${enquiries.filter((e) => e.status === "new").length > 0 ? `${enquiries.filter((e) => e.status === "new").length} New` : enquiries.length})`,
+                label: `Guest Enquiries (${enquiries.filter((e) => e.status === "new").length > 0 ? `${enquiries.filter((e) => e.status === "new").length} New` : enquiries.length})`,
                 icon: Inbox,
               },
               { id: "analytics", label: "Google Analytics", icon: BarChart3 },
-              { id: "hero", label: "Hero", icon: LayoutTemplate },
-              { id: "contact", label: "Contact", icon: Phone },
-              { id: "footer", label: "Footer", icon: Share2 },
+              { id: "contact", label: "Contact & Concierge", icon: Phone },
+              { id: "footer", label: "Footer & Social", icon: Share2 },
             ].map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -580,6 +627,314 @@ export default function AdminPage() {
             </div>
           ) : (
             <>
+              {/* SECTION: ABOUT ATELIER & FOUNDER JIBU */}
+              {activeTab === "about" && (
+                <div className="space-y-8">
+                  <div className="pb-4 border-b border-[#E9E0D2] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                      <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#183D2B]">
+                        About Atelier &amp; Founder Jibu Thomas
+                      </h2>
+                      <p className="text-xs text-[#242424]/70 font-light">
+                        Manage founder biography, story vision, philosophy pillars, why travel with us, and official photos.
+                      </p>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const form = document.getElementById("about-atelier-form") as HTMLFormElement;
+                        if (form) form.requestSubmit();
+                      }}
+                      className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#183D2B] hover:bg-[#8B5E35] text-white text-xs uppercase tracking-wider font-semibold transition-all shadow-md active:scale-95 cursor-pointer"
+                    >
+                      <Save className="w-4 h-4" />
+                      <span>Save About Content</span>
+                    </button>
+                  </div>
+
+                  <form
+                    id="about-atelier-form"
+                    onSubmit={async (e) => {
+                      e.preventDefault();
+                      const form = e.target as HTMLFormElement;
+                      const formData = new FormData(form);
+
+                      const payload = {
+                        storyBadge: formData.get("storyBadge") as string,
+                        storyTitle: formData.get("storyTitle") as string,
+                        storyQuote: formData.get("storyQuote") as string,
+                        storyImage: formData.get("storyImage") as string,
+                        storyDescription: formData.get("storyDescription") as string,
+
+                        jibuBadge: formData.get("jibuBadge") as string,
+                        jibuTitle: formData.get("jibuTitle") as string,
+                        jibuSubtitle: formData.get("jibuSubtitle") as string,
+                        jibuImage: formData.get("jibuImage") as string,
+                        jibuDescription: formData.get("jibuDescription") as string,
+                        jibuStats: [
+                          { value: (formData.get("jibu_stat_0_val") as string) || "20+ Yrs", label: (formData.get("jibu_stat_0_lbl") as string) || "Experience" },
+                          { value: (formData.get("jibu_stat_1_val") as string) || "100%", label: (formData.get("jibu_stat_1_lbl") as string) || "Tailored" },
+                          { value: (formData.get("jibu_stat_2_val") as string) || "Direct", label: (formData.get("jibu_stat_2_lbl") as string) || "Concierge" },
+                        ],
+
+                        philosophyBadge: formData.get("philosophyBadge") as string,
+                        philosophyTitle: formData.get("philosophyTitle") as string,
+                        philosophyQuote: formData.get("philosophyQuote") as string,
+
+                        whyUsBadge: formData.get("whyUsBadge") as string,
+                        whyUsTitle: formData.get("whyUsTitle") as string,
+                        whyUsQuote: formData.get("whyUsQuote") as string,
+                      };
+
+                      try {
+                        const res = await fetch("/api/content/about", {
+                          method: "PUT",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify(payload),
+                        });
+                        if (res.ok) {
+                          showToast("About atelier & Founder story saved successfully!");
+                          loadContent();
+                        } else {
+                          showToast("Failed to save About section.", "error");
+                        }
+                      } catch {
+                        showToast("Network error saving About section.", "error");
+                      }
+                    }}
+                    className="space-y-8"
+                  >
+                    {/* Part 1: Our Story & Founding Vision */}
+                    <div className="p-6 rounded-3xl bg-neutral-50/70 border border-[#E9E0D2] space-y-4">
+                      <div className="flex items-center gap-2 text-[#8B5E35] font-semibold text-xs uppercase tracking-wider">
+                        <Sparkles className="w-4 h-4" />
+                        <span>Part 1: Our Story &amp; Founding Vision</span>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1">
+                            Story Badge
+                          </label>
+                          <input
+                            name="storyBadge"
+                            defaultValue={content?.about?.storyBadge || "Our Story • Founding Vision"}
+                            className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none bg-white"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1">
+                            Headline Title
+                          </label>
+                          <input
+                            name="storyTitle"
+                            defaultValue={content?.about?.storyTitle || "The Founding Vision of Journeys by Jibu Thomas"}
+                            className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none bg-white"
+                          />
+                        </div>
+
+                        <div className="md:col-span-2">
+                          <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1">
+                            Signature Quote / Subtitle
+                          </label>
+                          <input
+                            name="storyQuote"
+                            defaultValue={content?.about?.storyQuote || "South India, experienced with soul, depth, and unhurried grace."}
+                            className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none bg-white"
+                          />
+                        </div>
+
+                        <div className="md:col-span-2">
+                          <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1">
+                            Story Photo with Upload
+                          </label>
+                          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                            <input
+                              id="about-story-photo-input"
+                              name="storyImage"
+                              defaultValue={content?.about?.storyImage || "/images/generated/tea-plantation-approach.jpg"}
+                              className="flex-1 px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none bg-white"
+                            />
+                            <label className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-white hover:bg-[#FAF6EF] border border-[#E9E0D2] text-xs font-semibold text-[#183D2B] cursor-pointer shrink-0 transition-colors">
+                              <Upload className="w-3.5 h-3.5" />
+                              <span>Upload Photo</span>
+                              <input
+                                type="file"
+                                accept="image/*"
+                                className="hidden"
+                                onChange={(e) =>
+                                  handleUploadImageFile(e, (url) => {
+                                    const inp = document.getElementById("about-story-photo-input") as HTMLInputElement;
+                                    if (inp) inp.value = url;
+                                  })
+                                }
+                              />
+                            </label>
+                          </div>
+                        </div>
+
+                        <div className="md:col-span-2">
+                          <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1">
+                            Full Story Description
+                          </label>
+                          <textarea
+                            rows={3}
+                            name="storyDescription"
+                            defaultValue={content?.about?.storyDescription || "Journeys by Jibu Thomas was created to show South India differently. We grew up along these waterways and highland ridges, unlocking private tea bungalows, quiet family kitchens, and secret viewpoints."}
+                            className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none bg-white font-sans"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Part 2: Meet Jibu Thomas */}
+                    <div className="p-6 rounded-3xl bg-neutral-50/70 border border-[#E9E0D2] space-y-4">
+                      <div className="flex items-center gap-2 text-[#8B5E35] font-semibold text-xs uppercase tracking-wider">
+                        <UserCheck className="w-4 h-4" />
+                        <span>Part 2: Meet Founder Jibu Thomas</span>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1">
+                            Founder Badge
+                          </label>
+                          <input
+                            name="jibuBadge"
+                            defaultValue={content?.about?.jibuBadge || "Founder • Lead Travel Designer"}
+                            className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none bg-white"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1">
+                            Founder Title
+                          </label>
+                          <input
+                            name="jibuTitle"
+                            defaultValue={content?.about?.jibuTitle || "Two decades of personal destination craftsmanship."}
+                            className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none bg-white"
+                          />
+                        </div>
+
+                        <div className="md:col-span-2">
+                          <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1">
+                            Founder Subtitle Quote
+                          </label>
+                          <input
+                            name="jibuSubtitle"
+                            defaultValue={content?.about?.jibuSubtitle || "Direct personal accountability for every journey that carries my name."}
+                            className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none bg-white"
+                          />
+                        </div>
+
+                        <div className="md:col-span-2">
+                          <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1">
+                            Jibu Thomas Official Photo (with Upload)
+                          </label>
+                          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                            <input
+                              id="about-jibu-photo-input"
+                              name="jibuImage"
+                              defaultValue={content?.about?.jibuImage || "/images/generated/fort-kochi-heritage.jpg"}
+                              className="flex-1 px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none bg-white"
+                            />
+                            <label className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-white hover:bg-[#FAF6EF] border border-[#E9E0D2] text-xs font-semibold text-[#183D2B] cursor-pointer shrink-0 transition-colors">
+                              <Upload className="w-3.5 h-3.5" />
+                              <span>Upload Photo</span>
+                              <input
+                                type="file"
+                                accept="image/*"
+                                className="hidden"
+                                onChange={(e) =>
+                                  handleUploadImageFile(e, (url) => {
+                                    const inp = document.getElementById("about-jibu-photo-input") as HTMLInputElement;
+                                    if (inp) inp.value = url;
+                                  })
+                                }
+                              />
+                            </label>
+                          </div>
+                        </div>
+
+                        <div className="md:col-span-2">
+                          <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1">
+                            Founder Bio / Overview
+                          </label>
+                          <textarea
+                            rows={3}
+                            name="jibuDescription"
+                            defaultValue={content?.about?.jibuDescription || "Jibu personally reviews your travel style, inspects every boutique stay, and briefs your private chauffeur. When you travel, his personal WhatsApp line is with you 24/7."}
+                            className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none bg-white font-sans"
+                          />
+                        </div>
+
+                        {/* Experience Stats */}
+                        <div>
+                          <label className="block text-[11px] font-semibold text-[#183D2B] mb-1">Stat 1 (e.g. 20+ Yrs / Experience)</label>
+                          <div className="grid grid-cols-2 gap-2">
+                            <input name="jibu_stat_0_val" defaultValue={content?.about?.jibuStats?.[0]?.value || "20+ Yrs"} placeholder="Value" className="px-3 py-2 rounded-lg border border-[#E9E0D2] text-xs bg-white" />
+                            <input name="jibu_stat_0_lbl" defaultValue={content?.about?.jibuStats?.[0]?.label || "Experience"} placeholder="Label" className="px-3 py-2 rounded-lg border border-[#E9E0D2] text-xs bg-white" />
+                          </div>
+                        </div>
+                        <div>
+                          <label className="block text-[11px] font-semibold text-[#183D2B] mb-1">Stat 2 (e.g. 100% / Tailored)</label>
+                          <div className="grid grid-cols-2 gap-2">
+                            <input name="jibu_stat_1_val" defaultValue={content?.about?.jibuStats?.[1]?.value || "100%"} placeholder="Value" className="px-3 py-2 rounded-lg border border-[#E9E0D2] text-xs bg-white" />
+                            <input name="jibu_stat_1_lbl" defaultValue={content?.about?.jibuStats?.[1]?.label || "Tailored"} placeholder="Label" className="px-3 py-2 rounded-lg border border-[#E9E0D2] text-xs bg-white" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Part 3 & 4: Philosophy & Why Us */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="p-6 rounded-3xl bg-neutral-50/70 border border-[#E9E0D2] space-y-3">
+                        <div className="flex items-center gap-2 text-[#8B5E35] font-semibold text-xs uppercase tracking-wider">
+                          <Heart className="w-4 h-4" />
+                          <span>Part 3: Philosophy</span>
+                        </div>
+                        <div>
+                          <label className="block text-xs font-semibold uppercase text-[#183D2B] mb-1">Philosophy Title</label>
+                          <input name="philosophyTitle" defaultValue={content?.about?.philosophyTitle || "How We Approach Every Single Itinerary"} className="w-full px-3 py-2 rounded-xl border border-[#E9E0D2] text-xs bg-white" />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-semibold uppercase text-[#183D2B] mb-1">Philosophy Quote</label>
+                          <input name="philosophyQuote" defaultValue={content?.about?.philosophyQuote || "Generous pacing, living heritage, and conscious respect for local hosts."} className="w-full px-3 py-2 rounded-xl border border-[#E9E0D2] text-xs bg-white" />
+                        </div>
+                      </div>
+
+                      <div className="p-6 rounded-3xl bg-neutral-50/70 border border-[#E9E0D2] space-y-3">
+                        <div className="flex items-center gap-2 text-[#8B5E35] font-semibold text-xs uppercase tracking-wider">
+                          <ShieldCheck className="w-4 h-4" />
+                          <span>Part 4: Standards / Why Us</span>
+                        </div>
+                        <div>
+                          <label className="block text-xs font-semibold uppercase text-[#183D2B] mb-1">Why Us Title</label>
+                          <input name="whyUsTitle" defaultValue={content?.about?.whyUsTitle || "The Discerning Boutique Difference"} className="w-full px-3 py-2 rounded-xl border border-[#E9E0D2] text-xs bg-white" />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-semibold uppercase text-[#183D2B] mb-1">Why Us Quote</label>
+                          <input name="whyUsQuote" defaultValue={content?.about?.whyUsQuote || "No middle-tier sales reps, no hidden commissions, pristine standards."} className="w-full px-3 py-2 rounded-xl border border-[#E9E0D2] text-xs bg-white" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-2">
+                      <button
+                        type="submit"
+                        className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-[#183D2B] hover:bg-[#8B5E35] text-white text-xs uppercase tracking-widest font-semibold transition-all shadow-md active:scale-95 cursor-pointer"
+                      >
+                        <Save className="w-4 h-4" />
+                        <span>Save All About Content &amp; Photos</span>
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              )}
+
               {/* SECTION: DESTINATIONS */}
               {activeTab === "destinations" && (
                 <div className="space-y-6">
@@ -857,6 +1212,113 @@ export default function AdminPage() {
                             >
                               <Trash2 className="w-4 h-4" />
                             </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* SECTION: WAYS TO TRAVEL & HANDPICKED STAYS */}
+              {activeTab === "services" && (
+                <div className="space-y-6">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-[#E9E0D2]">
+                    <div>
+                      <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#183D2B]">
+                        Ways to Travel &amp; Handpicked Stays
+                      </h2>
+                      <p className="text-xs text-[#242424]/70 font-light">
+                        Add and edit your travel services, private chauffeurs, heritage stays, and bespoke on-ground coordination.
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={() =>
+                        setEditModal({
+                          section: "service",
+                          isNew: true,
+                          data: {
+                            id: `service-${Date.now().toString().slice(-4)}`,
+                            number: `0${(content?.services?.length || 0) + 1}`,
+                            title: "",
+                            shortVibe: "",
+                            description: "",
+                            points: [],
+                            image: "/images/services/private-chauffeur.jpg",
+                            order: (content?.services?.length || 0) + 1,
+                          },
+                        })
+                      }
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#183D2B] hover:bg-[#8B5E35] text-white text-xs uppercase tracking-wider font-semibold transition-all shadow-md active:scale-95 cursor-pointer"
+                    >
+                      <Plus className="w-4 h-4" />
+                      <span>Add New Service / Stay</span>
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {(content?.services || []).map((srv: any, idx: number) => (
+                      <div
+                        key={srv.id || srv._id || idx}
+                        className="rounded-3xl bg-white border border-[#E9E0D2] overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between"
+                      >
+                        <div className="relative h-44 w-full bg-neutral-100 overflow-hidden">
+                          <img
+                            src={srv.image || "/images/services/private-chauffeur.jpg"}
+                            alt={srv.title}
+                            className="w-full h-full object-cover"
+                          />
+                          <div className="absolute top-3 left-3 bg-[#183D2B]/90 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] uppercase font-semibold text-white tracking-wider">
+                            Service {srv.number || `0${idx + 1}`}
+                          </div>
+                        </div>
+
+                        <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
+                          <div>
+                            <h3 className="text-base font-serif font-bold text-[#183D2B] leading-snug">
+                              {srv.title}
+                            </h3>
+                            <p className="text-xs text-[#8B5E35] font-medium mt-1">
+                              {srv.shortVibe}
+                            </p>
+                            <p className="text-xs text-[#242424]/75 font-light line-clamp-3 mt-2 leading-relaxed">
+                              {srv.description}
+                            </p>
+                          </div>
+
+                          <div className="pt-3 border-t border-[#E9E0D2]/70 flex items-center justify-between">
+                            <span className="text-[11px] text-[#242424]/50 font-mono">
+                              ID: {srv.id}
+                            </span>
+                            <div className="flex items-center gap-1.5">
+                              <button
+                                onClick={() =>
+                                  setEditModal({
+                                    section: "service",
+                                    isNew: false,
+                                    data: { ...srv },
+                                  })
+                                }
+                                className="p-2 rounded-xl text-[#183D2B] hover:bg-[#183D2B]/10 transition-colors cursor-pointer"
+                                title="Edit Service"
+                              >
+                                <Edit2 className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={() =>
+                                  setDeleteModal({
+                                    type: "service",
+                                    id: srv.id || srv._id,
+                                    title: srv.title,
+                                  })
+                                }
+                                className="p-2 rounded-xl text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+                                title="Delete Service"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -1953,29 +2415,52 @@ export default function AdminPage() {
                     />
                   </div>
 
-                  {editModal.isNew && (
-                    <div>
-                      <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
-                        Select Existing Image Asset
-                      </label>
-                      <select
-                        value={editModal.data.image}
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
+                      Photo / Image * (with Upload)
+                    </label>
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                      <input
+                        type="text"
+                        required
+                        value={editModal.data.image || ""}
                         onChange={(e) =>
                           setEditModal({
                             ...editModal,
                             data: { ...editModal.data, image: e.target.value },
                           })
                         }
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
-                      >
-                        {CURATED_IMAGES.map((img) => (
-                          <option key={img.path} value={img.path}>
-                            {img.label}
-                          </option>
-                        ))}
-                      </select>
+                        placeholder="Paste image URL or click Upload Photo ->"
+                        className="flex-1 px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
+                      />
+                      <label className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#FAF6EF] hover:bg-[#E9E0D2] border border-[#E9E0D2] text-xs font-semibold text-[#183D2B] cursor-pointer shrink-0 transition-colors">
+                        <Upload className="w-3.5 h-3.5" />
+                        <span>Upload Photo</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) =>
+                            handleUploadImageFile(e, (url) => {
+                              setEditModal({
+                                ...editModal,
+                                data: { ...editModal.data, image: url },
+                              });
+                            })
+                          }
+                        />
+                      </label>
                     </div>
-                  )}
+                    {editModal.data.image && (
+                      <div className="mt-2 relative h-28 w-44 rounded-xl overflow-hidden border border-[#E9E0D2] shadow-inner bg-neutral-100">
+                        <img
+                          src={editModal.data.image}
+                          alt="Preview"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                  </div>
                 </>
               )}
 
@@ -2079,6 +2564,52 @@ export default function AdminPage() {
                       className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
                     />
                   </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
+                      Photo / Image * (with Upload)
+                    </label>
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                      <input
+                        type="text"
+                        value={editModal.data.image || ""}
+                        onChange={(e) =>
+                          setEditModal({
+                            ...editModal,
+                            data: { ...editModal.data, image: e.target.value },
+                          })
+                        }
+                        placeholder="Paste image URL or click Upload Photo ->"
+                        className="flex-1 px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
+                      />
+                      <label className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#FAF6EF] hover:bg-[#E9E0D2] border border-[#E9E0D2] text-xs font-semibold text-[#183D2B] cursor-pointer shrink-0 transition-colors">
+                        <Upload className="w-3.5 h-3.5" />
+                        <span>Upload Photo</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) =>
+                            handleUploadImageFile(e, (url) => {
+                              setEditModal({
+                                ...editModal,
+                                data: { ...editModal.data, image: url },
+                              });
+                            })
+                          }
+                        />
+                      </label>
+                    </div>
+                    {editModal.data.image && (
+                      <div className="mt-2 relative h-28 w-44 rounded-xl overflow-hidden border border-[#E9E0D2] shadow-inner bg-neutral-100">
+                        <img
+                          src={editModal.data.image}
+                          alt="Preview"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                  </div>
                 </>
               )}
 
@@ -2161,6 +2692,52 @@ export default function AdminPage() {
 
                   <div>
                     <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
+                      Photo / Image * (with Upload)
+                    </label>
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                      <input
+                        type="text"
+                        value={editModal.data.image || ""}
+                        onChange={(e) =>
+                          setEditModal({
+                            ...editModal,
+                            data: { ...editModal.data, image: e.target.value },
+                          })
+                        }
+                        placeholder="Paste image URL or click Upload Photo ->"
+                        className="flex-1 px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
+                      />
+                      <label className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#FAF6EF] hover:bg-[#E9E0D2] border border-[#E9E0D2] text-xs font-semibold text-[#183D2B] cursor-pointer shrink-0 transition-colors">
+                        <Upload className="w-3.5 h-3.5" />
+                        <span>Upload Photo</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) =>
+                            handleUploadImageFile(e, (url) => {
+                              setEditModal({
+                                ...editModal,
+                                data: { ...editModal.data, image: url },
+                              });
+                            })
+                          }
+                        />
+                      </label>
+                    </div>
+                    {editModal.data.image && (
+                      <div className="mt-2 relative h-28 w-44 rounded-xl overflow-hidden border border-[#E9E0D2] shadow-inner bg-neutral-100">
+                        <img
+                          src={editModal.data.image}
+                          alt="Preview"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
                       Overview Description *
                     </label>
                     <textarea
@@ -2173,6 +2750,156 @@ export default function AdminPage() {
                           data: { ...editModal.data, overview: e.target.value },
                         })
                       }
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
+                    />
+                  </div>
+                </>
+              )}
+
+              {/* Service Form Fields */}
+              {editModal.section === "service" && (
+                <>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
+                        Service Title *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={editModal.data.title || ""}
+                        onChange={(e) =>
+                          setEditModal({
+                            ...editModal,
+                            data: { ...editModal.data, title: e.target.value },
+                          })
+                        }
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
+                        Service Number (e.g. 01, 02)
+                      </label>
+                      <input
+                        type="text"
+                        value={editModal.data.number || "01"}
+                        onChange={(e) =>
+                          setEditModal({
+                            ...editModal,
+                            data: { ...editModal.data, number: e.target.value },
+                          })
+                        }
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
+                      Short Atmosphere Vibe *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={editModal.data.shortVibe || ""}
+                      onChange={(e) =>
+                        setEditModal({
+                          ...editModal,
+                          data: { ...editModal.data, shortVibe: e.target.value },
+                        })
+                      }
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
+                      Photo / Image * (with Upload)
+                    </label>
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                      <input
+                        type="text"
+                        required
+                        value={editModal.data.image || ""}
+                        onChange={(e) =>
+                          setEditModal({
+                            ...editModal,
+                            data: { ...editModal.data, image: e.target.value },
+                          })
+                        }
+                        placeholder="Paste image URL or click Upload Photo ->"
+                        className="flex-1 px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
+                      />
+                      <label className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#FAF6EF] hover:bg-[#E9E0D2] border border-[#E9E0D2] text-xs font-semibold text-[#183D2B] cursor-pointer shrink-0 transition-colors">
+                        <Upload className="w-3.5 h-3.5" />
+                        <span>Upload Photo</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) =>
+                            handleUploadImageFile(e, (url) => {
+                              setEditModal({
+                                ...editModal,
+                                data: { ...editModal.data, image: url },
+                              });
+                            })
+                          }
+                        />
+                      </label>
+                    </div>
+                    {editModal.data.image && (
+                      <div className="mt-2 relative h-28 w-44 rounded-xl overflow-hidden border border-[#E9E0D2] shadow-inner bg-neutral-100">
+                        <img
+                          src={editModal.data.image}
+                          alt="Preview"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
+                      Detailed Description *
+                    </label>
+                    <textarea
+                      rows={3}
+                      required
+                      value={editModal.data.description || ""}
+                      onChange={(e) =>
+                        setEditModal({
+                          ...editModal,
+                          data: { ...editModal.data, description: e.target.value },
+                        })
+                      }
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
+                      Key Highlights / Inclusions (One point per line)
+                    </label>
+                    <textarea
+                      rows={4}
+                      value={
+                        Array.isArray(editModal.data.points)
+                          ? editModal.data.points.join("\n")
+                          : editModal.data.points || ""
+                      }
+                      onChange={(e) =>
+                        setEditModal({
+                          ...editModal,
+                          data: {
+                            ...editModal.data,
+                            points: e.target.value.split("\n").map((s) => s.trim()).filter(Boolean),
+                          },
+                        })
+                      }
+                      placeholder="Pristine AC fleet with seasoned chauffeurs&#10;Complimentary Wi-Fi and chilled water"
                       className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
                     />
                   </div>
@@ -2370,6 +3097,43 @@ export default function AdminPage() {
                       className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
                     />
                   </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
+                      Slide Media / Photo / Video URL (with Upload)
+                    </label>
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                      <input
+                        type="text"
+                        value={editModal.data.src || ""}
+                        onChange={(e) =>
+                          setEditModal({
+                            ...editModal,
+                            data: { ...editModal.data, src: e.target.value },
+                          })
+                        }
+                        placeholder="/video/video-1.mp4 or photo URL"
+                        className="flex-1 px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
+                      />
+                      <label className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#FAF6EF] hover:bg-[#E9E0D2] border border-[#E9E0D2] text-xs font-semibold text-[#183D2B] cursor-pointer shrink-0 transition-colors">
+                        <Upload className="w-3.5 h-3.5" />
+                        <span>Upload Photo</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) =>
+                            handleUploadImageFile(e, (url) => {
+                              setEditModal({
+                                ...editModal,
+                                data: { ...editModal.data, src: url },
+                              });
+                            })
+                          }
+                        />
+                      </label>
+                    </div>
+                  </div>
                 </>
               )}
 
@@ -2497,19 +3261,48 @@ export default function AdminPage() {
 
                     <div className="sm:col-span-2">
                       <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
-                        Cover Image URL
+                        Cover Image URL (with Upload)
                       </label>
-                      <input
-                        type="text"
-                        value={editModal.data.image || ""}
-                        onChange={(e) =>
-                          setEditModal({
-                            ...editModal,
-                            data: { ...editModal.data, image: e.target.value },
-                          })
-                        }
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
-                      />
+                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                        <input
+                          type="text"
+                          value={editModal.data.image || ""}
+                          onChange={(e) =>
+                            setEditModal({
+                              ...editModal,
+                              data: { ...editModal.data, image: e.target.value },
+                            })
+                          }
+                          placeholder="Paste image URL or click Upload Photo ->"
+                          className="flex-1 px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
+                        />
+                        <label className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#FAF6EF] hover:bg-[#E9E0D2] border border-[#E9E0D2] text-xs font-semibold text-[#183D2B] cursor-pointer shrink-0 transition-colors">
+                          <Upload className="w-3.5 h-3.5" />
+                          <span>Upload Photo</span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={(e) =>
+                              handleUploadImageFile(e, (url) => {
+                                setEditModal({
+                                  ...editModal,
+                                  data: { ...editModal.data, image: url },
+                                });
+                              })
+                            }
+                          />
+                        </label>
+                      </div>
+                      {editModal.data.image && (
+                        <div className="mt-2 relative h-28 w-44 rounded-xl overflow-hidden border border-[#E9E0D2] shadow-inner bg-neutral-100">
+                          <img
+                            src={editModal.data.image}
+                            alt="Preview"
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
 

@@ -682,3 +682,47 @@ export const INITIAL_JOURNAL = [
   },
 ];
 
+export const INITIAL_ABOUT = {
+  storyBadge: "Our Story • Founding Vision",
+  storyTitle: "The Founding Vision of Journeys by Jibu Thomas",
+  storyQuote: "South India, experienced with soul, depth, and unhurried grace.",
+  storyImage: "/images/generated/tea-plantation-approach.jpg",
+  storyDescription: "Founded in Kerala, Journeys by Jibu Thomas was born from a desire to liberate South Indian travel from hurried, cookie-cutter tour buses. We believe true luxury is space, unhurried time, and genuine human encounters.",
+  storyPillars: [
+    { title: "Bespoke Freedom", desc: "Every route starts from a blank canvas tailored around your arrival flights and personal cadence." },
+    { title: "Personal Chauffeurs", desc: "Pristine private air-conditioned vehicles driven by vetted, courteous South Indian gentlemen." },
+    { title: "Authentic Stays", desc: "Heritage tea planters' bungalows, private backwater kettuvallams, and quiet boutique sanctuaries." },
+  ],
+
+  jibuBadge: "Founder & Lead Travel Designer",
+  jibuTitle: "Two decades of personal destination craftsmanship.",
+  jibuSubtitle: "Direct personal accountability for every journey that carries my name.",
+  jibuImage: "/images/generated/fort-kochi-heritage.jpg",
+  jibuDescription: "Jibu personally reviews your travel style, inspects every boutique stay, and briefs your private chauffeur. When you travel, his personal WhatsApp line is with you 24/7.",
+  jibuStats: [
+    { value: "20+ Yrs", label: "Experience" },
+    { value: "100%", label: "Tailored" },
+    { value: "Direct", label: "Concierge" },
+  ],
+
+  philosophyBadge: "Philosophy • The Four Pillars",
+  philosophyTitle: "How We Approach Every Single Itinerary",
+  philosophyQuote: "Generous pacing, living heritage, and conscious respect for local hosts.",
+  philosophyPillars: [
+    { num: "01", title: "Unhurried Cadence", desc: "Generous 2-3 night stays to truly absorb South India's rhythm without rush." },
+    { num: "02", title: "Authentic Soul", desc: "Generational spice growers, boat crafters & genuine temple heritage." },
+    { num: "03", title: "Privately Tailored", desc: "Zero cookie-cutter packages. Sculpted from a blank canvas for you." },
+    { num: "04", title: "Conscious Respect", desc: "Honouring fragile ecosystems & patronizing family-run heritage stays." },
+  ],
+
+  whyUsBadge: "Standards • Why Travel With Us",
+  whyUsTitle: "The Discerning Boutique Difference",
+  whyUsQuote: "No middle-tier sales reps, no hidden commissions, pristine standards.",
+  whyUsReasons: [
+    { title: "100% Tailor-Made", desc: "Every route is custom-built around your arrival flights and personal cadence." },
+    { title: "Private Fleet & Chauffeurs", desc: "Pristine late-model vehicles with verified, courteous private chauffeurs." },
+    { title: "Direct Founder Line", desc: "24/7 personal WhatsApp connection directly with Jibu Thomas throughout your stay." },
+    { title: "Zero Commission Traps", desc: "No forced tourist souvenir shops or aggressive middle-man kickbacks." },
+  ],
+};
+

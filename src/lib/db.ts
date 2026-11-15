@@ -1,4 +1,12 @@
 import mongoose from "mongoose";
+import dns from "dns";
+
+// Ensure DNS resolution for mongodb+srv works across all Windows & local network configurations
+try {
+  dns.setServers(["8.8.8.8", "8.8.4.4", "1.1.1.1"]);
+} catch {
+  // Silent fallback
+}
 
 /**
  * Global connection cache for Mongoose in serverless environments (e.g. Vercel).

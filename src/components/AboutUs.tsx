@@ -116,6 +116,8 @@ export default function AboutUs() {
               return (
                 <button
                   key={tab.id}
+                  type="button"
+                  suppressHydrationWarning
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-sans tracking-wide transition-all whitespace-nowrap cursor-pointer ${
                     isActive
@@ -364,6 +366,8 @@ export default function AboutUs() {
               >
                 {/* Floating Close Button */}
                 <button
+                  type="button"
+                  suppressHydrationWarning
                   onClick={() => setModalTopic(null)}
                   className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 z-30 p-2 sm:p-2.5 rounded-full bg-black/40 md:bg-black/10 hover:bg-[#183D2B] text-white md:text-[#183D2B] md:hover:text-white transition-all shadow-sm active:scale-90 cursor-pointer backdrop-blur-sm"
                   aria-label="Close modal"

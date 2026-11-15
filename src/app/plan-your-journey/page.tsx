@@ -20,3 +20,4 @@ export const metadata: Metadata = {
 export default function PlanYourJourneyPage() {
   return <ContactPage />;
 }
+

@@ -322,6 +322,8 @@ export default function CuratedExperiences() {
               >
                 {/* Floating Close Button */}
                 <button
+                  type="button"
+                  suppressHydrationWarning
                   onClick={() => setSelectedExp(null)}
                   className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 z-30 p-2 sm:p-2.5 rounded-full bg-black/40 md:bg-black/10 hover:bg-[#183D2B] text-white md:text-[#183D2B] md:hover:text-white transition-all shadow-sm active:scale-90 backdrop-blur-sm cursor-pointer"
                   aria-label="Close modal"

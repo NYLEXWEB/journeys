@@ -144,8 +144,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/journal" className="hover:text-[#E9E0D2] transition-colors flex items-center justify-between">
-                  <span>Travel Guide &amp; Journal</span>
+                <Link href="/blog" className="hover:text-[#E9E0D2] transition-colors flex items-center justify-between">
+                  <span>Travel Blog &amp; Stories</span>
                   <ArrowUpRight className="w-3 h-3 opacity-60" />
                 </Link>
               </li>

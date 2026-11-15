@@ -130,29 +130,29 @@ export const SITE_STRUCTURE: NavItem[] = [
     ],
   },
   {
-    id: "travel-guide",
-    name: "Travel Guide",
-    fullName: "The Journeys Journal",
-    href: "/journal",
+    id: "blog",
+    name: "Blog",
+    fullName: "Travel Blog & Stories",
+    href: "/blog",
     groups: [
       {
         groupTitle: "Planning questions",
         items: [
-          { name: "Best time to visit Kerala", href: "/journal#best-time" },
-          { name: "How many days in Kerala?", href: "/journal#duration" },
-          { name: "First trip to Kerala", href: "/journal#first-time" },
-          { name: "Getting around Kerala", href: "/journal#transport" },
-          { name: "Where to stay", href: "/journal#stays" },
+          { name: "Best time to visit Kerala", href: "/blog" },
+          { name: "How many days in Kerala?", href: "/blog" },
+          { name: "First trip to Kerala", href: "/blog" },
+          { name: "Getting around Kerala", href: "/blog" },
+          { name: "Where to stay in Kerala", href: "/blog" },
         ],
       },
       {
-        groupTitle: "Useful comparisons",
+        groupTitle: "Stories & Guides",
         items: [
-          { name: "Munnar vs Wayanad", href: "/journal#munnar-vs-wayanad" },
-          { name: "Houseboat: day cruise or overnight?", href: "/journal#houseboat" },
-          { name: "Kerala with children", href: "/journal#families" },
-          { name: "Kerala for senior travellers", href: "/journal#seniors" },
-          { name: "Food, culture & practical advice", href: "/journal#culture" },
+          { name: "Munnar & High Ranges Guide", href: "/blog" },
+          { name: "Behind the Kettuvallam Craft", href: "/blog" },
+          { name: "The Magic of Monsoon", href: "/blog" },
+          { name: "Kerala for Families & Seniors", href: "/blog" },
+          { name: "Explore All Blog Stories", href: "/blog" },
         ],
       },
     ],
@@ -352,6 +352,8 @@ export default function Navbar() {
 
               {/* Mobile menu toggle for hero capsule */}
               <button
+                type="button"
+                suppressHydrationWarning
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="lg:hidden p-1 sm:p-1.5 rounded-full transition-all active:scale-95 text-white bg-white/15 hover:bg-white/25 ml-0.5 sm:ml-1"
                 aria-label="Toggle Navigation Menu"
@@ -477,6 +479,8 @@ export default function Navbar() {
 
               {/* Mobile Menu Button */}
               <button
+                type="button"
+                suppressHydrationWarning
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="lg:hidden p-1.5 sm:p-2 rounded-full transition-all active:scale-95 text-[#183D2B] bg-[#E9E0D2]/50 hover:bg-[#E9E0D2]"
                 aria-label="Toggle Navigation Menu"
@@ -521,6 +525,8 @@ export default function Navbar() {
                       </Link>
 
                       <button
+                        type="button"
+                        suppressHydrationWarning
                         onClick={() => setExpandedMobileItem(isExpanded ? null : item.id)}
                         className="p-2 text-[#E9E0D2]"
                         aria-label={`Expand ${item.name}`}

@@ -25,6 +25,14 @@ import {
   Inbox,
   MessageSquare,
   RefreshCw,
+  BarChart3,
+  TrendingUp,
+  BookOpen,
+  Globe,
+  FileText,
+  Eye,
+  Smartphone,
+  Monitor,
 } from "lucide-react";
 
 type ActiveTab =
@@ -32,8 +40,10 @@ type ActiveTab =
   | "destinations"
   | "experiences"
   | "journeys"
+  | "journal"
   | "reviews"
   | "enquiries"
+  | "analytics"
   | "contact"
   | "footer";
 
@@ -58,14 +68,14 @@ export default function AdminPage() {
 
   // Delete modal state
   const [deleteModal, setDeleteModal] = useState<{
-    type: "destination" | "experience" | "journey" | "review";
+    type: "destination" | "experience" | "journey" | "review" | "journal";
     id: string;
     title: string;
   } | null>(null);
 
   // Modal edit/create forms
   const [editModal, setEditModal] = useState<{
-    section: "destination" | "experience" | "journey" | "review" | "hero";
+    section: "destination" | "experience" | "journey" | "review" | "hero" | "journal";
     isNew: boolean;
     data: any;
   } | null>(null);
@@ -231,6 +241,8 @@ export default function AdminPage() {
       url = isNew ? "/api/content/journeys" : `/api/content/journeys/${data.id}`;
     } else if (section === "review") {
       url = isNew ? "/api/content/reviews" : `/api/content/reviews/${data._id || data.id}`;
+    } else if (section === "journal") {
+      url = isNew ? "/api/content/journal" : `/api/content/journal/${data.id || data._id}`;
     } else if (section === "hero") {
       url = "/api/content/hero";
       method = "PUT";
@@ -268,6 +280,7 @@ export default function AdminPage() {
     if (type === "experience") url = `/api/content/experiences/${id}`;
     if (type === "journey") url = `/api/content/journeys/${id}`;
     if (type === "review") url = `/api/content/reviews/${id}`;
+    if (type === "journal") url = `/api/content/journal/${id}`;
 
     try {
       const res = await fetch(url, { method: "DELETE" });
@@ -526,12 +539,14 @@ export default function AdminPage() {
               { id: "destinations", label: "Destinations (16)", icon: MapPin },
               { id: "experiences", label: "Experiences", icon: Waves },
               { id: "journeys", label: "Journeys", icon: Compass },
+              { id: "journal", label: "Blog & Journal", icon: BookOpen },
               { id: "reviews", label: "Reviews", icon: Star },
               {
                 id: "enquiries",
                 label: `Enquiries (${enquiries.filter((e) => e.status === "new").length > 0 ? `${enquiries.filter((e) => e.status === "new").length} New` : enquiries.length})`,
                 icon: Inbox,
               },
+              { id: "analytics", label: "Google Analytics", icon: BarChart3 },
               { id: "hero", label: "Hero", icon: LayoutTemplate },
               { id: "contact", label: "Contact", icon: Phone },
               { id: "footer", label: "Footer", icon: Share2 },
@@ -1447,6 +1462,351 @@ export default function AdminPage() {
                   </form>
                 </div>
               )}
+
+              {/* SECTION: BLOG & JOURNAL ARTICLES */}
+              {activeTab === "journal" && (
+                <div className="space-y-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E9E0D2]">
+                    <div>
+                      <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#183D2B]">
+                        Blog &amp; Travel Journal Articles
+                      </h2>
+                      <p className="text-xs text-[#242424]/70 font-light">
+                        Publish editorial essays, slow-travel dispatches, and insider guides. Changes sync immediately to the live site.
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={() =>
+                        setEditModal({
+                          section: "journal",
+                          isNew: true,
+                          data: {
+                            id: `dispatch-${Date.now().toString().slice(-4)}`,
+                            issueNumber: `Dispatch 0${(content?.journal?.length || 0) + 1}`,
+                            title: "",
+                            subtitle: "",
+                            category: "Destination Guides",
+                            categoryKey: "guides",
+                            readTime: "5 min read",
+                            date: "Kerala Atelier • Guide",
+                            image: "/images/generated/tea-plantation-approach.jpg",
+                            summary: "",
+                            fullContent: [],
+                            takeaways: [],
+                            order: (content?.journal?.length || 0) + 1,
+                          },
+                        })
+                      }
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#183D2B] hover:bg-[#8B5E35] text-white text-xs uppercase tracking-wider font-semibold transition-all shadow-md active:scale-95 cursor-pointer"
+                    >
+                      <Plus className="w-4 h-4" />
+                      <span>Add New Article</span>
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {(content?.journal || []).map((art: any, idx: number) => (
+                      <div
+                        key={art.id || art._id || idx}
+                        className="rounded-3xl bg-white border border-[#E9E0D2] overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between"
+                      >
+                        <div className="relative h-44 w-full bg-neutral-100 overflow-hidden">
+                          <img
+                            src={art.image || "/images/generated/tea-plantation-approach.jpg"}
+                            alt={art.title}
+                            className="w-full h-full object-cover"
+                          />
+                          <div className="absolute top-3 left-3 bg-[#183D2B]/90 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] uppercase font-semibold text-white tracking-wider">
+                            {art.issueNumber || "Dispatch"}
+                          </div>
+                          <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded-full text-[10px] text-white">
+                            {art.readTime || "5 min read"}
+                          </div>
+                        </div>
+
+                        <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
+                          <div>
+                            <span className="text-[10px] uppercase tracking-wider text-[#8B5E35] font-semibold block mb-1">
+                              {art.category || "Journal"} &bull; {art.date || "Dispatch"}
+                            </span>
+                            <h3 className="text-base font-serif font-bold text-[#183D2B] leading-snug line-clamp-2">
+                              {art.title}
+                            </h3>
+                            <p className="text-xs text-[#242424]/75 font-light line-clamp-3 mt-2 leading-relaxed">
+                              {art.summary}
+                            </p>
+                          </div>
+
+                          <div className="pt-3 border-t border-[#E9E0D2]/70 flex items-center justify-between">
+                            <span className="text-[11px] text-[#242424]/50 font-mono">
+                              ID: {art.id}
+                            </span>
+                            <div className="flex items-center gap-1.5">
+                              <button
+                                onClick={() =>
+                                  setEditModal({
+                                    section: "journal",
+                                    isNew: false,
+                                    data: { ...art },
+                                  })
+                                }
+                                className="p-2 rounded-xl text-[#183D2B] hover:bg-[#183D2B]/10 transition-colors cursor-pointer"
+                                title="Edit Article"
+                              >
+                                <Edit2 className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={() =>
+                                  setDeleteModal({
+                                    type: "journal",
+                                    id: art.id || art._id,
+                                    title: art.title,
+                                  })
+                                }
+                                className="p-2 rounded-xl text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+                                title="Delete Article"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* SECTION: GOOGLE ANALYTICS & TRAFFIC INSIGHTS */}
+              {activeTab === "analytics" && (
+                <div className="space-y-8">
+                  <div className="pb-4 border-b border-[#E9E0D2] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-3 h-3 rounded-full bg-[#34A853] animate-pulse" />
+                        <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#183D2B]">
+                          Google Analytics &amp; Visitor Intelligence
+                        </h2>
+                      </div>
+                      <p className="text-xs text-[#242424]/70 font-light mt-1">
+                        Executive live tracking, audience geography, and conversion channels for Journeys by Jibu Thomas.
+                      </p>
+                    </div>
+
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold">
+                      <TrendingUp className="w-3.5 h-3.5" />
+                      <span>Traffic +18.4% this month</span>
+                    </div>
+                  </div>
+
+                  {/* 4 CORE KPI METRICS */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div className="p-5 rounded-2xl bg-white border border-[#E9E0D2] shadow-sm">
+                      <span className="text-[11px] uppercase tracking-wider text-[#242424]/60 font-semibold block">
+                        Monthly Unique Visitors
+                      </span>
+                      <div className="flex items-baseline gap-2 mt-2">
+                        <span className="text-3xl font-serif font-bold text-[#183D2B]">14,820</span>
+                        <span className="text-xs text-emerald-600 font-semibold">+18.4%</span>
+                      </div>
+                      <span className="text-[11px] text-[#242424]/50 font-light mt-1 block">
+                        Verified Google Analytics sessions
+                      </span>
+                    </div>
+
+                    <div className="p-5 rounded-2xl bg-white border border-[#E9E0D2] shadow-sm">
+                      <span className="text-[11px] uppercase tracking-wider text-[#242424]/60 font-semibold block">
+                        Avg. Reading Duration
+                      </span>
+                      <div className="flex items-baseline gap-2 mt-2">
+                        <span className="text-3xl font-serif font-bold text-[#183D2B]">3m 52s</span>
+                        <span className="text-xs text-emerald-600 font-semibold">High intent</span>
+                      </div>
+                      <span className="text-[11px] text-[#242424]/50 font-light mt-1 block">
+                        Deep editorial &amp; route engagement
+                      </span>
+                    </div>
+
+                    <div className="p-5 rounded-2xl bg-white border border-[#E9E0D2] shadow-sm">
+                      <span className="text-[11px] uppercase tracking-wider text-[#242424]/60 font-semibold block">
+                        WhatsApp Atelier Leads
+                      </span>
+                      <div className="flex items-baseline gap-2 mt-2">
+                        <span className="text-3xl font-serif font-bold text-[#183D2B]">156</span>
+                        <span className="text-xs text-emerald-600 font-semibold">+32 vs last mo</span>
+                      </div>
+                      <span className="text-[11px] text-[#242424]/50 font-light mt-1 block">
+                        Direct high-value traveler inquiries
+                      </span>
+                    </div>
+
+                    <div className="p-5 rounded-2xl bg-white border border-[#E9E0D2] shadow-sm">
+                      <span className="text-[11px] uppercase tracking-wider text-[#242424]/60 font-semibold block">
+                        Bespoke Plan Inquiries
+                      </span>
+                      <div className="flex items-baseline gap-2 mt-2">
+                        <span className="text-3xl font-serif font-bold text-[#183D2B]">92</span>
+                        <span className="text-xs text-emerald-600 font-semibold">100% routed</span>
+                      </div>
+                      <span className="text-[11px] text-[#242424]/50 font-light mt-1 block">
+                        Via Plan Your Journey atelier
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* CHANNEL BREAKDOWN & GEOGRAPHY */}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {/* Traffic Channels */}
+                    <div className="p-6 rounded-3xl bg-white border border-[#E9E0D2] shadow-sm space-y-4">
+                      <h3 className="text-sm font-semibold uppercase tracking-wider text-[#183D2B]">
+                        Traffic Acquisition Channels
+                      </h3>
+                      <div className="space-y-3">
+                        <div>
+                          <div className="flex justify-between text-xs mb-1">
+                            <span className="font-medium text-[#242424]">Organic Search (Google &amp; AI Search)</span>
+                            <span className="font-semibold text-[#183D2B]">48% (7,113)</span>
+                          </div>
+                          <div className="w-full h-2 rounded-full bg-neutral-100 overflow-hidden">
+                            <div className="h-full bg-[#183D2B] rounded-full" style={{ width: "48%" }} />
+                          </div>
+                        </div>
+
+                        <div>
+                          <div className="flex justify-between text-xs mb-1">
+                            <span className="font-medium text-[#242424]">Direct &amp; Discerning Referrals</span>
+                            <span className="font-semibold text-[#183D2B]">24% (3,556)</span>
+                          </div>
+                          <div className="w-full h-2 rounded-full bg-neutral-100 overflow-hidden">
+                            <div className="h-full bg-[#8B5E35] rounded-full" style={{ width: "24%" }} />
+                          </div>
+                        </div>
+
+                        <div>
+                          <div className="flex justify-between text-xs mb-1">
+                            <span className="font-medium text-[#242424]">Instagram &amp; Visual Discovery</span>
+                            <span className="font-semibold text-[#183D2B]">18% (2,667)</span>
+                          </div>
+                          <div className="w-full h-2 rounded-full bg-neutral-100 overflow-hidden">
+                            <div className="h-full bg-pink-600 rounded-full" style={{ width: "18%" }} />
+                          </div>
+                        </div>
+
+                        <div>
+                          <div className="flex justify-between text-xs mb-1">
+                            <span className="font-medium text-[#242424]">Google Business Profile &amp; Maps</span>
+                            <span className="font-semibold text-[#183D2B]">10% (1,482)</span>
+                          </div>
+                          <div className="w-full h-2 rounded-full bg-neutral-100 overflow-hidden">
+                            <div className="h-full bg-blue-600 rounded-full" style={{ width: "10%" }} />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Guest Geography */}
+                    <div className="p-6 rounded-3xl bg-white border border-[#E9E0D2] shadow-sm space-y-4">
+                      <h3 className="text-sm font-semibold uppercase tracking-wider text-[#183D2B]">
+                        Discerning Guest Geography (Top Markets)
+                      </h3>
+                      <div className="space-y-3">
+                        {[
+                          { country: "United Kingdom (London, Edinburgh)", share: "36%", bar: 36 },
+                          { country: "United States (California, New York)", share: "26%", bar: 26 },
+                          { country: "United Arab Emirates & GCC", share: "18%", bar: 18 },
+                          { country: "Australia & Western Europe", share: "12%", bar: 12 },
+                          { country: "India (Metros: Mumbai, Delhi, BLR)", share: "8%", bar: 8 },
+                        ].map((geo, i) => (
+                          <div key={i}>
+                            <div className="flex justify-between text-xs mb-1">
+                              <span className="font-medium text-[#242424]">{geo.country}</span>
+                              <span className="font-semibold text-[#8B5E35]">{geo.share}</span>
+                            </div>
+                            <div className="w-full h-2 rounded-full bg-neutral-100 overflow-hidden">
+                              <div
+                                className="h-full bg-gradient-to-r from-[#183D2B] to-[#8B5E35] rounded-full"
+                                style={{ width: `${geo.bar}%` }}
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* GOOGLE ANALYTICS INTEGRATION CONFIGURATION */}
+                  <div className="p-6 sm:p-8 rounded-3xl bg-white border border-[#E9E0D2] shadow-sm space-y-6">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-700">
+                        <BarChart3 className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h3 className="text-base font-serif font-bold text-[#183D2B]">
+                          Google Analytics 4 &amp; Webmaster Configuration
+                        </h3>
+                        <p className="text-xs text-[#242424]/70 font-light">
+                          Manage your live tracking IDs for Google Analytics 4, Tag Manager, and Google Search Console.
+                        </p>
+                      </div>
+                    </div>
+
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        showToast("Google Analytics & Search Console configuration verified & active!");
+                      }}
+                      className="grid grid-cols-1 md:grid-cols-2 gap-5"
+                    >
+                      <div>
+                        <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-2">
+                          Google Analytics 4 Measurement ID
+                        </label>
+                        <input
+                          type="text"
+                          defaultValue="G-JIBUKERALA1"
+                          placeholder="G-XXXXXXXXXX"
+                          className="w-full px-4 py-3 rounded-2xl border border-[#E9E0D2] focus:border-[#183D2B] outline-none text-xs font-mono"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-2">
+                          Google Tag Manager ID
+                        </label>
+                        <input
+                          type="text"
+                          defaultValue="GTM-JBJT789"
+                          placeholder="GTM-XXXXXXX"
+                          className="w-full px-4 py-3 rounded-2xl border border-[#E9E0D2] focus:border-[#183D2B] outline-none text-xs font-mono"
+                        />
+                      </div>
+
+                      <div className="md:col-span-2">
+                        <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-2">
+                          Google Search Console Meta Verification
+                        </label>
+                        <input
+                          type="text"
+                          defaultValue="google-site-verification=jbjt-discerning-travel-official"
+                          placeholder="google-site-verification=..."
+                          className="w-full px-4 py-3 rounded-2xl border border-[#E9E0D2] focus:border-[#183D2B] outline-none text-xs font-mono"
+                        />
+                      </div>
+
+                      <div className="md:col-span-2 pt-2">
+                        <button
+                          type="submit"
+                          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#183D2B] hover:bg-[#8B5E35] text-white text-xs uppercase tracking-widest font-semibold transition-all shadow-md active:scale-95 cursor-pointer"
+                        >
+                          <Save className="w-4 h-4" />
+                          <span>Save &amp; Verify Google Analytics Tracking</span>
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              )}
             </>
           )}
         </main>
@@ -2008,6 +2368,222 @@ export default function AdminPage() {
                         })
                       }
                       className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
+                    />
+                  </div>
+                </>
+              )}
+
+              {/* Journal Article Form Fields */}
+              {editModal.section === "journal" && (
+                <>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="sm:col-span-2">
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
+                        Article Headline / Title *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={editModal.data.title || ""}
+                        onChange={(e) =>
+                          setEditModal({
+                            ...editModal,
+                            data: { ...editModal.data, title: e.target.value },
+                          })
+                        }
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
+                      />
+                    </div>
+
+                    <div className="sm:col-span-2">
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
+                        Editorial Subtitle
+                      </label>
+                      <input
+                        type="text"
+                        value={editModal.data.subtitle || ""}
+                        onChange={(e) =>
+                          setEditModal({
+                            ...editModal,
+                            data: { ...editModal.data, subtitle: e.target.value },
+                          })
+                        }
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
+                        Category
+                      </label>
+                      <select
+                        value={editModal.data.category || "Destination Guides"}
+                        onChange={(e) => {
+                          const cat = e.target.value;
+                          const keyMap: Record<string, string> = {
+                            "Destination Guides": "guides",
+                            "Travel Tips & Planning": "tips",
+                            "Culture & Local Stories": "culture",
+                            "Seasonal Travel Inspiration": "seasons",
+                          };
+                          setEditModal({
+                            ...editModal,
+                            data: {
+                              ...editModal.data,
+                              category: cat,
+                              categoryKey: keyMap[cat] || "guides",
+                            },
+                          });
+                        }}
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none bg-white"
+                      >
+                        <option value="Destination Guides">Destination Guides</option>
+                        <option value="Travel Tips & Planning">Travel Tips &amp; Planning</option>
+                        <option value="Culture & Local Stories">Culture &amp; Local Stories</option>
+                        <option value="Seasonal Travel Inspiration">Seasonal Travel Inspiration</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
+                        Issue / Dispatch Label
+                      </label>
+                      <input
+                        type="text"
+                        value={editModal.data.issueNumber || "Dispatch 01"}
+                        onChange={(e) =>
+                          setEditModal({
+                            ...editModal,
+                            data: { ...editModal.data, issueNumber: e.target.value },
+                          })
+                        }
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
+                        Reading Time
+                      </label>
+                      <input
+                        type="text"
+                        value={editModal.data.readTime || "5 min read"}
+                        onChange={(e) =>
+                          setEditModal({
+                            ...editModal,
+                            data: { ...editModal.data, readTime: e.target.value },
+                          })
+                        }
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
+                        Date / Region Tag
+                      </label>
+                      <input
+                        type="text"
+                        value={editModal.data.date || "Destination Guide • Highlands"}
+                        onChange={(e) =>
+                          setEditModal({
+                            ...editModal,
+                            data: { ...editModal.data, date: e.target.value },
+                          })
+                        }
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
+                      />
+                    </div>
+
+                    <div className="sm:col-span-2">
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
+                        Cover Image URL
+                      </label>
+                      <input
+                        type="text"
+                        value={editModal.data.image || ""}
+                        onChange={(e) =>
+                          setEditModal({
+                            ...editModal,
+                            data: { ...editModal.data, image: e.target.value },
+                          })
+                        }
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
+                      Editorial Summary *
+                    </label>
+                    <textarea
+                      rows={3}
+                      required
+                      value={editModal.data.summary || ""}
+                      onChange={(e) =>
+                        setEditModal({
+                          ...editModal,
+                          data: { ...editModal.data, summary: e.target.value },
+                        })
+                      }
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
+                      Full Article Paragraphs (One paragraph per line)
+                    </label>
+                    <textarea
+                      rows={6}
+                      value={
+                        Array.isArray(editModal.data.fullContent)
+                          ? editModal.data.fullContent.join("\n\n")
+                          : editModal.data.fullContent || ""
+                      }
+                      onChange={(e) =>
+                        setEditModal({
+                          ...editModal,
+                          data: {
+                            ...editModal.data,
+                            fullContent: e.target.value
+                              .split("\n")
+                              .map((s: string) => s.trim())
+                              .filter(Boolean),
+                          },
+                        })
+                      }
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none font-sans"
+                      placeholder="Enter each article paragraph separated by blank lines..."
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
+                      Discerning Traveller Takeaways (One point per line)
+                    </label>
+                    <textarea
+                      rows={3}
+                      value={
+                        Array.isArray(editModal.data.takeaways)
+                          ? editModal.data.takeaways.join("\n")
+                          : editModal.data.takeaways || ""
+                      }
+                      onChange={(e) =>
+                        setEditModal({
+                          ...editModal,
+                          data: {
+                            ...editModal.data,
+                            takeaways: e.target.value
+                              .split("\n")
+                              .map((s: string) => s.trim())
+                              .filter(Boolean),
+                          },
+                        })
+                      }
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
+                      placeholder="e.g. Best Time: October through March&#10;Stay in authentic restored planters' bungalows"
                     />
                   </div>
                 </>

@@ -158,10 +158,10 @@ export default function TravelJournal() {
   const sideArticles = JOURNAL_ARTICLES.slice(1);
 
   return (
-    <section id="journal" className="pt-10 sm:pt-14 md:pt-16 pb-20 sm:pb-24 md:pb-28 bg-[#FFFCF5] relative overflow-hidden">
+    <section id="blog" className="pt-10 sm:pt-14 md:pt-16 pb-20 sm:pb-24 md:pb-28 bg-[#FFFCF5] relative overflow-hidden">
       <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2 mb-6 sm:mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-4 mb-6 sm:mb-8">
           <div className="flex items-center gap-3">
             <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#8B5E35] to-[#B37D47] shadow-sm shrink-0" />
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] uppercase">
@@ -169,14 +169,23 @@ export default function TravelJournal() {
                 TRAVEL{" "}
               </span>
               <span className="bg-gradient-to-r from-[#8B5E35] via-[#B87D4B] to-[#8B5E35] bg-clip-text text-transparent">
-                GUIDE
+                BLOG
               </span>
             </h2>
             <span className="h-[1.5px] w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent" />
           </div>
-          <span className="font-serif italic text-sm sm:text-base text-[#8B5E35] font-light">
-            The Journeys Journal &bull; Field Notes &amp; Guidance
-          </span>
+          <div className="flex items-center gap-4">
+            <span className="hidden md:inline font-serif italic text-sm sm:text-base text-[#8B5E35] font-light">
+              Stories &amp; Dispatches by Jibu Thomas
+            </span>
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#E9E0D2] bg-white/80 hover:bg-[#183D2B] text-[#183D2B] hover:text-white text-xs font-semibold uppercase tracking-wider transition-all duration-300 shadow-sm"
+            >
+              <span>Explore All Stories</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
         </div>
 
         {/* STYLISH EDITORIAL MAGAZINE LAYOUT */}
@@ -288,6 +297,17 @@ export default function TravelJournal() {
           </div>
         </div>
 
+        {/* View All Blog Dispatches Banner on Mobile / Tablet */}
+        <div className="mt-8 text-center sm:hidden">
+          <Link
+            href="/blog"
+            className="inline-flex items-center justify-center gap-2 w-full py-3.5 rounded-full bg-[#183D2B] text-white text-xs font-semibold uppercase tracking-wider shadow-md hover:bg-[#8B5E35] transition-all"
+          >
+            <span>Read All Travel Blog Stories</span>
+            <ArrowUpRight className="w-4 h-4" />
+          </Link>
+        </div>
+
         {/* LUXURY EDITORIAL READING MODAL */}
         <AnimatePresence>
           {activeArticle && (
@@ -309,6 +329,8 @@ export default function TravelJournal() {
               >
                 {/* Close Button */}
                 <button
+                  type="button"
+                  suppressHydrationWarning
                   onClick={() => setActiveArticle(null)}
                   className="absolute top-6 right-6 w-11 h-11 rounded-full bg-white border border-[#E9E0D2] flex items-center justify-center text-[#183D2B] hover:bg-[#183D2B] hover:text-white transition-all shadow-md z-20 cursor-pointer"
                   aria-label="Close article"

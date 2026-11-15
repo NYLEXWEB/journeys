@@ -290,10 +290,12 @@ export default function GoogleReviews() {
             {/* Right: Actions */}
             <div className="flex items-center gap-2.5 w-full md:w-auto">
               <button
+                type="button"
+                suppressHydrationWarning
                 onClick={() => setIsWriteModalOpen(true)}
-                className="flex-1 md:flex-initial inline-flex items-center justify-center gap-2 px-4 py-2 sm:py-2.5 rounded-full bg-[#1A73E8] hover:bg-[#1557B0] active:scale-[0.98] text-white font-sans font-medium text-xs sm:text-sm transition-all duration-200 cursor-pointer"
+                className="flex-1 md:flex-initial inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-black hover:bg-neutral-800 active:scale-[0.98] text-white font-sans font-medium text-xs sm:text-sm transition-all duration-200 shadow-sm cursor-pointer"
               >
-                <PenSquare className="w-3.5 h-3.5" />
+                <PenSquare className="w-3.5 h-3.5 text-white" />
                 <span>Write a review</span>
               </button>
 
@@ -404,27 +406,10 @@ export default function GoogleReviews() {
                     )}
 
                     {/* Review Body */}
-                    <p className="font-sans text-[12.5px] sm:text-[13px] leading-relaxed text-[#242424]/85 line-clamp-3 sm:line-clamp-4 break-words">
+                    <p className="font-sans text-[12.5px] sm:text-[13px] leading-relaxed text-[#242424]/85 line-clamp-4 break-words">
                       {rev.text}
                     </p>
                   </div>
-
-                  {/* Owner Response Box (Journeys & Google merged theme) */}
-                  {rev.ownerResponse && (
-                    <div className="mt-3 pt-2 border-t border-[#E9E0D2]/70 bg-[#183D2B]/[0.035] border-l-2 border-[#183D2B] rounded-r-lg p-2.5">
-                      <div className="flex items-center gap-1.5 mb-0.5">
-                        <span className="text-[11.5px] font-sans font-semibold text-[#183D2B]">
-                          Response from Jibu Thomas
-                        </span>
-                        <span className="text-[10px] font-sans text-[#242424]/50">
-                          &bull; {rev.ownerResponse.date}
-                        </span>
-                      </div>
-                      <p className="text-[11.5px] font-sans text-[#242424]/75 leading-relaxed line-clamp-2 break-words">
-                        {rev.ownerResponse.text}
-                      </p>
-                    </div>
-                  )}
                 </div>
               );
             })}
@@ -478,6 +463,8 @@ export default function GoogleReviews() {
               </div>
 
               <button
+                type="button"
+                suppressHydrationWarning
                 onClick={() => setIsWriteModalOpen(false)}
                 className="p-2 rounded-full hover:bg-[#E9E0D2]/40 text-[#242424]/60 hover:text-[#183D2B] transition-colors"
                 aria-label="Close"
@@ -509,6 +496,7 @@ export default function GoogleReviews() {
                     {[1, 2, 3, 4, 5].map((star) => (
                       <button
                         type="button"
+                        suppressHydrationWarning
                         key={star}
                         onClick={() => setNewRating(star)}
                         onMouseEnter={() => setHoverRating(star)}
@@ -579,6 +567,7 @@ export default function GoogleReviews() {
                 <div className="flex items-center justify-end gap-3 pt-3">
                   <button
                     type="button"
+                    suppressHydrationWarning
                     onClick={() => setIsWriteModalOpen(false)}
                     className="px-5 py-2.5 rounded-full border border-[#E9E0D2] text-[#242424]/70 text-sm font-sans font-medium hover:bg-[#FAF6EF] transition-colors"
                   >
@@ -586,7 +575,8 @@ export default function GoogleReviews() {
                   </button>
                   <button
                     type="submit"
-                    className="px-6 py-2.5 rounded-full bg-[#1A73E8] hover:bg-[#1557B0] text-white text-sm font-sans font-medium transition-all"
+                    suppressHydrationWarning
+                    className="px-6 py-2.5 rounded-full bg-black hover:bg-neutral-800 text-white text-sm font-sans font-medium transition-all shadow-sm cursor-pointer"
                   >
                     Post Review
                   </button>

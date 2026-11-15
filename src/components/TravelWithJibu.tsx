@@ -242,6 +242,8 @@ export default function TravelWithJibu() {
           {/* Tab Selector */}
           <div className="flex items-center gap-1 sm:gap-1.5 p-1 rounded-full bg-[#E9E0D2]/50 border border-[#E9E0D2] self-start md:self-end max-w-full overflow-x-auto no-scrollbar">
             <button
+              type="button"
+              suppressHydrationWarning
               onClick={() => setActiveTab("signature")}
               className={`px-4 sm:px-5 py-2 rounded-full text-xs font-sans transition-all cursor-pointer ${activeTab === "signature"
                   ? "bg-[#183D2B] text-white shadow-sm font-medium"
@@ -251,6 +253,8 @@ export default function TravelWithJibu() {
               Signature Journeys (5)
             </button>
             <button
+              type="button"
+              suppressHydrationWarning
               onClick={() => setActiveTab("bespoke")}
               className={`px-4 sm:px-5 py-2 rounded-full text-xs font-sans transition-all cursor-pointer ${activeTab === "bespoke"
                   ? "bg-[#183D2B] text-white shadow-sm font-medium"
@@ -339,6 +343,8 @@ export default function TravelWithJibu() {
 
                   {/* VIEW MORE DETAILS BUTTON */}
                   <button
+                    type="button"
+                    suppressHydrationWarning
                     onClick={() => setSelectedBespoke(p)}
                     className="w-full py-2 px-3 rounded-full bg-[#183D2B]/5 hover:bg-[#183D2B] text-[#183D2B] hover:text-white text-[11px] uppercase tracking-wider font-medium transition-all duration-200 flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
                   >
@@ -373,6 +379,8 @@ export default function TravelWithJibu() {
               >
                 {/* Close Button */}
                 <button
+                  type="button"
+                  suppressHydrationWarning
                   onClick={() => setSelectedJourney(null)}
                   className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 z-30 p-2 sm:p-2.5 rounded-full bg-black/40 md:bg-black/10 hover:bg-[#183D2B] text-white md:text-[#183D2B] md:hover:text-white transition-all shadow-sm active:scale-90 backdrop-blur-sm cursor-pointer"
                   aria-label="Close modal"
@@ -502,6 +510,8 @@ export default function TravelWithJibu() {
                 className="relative max-w-xl w-full max-h-[85vh] overflow-y-auto no-scrollbar rounded-[2.5rem] bg-[#FFFCF5] border border-[#E9E0D2] shadow-2xl p-6 sm:p-9 space-y-5"
               >
                 <button
+                  type="button"
+                  suppressHydrationWarning
                   onClick={() => setSelectedBespoke(null)}
                   className="absolute top-5 right-5 p-2.5 rounded-full bg-black/10 hover:bg-[#183D2B] text-[#183D2B] hover:text-white transition-all shadow-sm active:scale-90"
                   aria-label="Close modal"

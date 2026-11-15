@@ -448,6 +448,8 @@ export default function Destinations() {
             {/* View Mode Toggle: Flow vs Grid */}
             <div className="flex items-center p-1 rounded-full bg-[#E9E0D2]/40 border border-[#E9E0D2]">
               <button
+                type="button"
+                suppressHydrationWarning
                 onClick={() => setViewMode("flow")}
                 className={`px-3 py-1.5 rounded-full text-[11px] uppercase tracking-wider font-medium flex items-center gap-1.5 transition-all duration-300 cursor-pointer ${
                   viewMode === "flow"
@@ -460,6 +462,8 @@ export default function Destinations() {
                 <span className="hidden sm:inline">Showcase</span>
               </button>
               <button
+                type="button"
+                suppressHydrationWarning
                 onClick={() => setViewMode("grid")}
                 className={`px-3 py-1.5 rounded-full text-[11px] uppercase tracking-wider font-medium flex items-center gap-1.5 transition-all duration-300 cursor-pointer ${
                   viewMode === "grid"
@@ -482,6 +486,8 @@ export default function Destinations() {
             return (
               <button
                 key={cat.id}
+                type="button"
+                suppressHydrationWarning
                 onClick={() => setSelectedCategory(cat.id)}
                 className={`px-4 sm:px-6 py-2.5 sm:py-3 rounded-full text-xs sm:text-sm uppercase tracking-wider font-medium transition-all duration-300 flex items-center gap-2.5 whitespace-nowrap cursor-pointer select-none ${
                   isActive
@@ -589,6 +595,8 @@ export default function Destinations() {
             >
               {/* Close Button */}
               <button
+                type="button"
+                suppressHydrationWarning
                 onClick={() => setSelectedDest(null)}
                 className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 z-30 p-2 sm:p-2.5 rounded-full bg-black/40 md:bg-black/10 hover:bg-[#183D2B] text-white md:text-[#183D2B] md:hover:text-white transition-all shadow-sm active:scale-90 backdrop-blur-sm cursor-pointer"
                 aria-label="Close modal"

@@ -127,6 +127,8 @@ export default function OurServices() {
               return (
                 <button
                   key={srv.id}
+                  type="button"
+                  suppressHydrationWarning
                   onClick={() => setActiveId(srv.id)}
                   className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-sans transition-all cursor-pointer ${
                     isActive
@@ -151,6 +153,8 @@ export default function OurServices() {
               return (
                 <button
                   key={srv.id}
+                  type="button"
+                  suppressHydrationWarning
                   onClick={() => setActiveId(srv.id)}
                   className={`group w-full text-left py-4.5 px-4 transition-all duration-300 relative cursor-pointer ${
                     isActive

@@ -72,17 +72,17 @@ export default function Home() {
             <OurServices />
           </StackingSection>
 
-          {/* Fixed Background Video Curtain Reveal between Our Services & Travel Journal */}
+          {/* Fixed Background Video Curtain Reveal between Our Services & Travel Blog */}
           <CurtainVideoReveal
             videoSrc="/video/video-4.mp4"
             tag="The Living Chronicle"
             quote="&ldquo;Every journey writes a story that time cannot erase.&rdquo;"
-            subQuote="Dispatches · Heritage · Slow Living"
+            subQuote="Travel Blog · Dispatches · Slow Living"
             heightClass="h-[100vh] sm:h-[100vh] lg:h-[100vh]"
             portalZIndex={7}
           />
 
-          {/* 6. TRAVEL JOURNAL: Page 6 */}
+          {/* 6. TRAVEL BLOG: Page 6 */}
           <StackingSection zIndex={20}>
             <TravelJournal />
           </StackingSection>

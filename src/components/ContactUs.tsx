@@ -209,6 +209,8 @@ export default function ContactUs() {
                     Your enquiry has been received directly by Jibu Thomas. We will review your preliminary ideas and connect shortly via your preferred channel.
                   </p>
                   <button
+                    type="button"
+                    suppressHydrationWarning
                     onClick={() => {
                       setIsSubmitted(false);
                       setFormData({ fullName: "", contactInfo: "", travelDates: "", message: "", hpWebsite: "" });
@@ -300,6 +302,7 @@ export default function ContactUs() {
                   <div className="pt-2">
                     <button
                       type="submit"
+                      suppressHydrationWarning
                       disabled={isSubmitting}
                       className="w-full py-4 rounded-full bg-[#183D2B] hover:bg-[#8B5E35] text-[#FFFCF5] text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
                     >

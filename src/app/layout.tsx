@@ -141,14 +141,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} antialiased`}>
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} antialiased`}>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-screen bg-[#FFFCF5] text-[#242424] font-sans font-light selection:bg-[#183D2B] selection:text-[#FFFCF5] tracking-[-0.015em]">
+      <body suppressHydrationWarning className="min-h-screen bg-[#FFFCF5] text-[#242424] font-sans font-light selection:bg-[#183D2B] selection:text-[#FFFCF5] tracking-[-0.015em]">
         {children}
       </body>
     </html>

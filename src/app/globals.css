@@ -128,10 +128,57 @@ html.modal-open {
   }
 }
 
+/* Ambient Living Motion & Breathing Animations (No Heavy Shadows, Subtle & Luxury) */
+@keyframes ken-burns-slow {
+  0% {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+  50% {
+    transform: scale(1.04) translate3d(-0.4%, -0.4%, 0);
+  }
+  100% {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+}
+
+@keyframes float-gentle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.03);
+  }
+}
+
+.animate-ken-burns {
+  animation: ken-burns-slow 16s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.animate-float-slow {
+  animation: float-gentle 5s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 3.5s ease-in-out infinite;
+}
+
 .animate-marquee-left {
   display: flex;
   width: max-content;
-  animation: marquee-horizontal-left 52s linear infinite;
+  animation: marquee-horizontal-left 46s linear infinite;
   will-change: transform;
 }
 
@@ -142,7 +189,7 @@ html.modal-open {
 .animate-marquee-right {
   display: flex;
   width: max-content;
-  animation: marquee-horizontal-right 52s linear infinite;
+  animation: marquee-horizontal-right 46s linear infinite;
   will-change: transform;
 }
 

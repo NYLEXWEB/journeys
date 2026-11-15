@@ -451,20 +451,20 @@ export default function AdminPage() {
 
       {/* Main Layout */}
       <div className="flex-1 max-w-[1600px] w-full mx-auto px-4 sm:px-8 py-8 flex flex-col md:flex-row gap-8 items-start">
-        {/* Sidebar Navigation */}
-        <aside className="w-full md:w-64 bg-white rounded-3xl border border-[#E9E0D2] p-4 shadow-sm shrink-0 sticky top-24">
-          <span className="text-[10px] uppercase tracking-widest font-semibold text-[#8B5E35] px-3 pb-2 block border-b border-[#E9E0D2] mb-3">
+        {/* Sidebar / Mobile Tabs Navigation */}
+        <aside className="w-full md:w-64 bg-white rounded-2xl md:rounded-3xl border border-[#E9E0D2] p-3 md:p-4 shadow-sm shrink-0 md:sticky md:top-24">
+          <span className="text-[10px] uppercase tracking-widest font-semibold text-[#8B5E35] px-2 md:px-3 pb-2 block border-b border-[#E9E0D2] mb-2 md:mb-3">
             Website Sections
           </span>
-          <nav className="space-y-1">
+          <nav className="flex md:flex-col gap-1.5 md:space-y-1 overflow-x-auto no-scrollbar pb-1 md:pb-0">
             {[
               { id: "destinations", label: "Destinations (16)", icon: MapPin },
-              { id: "experiences", label: "Curated Experiences", icon: Waves },
-              { id: "journeys", label: "Travel with Jibu", icon: Compass },
-              { id: "reviews", label: "Google Reviews", icon: Star },
-              { id: "hero", label: "Hero Headings", icon: LayoutTemplate },
-              { id: "contact", label: "Contact & Concierge", icon: Phone },
-              { id: "footer", label: "Footer & Social", icon: Share2 },
+              { id: "experiences", label: "Experiences", icon: Waves },
+              { id: "journeys", label: "Journeys", icon: Compass },
+              { id: "reviews", label: "Reviews", icon: Star },
+              { id: "hero", label: "Hero", icon: LayoutTemplate },
+              { id: "contact", label: "Contact", icon: Phone },
+              { id: "footer", label: "Footer", icon: Share2 },
             ].map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -472,13 +472,13 @@ export default function AdminPage() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as ActiveTab)}
-                  className={`w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl text-xs font-semibold tracking-wide transition-all text-left ${
+                  className={`flex items-center gap-2 px-3 py-2 md:px-3.5 md:py-2.5 rounded-xl md:rounded-2xl text-xs font-semibold tracking-wide transition-all whitespace-nowrap cursor-pointer shrink-0 md:w-full text-left ${
                     isActive
                       ? "bg-[#183D2B] text-white shadow-md"
-                      : "text-[#242424]/80 hover:bg-[#183D2B]/5 hover:text-[#183D2B]"
+                      : "text-[#242424]/80 hover:bg-[#183D2B]/5 hover:text-[#183D2B] bg-[#183D2B]/[0.02] md:bg-transparent"
                   }`}
                 >
-                  <Icon className={`w-4 h-4 ${isActive ? "text-[#E9E0D2]" : "text-[#8B5E35]"}`} />
+                  <Icon className={`w-3.5 h-3.5 md:w-4 md:h-4 ${isActive ? "text-[#E9E0D2]" : "text-[#8B5E35]"}`} />
                   <span>{tab.label}</span>
                 </button>
               );

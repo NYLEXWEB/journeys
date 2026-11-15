@@ -240,7 +240,7 @@ export default function TravelWithJibu() {
           </div>
 
           {/* Tab Selector */}
-          <div className="flex items-center gap-1.5 p-1 rounded-full bg-[#E9E0D2]/50 border border-[#E9E0D2] self-start md:self-end">
+          <div className="flex items-center gap-1 sm:gap-1.5 p-1 rounded-full bg-[#E9E0D2]/50 border border-[#E9E0D2] self-start md:self-end max-w-full overflow-x-auto no-scrollbar">
             <button
               onClick={() => setActiveTab("signature")}
               className={`px-4 sm:px-5 py-2 rounded-full text-xs font-sans transition-all cursor-pointer ${activeTab === "signature"
@@ -269,7 +269,7 @@ export default function TravelWithJibu() {
               <div
                 key={j.id}
                 onClick={() => setSelectedJourney(j)}
-                className="group relative h-[440px] sm:h-[480px] lg:h-[500px] rounded-3xl overflow-hidden cursor-pointer shadow-md hover:shadow-xl hover:-translate-y-1.5 transition-all duration-500 bg-[#183D2B] select-none"
+                className="group relative h-[440px] sm:h-[480px] lg:h-[500px] rounded-3xl overflow-hidden cursor-pointer border border-white/10 hover:border-[#8B5E35]/60 hover:-translate-y-2 transition-all duration-500 bg-[#183D2B] select-none hover:shadow-[0_12px_28px_rgba(24,61,43,0.08)]"
               >
                 {/* Full Image */}
                 <Image
@@ -277,7 +277,7 @@ export default function TravelWithJibu() {
                   alt={j.title}
                   fill
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 20vw"
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-108"
+                  className="object-cover transition-transform duration-1000 ease-out group-hover:scale-110"
                 />
 
                 {/* Dark Vignette */}
@@ -285,7 +285,7 @@ export default function TravelWithJibu() {
 
                 {/* Top Duration Badge */}
                 <div className="absolute top-4 left-4 z-10 flex items-center gap-1.5">
-                  <span className="px-3 py-1 rounded-full bg-white/90 backdrop-blur-md text-[10px] uppercase font-semibold text-[#183D2B] flex items-center gap-1">
+                  <span className="px-3 py-1 rounded-full bg-white/95 backdrop-blur-md text-[10px] uppercase font-semibold text-[#183D2B] flex items-center gap-1 border border-white/60 transition-transform duration-300 group-hover:-translate-y-0.5">
                     <Clock className="w-3 h-3 text-[#8B5E35]" />
                     {j.duration}
                   </span>
@@ -293,19 +293,19 @@ export default function TravelWithJibu() {
 
                 {/* Bottom Overlay: Title, Route & "View Details" */}
                 <div className="absolute inset-x-0 bottom-0 z-10 p-5 sm:p-6 flex flex-col justify-end space-y-2">
-                  <p className="text-[11px] font-sans text-[#E9E0D2] tracking-wider uppercase flex items-center gap-1 opacity-90">
+                  <p className="text-[11px] font-sans text-[#E9E0D2] tracking-wider uppercase flex items-center gap-1 opacity-90 transition-transform duration-300 group-hover:translate-x-0.5">
                     <MapPin className="w-3 h-3 text-[#E9E0D2]" />
                     <span className="line-clamp-1">{j.route}</span>
                   </p>
 
-                  <h3 className="text-xl sm:text-2xl font-serif text-white font-medium leading-snug group-hover:text-[#E9E0D2] transition-colors">
+                  <h3 className="text-xl sm:text-2xl font-serif text-white font-medium leading-snug group-hover:text-[#E9E0D2] group-hover:translate-x-0.5 transition-all duration-300">
                     {j.title}
                   </h3>
 
                   <div className="pt-1">
-                    <span className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider font-medium text-[#E9E0D2] group-hover:text-white transition-colors">
+                    <span className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider font-medium text-[#E9E0D2] group-hover:text-white transition-colors duration-300">
                       <span>View Details</span>
-                      <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                      <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1.5 group-hover:-translate-y-0.5" />
                     </span>
                   </div>
                 </div>

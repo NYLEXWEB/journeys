@@ -123,7 +123,7 @@ export default function Hero() {
               loop
               preload="auto"
               className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
-                isActive ? "opacity-90 z-10 scale-100" : "opacity-0 z-0 pointer-events-none scale-105"
+                isActive ? "opacity-90 z-10 scale-100 animate-ken-burns" : "opacity-0 z-0 pointer-events-none scale-105"
               } transition-transform duration-[6000ms] ease-out`}
             />
           );
@@ -136,27 +136,29 @@ export default function Hero() {
 
       {/* 
         BOTTOM BAR CONTENT:
-        1. Left: Heading (Compact, bold, aligned on the exact same horizontal line)
+        1. Left: Heading (Compact, bold)
         2. Center: Invisible Anchor / Spacer where the floating Navbar capsule sits
-        3. Right: Explore Journeys action button (matching height, on the exact same line)
-        All 3 on the exact same line, moving up together on scroll!
+        3. Right: Plan Your Journey action button
+        - On Desktop / Tablet (md and up): All 3 on the exact same horizontal line!
+        - On Mobile (< md): Two-tier adaptive layout (Heading & CTA on top row, centered Navbar below), with zero horizontal scroll!
+        All moving up together smoothly on scroll!
       */}
-      <div className="absolute bottom-6 sm:bottom-8 lg:bottom-10 inset-x-0 z-30 px-4 sm:px-8 lg:px-12 pointer-events-none">
-        <div className="w-full max-w-[1600px] mx-auto flex items-center justify-between gap-3 sm:gap-4">
+      <div className="absolute bottom-4 sm:bottom-6 md:bottom-8 lg:bottom-10 inset-x-0 z-30 px-3 sm:px-6 md:px-8 lg:px-12 pointer-events-none">
+        <div className="w-full max-w-[1600px] mx-auto flex flex-col md:flex-row items-center md:justify-between gap-2.5 sm:gap-3 md:gap-4">
           
-          {/* Left: Heading - compact & bold, vertically centered */}
-          <div className="flex-1 flex items-center justify-start pointer-events-auto min-w-0">
+          {/* Mobile Top Row / Desktop Left: Heading & Mobile Plan Button */}
+          <div className="w-full md:w-auto md:flex-1 flex items-center justify-between md:justify-start pointer-events-auto min-w-0">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentSlide.slideId || currentSlide.id || currentIndex}
-                initial={{ opacity: 0, y: 8, filter: "blur(4px)" }}
+                initial={{ opacity: 0, y: 6, filter: "blur(4px)" }}
                 animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                exit={{ opacity: 0, y: -8, filter: "blur(4px)" }}
+                exit={{ opacity: 0, y: -6, filter: "blur(4px)" }}
                 transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                className="flex items-center gap-2 h-[48px] sm:h-[54px]"
+                className="flex items-center gap-1.5 sm:gap-2 h-[38px] sm:h-[44px] md:h-[54px]"
               >
-                <span className="w-2 h-2 rounded-full bg-[#8B5E35] shrink-0" />
-                <h1 className="text-sm sm:text-base md:text-lg lg:text-xl font-sans font-extrabold tracking-tight text-white leading-none select-none whitespace-nowrap drop-shadow-md">
+                <span className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-[#8B5E35] shrink-0 animate-pulse-subtle shadow-[0_0_8px_rgba(139,94,53,0.8)]" />
+                <h1 className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl font-sans font-extrabold tracking-tight text-white leading-none select-none whitespace-nowrap drop-shadow-md">
                   {currentSlide.word}{" "}
                   <span className="italic font-normal font-serif text-[#E9E0D2]">
                     {currentSlide.subWord}
@@ -164,19 +166,28 @@ export default function Hero() {
                 </h1>
               </motion.div>
             </AnimatePresence>
+
+            {/* Mobile-only compact Plan CTA button */}
+            <Link
+              href="/contact"
+              className="md:hidden inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/95 hover:bg-white text-[#183D2B] text-[10px] font-bold tracking-wider uppercase transition-all shadow-md active:scale-95 whitespace-nowrap shrink-0"
+            >
+              <span>Plan</span>
+              <ArrowUpRight className="w-3 h-3 text-[#183D2B]" />
+            </Link>
           </div>
 
           {/* Center: Invisible Anchor / Spacer for the floating Navbar capsule */}
           <div
             id="hero-navbar-anchor"
-            className="shrink-0 h-[48px] sm:h-[54px] w-[300px] sm:w-[500px] md:w-[560px] pointer-events-none"
+            className="shrink-0 h-[44px] sm:h-[48px] md:h-[54px] w-full max-w-[320px] sm:max-w-[420px] md:w-[460px] lg:w-[540px] pointer-events-none"
           />
 
-          {/* Right: Primary Plan Your Journey CTA Button - matching height, on same line */}
-          <div className="flex-1 flex items-center justify-end pointer-events-auto">
+          {/* Desktop Right: Primary Plan Your Journey CTA Button - matching height, on same line */}
+          <div className="hidden md:flex flex-1 items-center justify-end pointer-events-auto">
             <Link
               href="/contact"
-              className="group inline-flex items-center gap-2 sm:gap-2.5 px-4 sm:px-6 h-[48px] sm:h-[54px] rounded-full bg-white hover:bg-[#8B5E35] text-[#183D2B] hover:text-white text-[11px] sm:text-xs font-bold tracking-wider uppercase transition-all duration-300 shadow-xl hover:scale-105 active:scale-95 whitespace-nowrap shrink-0"
+              className="group inline-flex items-center gap-2 sm:gap-2.5 px-4 sm:px-6 h-[48px] sm:h-[54px] rounded-full bg-white hover:bg-[#8B5E35] text-[#183D2B] hover:text-white text-[11px] sm:text-xs font-bold tracking-wider uppercase transition-all duration-300 hover:shadow-[0_8px_25px_rgba(255,255,255,0.22)] hover:-translate-y-0.5 active:scale-95 whitespace-nowrap shrink-0 border border-white/40"
             >
               <span>Plan Your Journey</span>
               <div className="w-6 h-6 rounded-full bg-[#183D2B] group-hover:bg-white text-white group-hover:text-[#8B5E35] flex items-center justify-center transition-colors shrink-0">

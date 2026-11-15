@@ -215,33 +215,33 @@ export default function CuratedExperiences() {
             <div
               key={exp.id}
               onClick={() => setSelectedExp(exp)}
-              className="group relative h-[480px] lg:h-[520px] rounded-[2rem] sm:rounded-[2.4rem] overflow-hidden cursor-pointer shadow-[0_12px_35px_rgba(24,61,43,0.08)] hover:shadow-[0_25px_50px_rgba(24,61,43,0.2)] hover:-translate-y-1.5 transition-all duration-500 select-none bg-[#183D2B]"
+              className="group relative h-[480px] lg:h-[520px] rounded-[2rem] sm:rounded-[2.4rem] overflow-hidden cursor-pointer border border-white/10 hover:border-[#8B5E35]/60 hover:-translate-y-2 transition-all duration-500 select-none bg-[#183D2B] hover:shadow-[0_12px_30px_rgba(24,61,43,0.08)]"
             >
               <Image
                 src={exp.image}
                 alt={exp.title}
                 fill
                 sizes="(max-width: 1024px) 50vw, 25vw"
-                className="object-cover transition-transform duration-1000 ease-out group-hover:scale-108"
+                className="object-cover transition-transform duration-1000 ease-out group-hover:scale-110"
               />
 
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/10 transition-opacity duration-500 group-hover:from-black/90" />
 
               <div className="absolute top-5 left-5 z-10">
-                <span className="font-serif italic text-lg sm:text-xl text-[#E9E0D2] drop-shadow-sm">
+                <span className="font-serif italic text-lg sm:text-xl text-[#E9E0D2] drop-shadow-sm transition-transform duration-300 group-hover:-translate-y-1 block">
                   {exp.number}
                 </span>
               </div>
 
               <div className="absolute inset-x-0 bottom-0 z-10 p-6 sm:p-7 flex flex-col justify-end space-y-3">
-                <h3 className="font-serif text-2xl sm:text-[25px] text-white font-light leading-snug group-hover:text-[#E9E0D2] transition-colors duration-300">
+                <h3 className="font-serif text-2xl sm:text-[25px] text-white font-light leading-snug group-hover:text-[#E9E0D2] group-hover:translate-x-0.5 transition-all duration-300">
                   {exp.title}
                 </h3>
 
                 <div className="pt-1">
                   <span className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] font-medium text-[#E9E0D2] group-hover:text-white transition-colors duration-300">
                     <span>View Details</span>
-                    <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5" />
+                    <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1.5 group-hover:-translate-y-0.5" />
                   </span>
                 </div>
               </div>
@@ -262,7 +262,7 @@ export default function CuratedExperiences() {
                 top: `calc(75px + ${idx * 6}px)`,
                 zIndex: idx + 5,
               }}
-              className={`sticky group relative h-[70vh] min-h-[420px] max-h-[520px] rounded-[2rem] overflow-hidden cursor-pointer shadow-[0_-8px_30px_rgba(0,0,0,0.35)] select-none bg-[#183D2B] border border-white/10 ${idx === EXPERIENCES_DATA.length - 1 ? "mb-0" : "mb-6"
+              className={`sticky group relative h-[70vh] min-h-[420px] max-h-[520px] rounded-[2rem] overflow-hidden cursor-pointer shadow-[0_-4px_20px_rgba(0,0,0,0.18)] select-none bg-[#183D2B] border border-white/15 ${idx === experiencesData.length - 1 ? "mb-0" : "mb-6"
                 }`}
             >
               <Image

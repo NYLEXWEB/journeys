@@ -380,10 +380,10 @@ export default function Destinations() {
       className={`group relative ${
         isGrid
           ? "w-full h-[380px] sm:h-[420px]"
-          : "w-[280px] sm:w-[340px] md:w-[380px] h-[340px] sm:h-[390px] shrink-0 mx-2.5 sm:mx-3.5"
-      } rounded-[2rem] sm:rounded-[2.4rem] overflow-hidden cursor-pointer shadow-[0_10px_30px_rgba(24,61,43,0.08)] hover:shadow-[0_20px_50px_rgba(24,61,43,0.22)] transition-all duration-700 bg-[#183D2B] select-none`}
+          : "w-[280px] sm:w-[340px] md:w-[380px] h-[340px] sm:h-[390px] shrink-0 mx-2 sm:mx-3"
+      } rounded-[2rem] sm:rounded-[2.4rem] overflow-hidden cursor-pointer border border-white/10 hover:border-[#8B5E35]/60 hover:-translate-y-1.5 transition-all duration-500 bg-[#183D2B] select-none hover:shadow-[0_12px_28px_rgba(24,61,43,0.08)]`}
     >
-      {/* Full Image */}
+      {/* Full Image with Living Slow Drift & Hover Zoom */}
       <Image
         src={dest.image}
         alt={dest.name}
@@ -393,34 +393,34 @@ export default function Destinations() {
             ? "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
             : "(max-width: 640px) 280px, (max-width: 1024px) 340px, 380px"
         }
-        className="object-cover transition-transform duration-1000 ease-out group-hover:scale-108"
+        className="object-cover transition-transform duration-1000 ease-out group-hover:scale-110"
       />
 
       {/* Ambient Dark Gradient for Legibility */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/10 transition-opacity duration-500 group-hover:from-black/90" />
 
-      {/* Top State Badge */}
+      {/* Top State Badge with Gentle Hover Motion */}
       <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
-        <span className="px-3 py-1 rounded-full bg-white/90 backdrop-blur-md text-[10px] uppercase tracking-wider font-semibold text-[#183D2B] shadow-sm">
+        <span className="px-3 py-1 rounded-full bg-white/95 backdrop-blur-md text-[10px] uppercase tracking-wider font-semibold text-[#183D2B] border border-white/60 transition-transform duration-300 group-hover:-translate-y-0.5">
           {dest.state}
         </span>
       </div>
 
       {/* Bottom Overlay: Title & Minimal "View Details" */}
       <div className="absolute inset-x-0 bottom-0 z-10 p-5 sm:p-6 flex flex-col justify-end space-y-2">
-        <span className="text-[10px] sm:text-[11px] font-sans text-[#E9E0D2] tracking-wide flex items-center gap-1.5 opacity-90">
+        <span className="text-[10px] sm:text-[11px] font-sans text-[#E9E0D2] tracking-wide flex items-center gap-1.5 opacity-90 transition-transform duration-300 group-hover:translate-x-0.5">
           <MapPin className="w-3 h-3 text-[#E9E0D2]" />
           <span>{dest.region}</span>
         </span>
 
-        <h3 className="text-2xl sm:text-3xl font-serif text-white font-light leading-snug group-hover:text-[#E9E0D2] transition-colors duration-300 break-words line-clamp-2">
+        <h3 className="text-2xl sm:text-3xl font-serif text-white font-light leading-snug group-hover:text-[#E9E0D2] group-hover:translate-x-0.5 transition-all duration-300 break-words line-clamp-2">
           {dest.name}
         </h3>
 
         <div className="pt-1">
           <span className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] font-medium text-[#E9E0D2] group-hover:text-white transition-colors duration-300">
             <span>View Details</span>
-            <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5" />
+            <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1.5 group-hover:-translate-y-0.5" />
           </span>
         </div>
       </div>

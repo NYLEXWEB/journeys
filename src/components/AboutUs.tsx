@@ -107,26 +107,28 @@ export default function AboutUs() {
           </p>
         </div>
 
-        {/* Tab Navigation Pill Bar */}
-        <div className="flex items-center gap-2 p-1.5 rounded-full bg-[#E9E0D2]/40 border border-[#E9E0D2] mb-6 sm:mb-8 max-w-fit overflow-x-auto no-scrollbar">
-          {tabs.map((tab) => {
-            const Icon = tab.icon;
-            const isActive = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-sans tracking-wide transition-all whitespace-nowrap cursor-pointer ${
-                  isActive
-                    ? "bg-[#183D2B] text-[#FFFCF5] shadow-sm font-medium"
-                    : "text-[#242424]/75 hover:text-[#183D2B] hover:bg-white/60"
-                }`}
-              >
-                <Icon className={`w-3.5 h-3.5 ${isActive ? "text-[#E9E0D2]" : "text-[#8B5E35]"}`} />
-                <span>{tab.label}</span>
-              </button>
-            );
-          })}
+        {/* Tab Navigation Pill Bar with smooth mobile horizontal scroll */}
+        <div className="w-full overflow-x-auto no-scrollbar mb-6 sm:mb-8 pb-1">
+          <div className="flex items-center gap-2 p-1.5 rounded-full bg-[#E9E0D2]/40 border border-[#E9E0D2] w-max">
+            {tabs.map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-sans tracking-wide transition-all whitespace-nowrap cursor-pointer ${
+                    isActive
+                      ? "bg-[#183D2B] text-[#FFFCF5] shadow-sm font-medium"
+                      : "text-[#242424]/75 hover:text-[#183D2B] hover:bg-white/60"
+                  }`}
+                >
+                  <Icon className={`w-3.5 h-3.5 ${isActive ? "text-[#E9E0D2]" : "text-[#8B5E35]"}`} />
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Interactive Tab Panels */}

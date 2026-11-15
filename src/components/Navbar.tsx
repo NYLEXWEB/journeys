@@ -291,19 +291,19 @@ export default function Navbar() {
         <div
           className={`pointer-events-auto flex items-center justify-between rounded-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
             isDocked
-              ? "w-[calc(100vw-24px)] max-w-[1600px] bg-[#FFFCF5]/96 backdrop-blur-2xl border border-[#E9E0D2] shadow-[0_16px_40px_rgba(24,61,43,0.12)] text-[#242424] px-3 sm:px-6 py-1.5 sm:py-2.5 h-[52px] sm:h-[58px]"
-              : "w-auto max-w-fit bg-black/75 backdrop-blur-2xl border border-white/25 shadow-[0_20px_50px_rgba(0,0,0,0.65)] text-white px-3 sm:px-4 py-1.5 sm:py-2 gap-2 sm:gap-3 h-[48px] sm:h-[54px]"
+              ? "w-[calc(100vw-20px)] sm:w-[calc(100vw-24px)] max-w-[1600px] bg-[#FFFCF5]/96 backdrop-blur-2xl border border-[#E9E0D2] shadow-[0_16px_40px_rgba(24,61,43,0.12)] text-[#242424] px-3 sm:px-6 py-1.5 sm:py-2.5 h-[50px] sm:h-[58px]"
+              : "w-auto max-w-[calc(100vw-16px)] bg-black/75 backdrop-blur-2xl border border-white/25 shadow-[0_20px_50px_rgba(0,0,0,0.65)] text-white px-2.5 sm:px-4 py-1.5 sm:py-2 gap-1.5 sm:gap-3 h-[46px] sm:h-[54px]"
           }`}
         >
           {/* Brand Logo */}
           <Link
             href="/#hero"
-            className="flex items-center gap-2 group transition-transform duration-300 hover:scale-[1.01] shrink-0 pl-1"
+            className="flex items-center gap-2 group transition-transform duration-300 hover:scale-[1.01] shrink-0 pl-0.5 sm:pl-1"
           >
             <div
               className={`relative transition-all duration-500 ${
                 !isDocked
-                  ? "h-6 sm:h-7 w-20 sm:w-24"
+                  ? "h-5 sm:h-7 w-16 sm:w-24"
                   : "h-7 sm:h-9 md:h-10 w-24 sm:w-36 md:w-40"
               }`}
             >
@@ -324,24 +324,24 @@ export default function Navbar() {
 
           {/* DUAL NAVIGATION CONTENT */}
           {!isDocked ? (
-            /* HERO FLOATING CAPSULE NAVIGATION: [Kerala] [Journeys] [Experiences] */
+            /* HERO FLOATING CAPSULE NAVIGATION: [Kerala] [Journeys] [Experiences (sm+)] */
             <div className="flex items-center gap-0.5 sm:gap-1.5">
-              <div className="h-3.5 w-px bg-white/20 mx-1" />
+              <div className="h-3.5 w-px bg-white/20 mx-0.5 sm:mx-1" />
               <Link
                 href="#destinations"
-                className="text-[11px] sm:text-xs font-semibold tracking-wider uppercase px-2 sm:px-2.5 py-1.5 rounded-full text-white/90 hover:text-white hover:bg-white/15 transition-all whitespace-nowrap"
+                className="text-[10px] sm:text-xs font-semibold tracking-wider uppercase px-1.5 sm:px-2.5 py-1 sm:py-1.5 rounded-full text-white/90 hover:text-white hover:bg-white/15 transition-all whitespace-nowrap"
               >
                 Kerala
               </Link>
               <Link
                 href="#travel-with-jibu"
-                className="text-[11px] sm:text-xs font-semibold tracking-wider uppercase px-2 sm:px-2.5 py-1.5 rounded-full text-white/90 hover:text-white hover:bg-white/15 transition-all whitespace-nowrap"
+                className="text-[10px] sm:text-xs font-semibold tracking-wider uppercase px-1.5 sm:px-2.5 py-1 sm:py-1.5 rounded-full text-white/90 hover:text-white hover:bg-white/15 transition-all whitespace-nowrap"
               >
                 Journeys
               </Link>
               <Link
                 href="#experiences"
-                className="text-[11px] sm:text-xs font-semibold tracking-wider uppercase px-2 sm:px-2.5 py-1.5 rounded-full text-white/90 hover:text-white hover:bg-white/15 transition-all whitespace-nowrap"
+                className="hidden sm:inline-block text-[10px] sm:text-xs font-semibold tracking-wider uppercase px-1.5 sm:px-2.5 py-1 sm:py-1.5 rounded-full text-white/90 hover:text-white hover:bg-white/15 transition-all whitespace-nowrap"
               >
                 Experiences
               </Link>
@@ -349,13 +349,13 @@ export default function Navbar() {
               {/* Mobile menu toggle for hero capsule */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="lg:hidden p-1.5 rounded-full transition-all active:scale-95 text-white bg-white/15 hover:bg-white/25 ml-1"
+                className="lg:hidden p-1 sm:p-1.5 rounded-full transition-all active:scale-95 text-white bg-white/15 hover:bg-white/25 ml-0.5 sm:ml-1"
                 aria-label="Toggle Navigation Menu"
               >
                 {isMobileMenuOpen ? (
-                  <X className="w-4 h-4" />
+                  <X className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 ) : (
-                  <Menu className="w-4 h-4" />
+                  <Menu className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 )}
               </button>
             </div>

@@ -7,6 +7,7 @@ import { ContactInfoModel } from "@/models/ContactInfo";
 import { FooterContentModel } from "@/models/FooterContent";
 import { ServiceModel } from "@/models/Service";
 import { JournalModel } from "@/models/Journal";
+import { FAQModel } from "@/models/FAQ";
 import {
   INITIAL_HERO_SLIDES,
   INITIAL_DESTINATIONS,
@@ -17,6 +18,7 @@ import {
   INITIAL_FOOTER_CONTENT,
   INITIAL_SERVICES,
   INITIAL_JOURNAL,
+  INITIAL_FAQS,
 } from "./seedData";
 
 /**
@@ -77,6 +79,12 @@ export async function seedInitialDataIfEmpty(): Promise<void> {
     if (journalCount === 0) {
       await JournalModel.insertMany(INITIAL_JOURNAL);
       console.log("Seeded initial journal dispatches.");
+    }
+
+    const faqCount = await FAQModel.countDocuments();
+    if (faqCount === 0) {
+      await FAQModel.insertMany(INITIAL_FAQS);
+      console.log("Seeded initial FAQs.");
     }
   } catch (err) {
     console.error("Initial data seed check warning:", err);

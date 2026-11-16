@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@uploadthing/react": "^7.3.3",
     "bcryptjs": "^3.0.3",
     "framer-motion": "^14.9.0",
     "jose": "^6.2.17",
@@ -17,7 +18,8 @@
     "mongoose": "^9.12.1",
     "next": "16.4.5",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "uploadthing": "^7.7.4"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",

@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { connectToDatabase } from "@/lib/db";
 import { verifyAuthRequest } from "@/lib/auth";
 import { ExperienceModel } from "@/models/Experience";
+import { deleteUploadThingFiles } from "@/lib/uploadthing-server";
 
 export async function PUT(
   req: NextRequest,
@@ -70,10 +71,16 @@ export async function DELETE(
       return NextResponse.json({ error: "Experience not found" }, { status: 404 });
     }
 
+    // Automatically purge remote cloud assets from UploadThing if uploaded
+    if (deleted.image) {
+      deleteUploadThingFiles([deleted.image]).catch((err) => {
+        console.warn("[UploadThing] Failed to delete file after experience deletion:", err);
+      });
+    }
+
     return NextResponse.json({ success: true, message: `Experience ${deleted.title} deleted successfully.` });
   } catch (err: any) {
     console.error("DELETE Experience error:", err);
     return NextResponse.json({ error: err.message || "Failed to delete experience" }, { status: 500 });
   }
 }
-

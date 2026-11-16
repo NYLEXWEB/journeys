@@ -726,3 +726,50 @@ export const INITIAL_ABOUT = {
   ],
 };
 
+
+
+export interface FAQItem {
+  id: string;
+  question: string;
+  answer: string;
+  category?: string;
+  order: number;
+}
+
+export const INITIAL_FAQS: FAQItem[] = [
+  {
+    id: "faq-chauffeur-fleet",
+    question: "How does private chauffeur-driven travel work with Journeys by Jibu Thomas?",
+    answer: "Every journey includes a dedicated, seasoned private chauffeur and an immaculate, air-conditioned vehicle (premium Toyota Innova Crysta or luxury SUV) exclusively reserved for you throughout your stay. Your chauffeur knows every scenic mountain pass, quiet tea stall, and tranquil viewpoint, allowing complete flexibility for spontaneous stops without stress.",
+    category: "Logistics & Transport",
+    order: 1,
+  },
+  {
+    id: "faq-ideal-duration",
+    question: "How many days are recommended for a relaxed, authentic Kerala holiday?",
+    answer: "We recommend at least 7 to 10 days to comfortably absorb Kerala without travel fatigue. Our golden rule is at least 2 to 3 nights in each destination (such as colonial Fort Kochi, Munnar's high-altitude tea plantations, and a secluded private backwater retreat in Kumarakom or Alleppey).",
+    category: "Planning & Pacing",
+    order: 2,
+  },
+  {
+    id: "faq-houseboat-privacy",
+    question: "Are your houseboats private, safe, and air-conditioned?",
+    answer: "Yes, absolutely. We exclusively charter private traditional kettuvallams (wooden houseboats) for our guests—you never share a vessel with strangers. Each boat features fully air-conditioned bedrooms, private en-suite bathrooms, and a dedicated 3-person crew (private captain, engine driver, and personal chef) who prepares fresh local culinary banquets.",
+    category: "Houseboats & Stays",
+    order: 3,
+  },
+  {
+    id: "faq-best-season",
+    question: "When is the best time of year to visit Kerala and the Western Ghats?",
+    answer: "October through March offers crisp, golden weather with pleasant daytime temperatures and cool mountain evenings in Munnar (10°C–15°C). June through September is the monsoon season, globally celebrated for vibrant emerald landscapes, cascading waterfalls, and authentic Ayurvedic wellness therapies.",
+    category: "Seasons & Timing",
+    order: 4,
+  },
+  {
+    id: "faq-booking-consultation",
+    question: "What is the process to begin planning and secure our booking?",
+    answer: "Planning begins with an unhurried, conversational consultation. You share your dates, travel style, and interests through our website enquiry or direct WhatsApp. Jibu Thomas personally shapes a bespoke proposal. Once you are completely delighted with the pace and stays, we confirm all private arrangements with transparent clarity.",
+    category: "Booking & Planning",
+    order: 5,
+  },
+];

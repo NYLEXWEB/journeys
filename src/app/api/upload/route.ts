@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
+import { UTApi } from "uploadthing/server";
 import { getAdminSession } from "@/lib/auth";
+import { getCleanUploadThingToken } from "@/lib/uploadthing-server";
 
 export async function POST(req: NextRequest) {
   try {
@@ -17,28 +17,33 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
+    const token = getCleanUploadThingToken();
+    if (!token) {
+      return NextResponse.json(
+        { error: "UploadThing token not configured in environment variables." },
+        { status: 500 }
+      );
+    }
 
-    // Sanitize filename and create unique timestamped name
-    const originalName = file.name || "upload.jpg";
-    const extension = path.extname(originalName) || ".jpg";
-    const baseName = path
-      .basename(originalName, extension)
-      .toLowerCase()
-      .replace(/[^a-z0-9]/g, "-")
-      .slice(0, 30);
-    const uniqueFileName = `${baseName}-${Date.now()}${extension}`;
+    const utapi = new UTApi({ token });
+    const uploadRes = await utapi.uploadFiles([file]);
 
-    // Target upload folder in public/uploads
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
-    await mkdir(uploadDir, { recursive: true });
+    if (!uploadRes || !uploadRes[0] || uploadRes[0].error) {
+      throw new Error(uploadRes?.[0]?.error?.message || "Failed to upload file to UploadThing.");
+    }
 
-    const filePath = path.join(uploadDir, uniqueFileName);
-    await writeFile(filePath, buffer);
+    const uploadedData = uploadRes[0].data;
+    const cdnUrl =
+      (uploadedData as any).ufsUrl ||
+      uploadedData.url ||
+      `https://utfs.io/f/${uploadedData.key}`;
 
-    const publicUrl = `/uploads/${uniqueFileName}`;
-    return NextResponse.json({ success: true, url: publicUrl });
+    return NextResponse.json({
+      success: true,
+      url: cdnUrl,
+      key: uploadedData.key,
+      name: uploadedData.name,
+    });
   } catch (error: any) {
     console.error("[Upload API Error]:", error);
     return NextResponse.json(
@@ -47,4 +52,3 @@ export async function POST(req: NextRequest) {
     );
   }
 }
-

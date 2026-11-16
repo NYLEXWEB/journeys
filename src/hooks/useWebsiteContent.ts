@@ -12,6 +12,7 @@ import {
   INITIAL_SERVICES,
   INITIAL_JOURNAL,
   INITIAL_ABOUT,
+  INITIAL_FAQS,
 } from "@/lib/seedData";
 
 let globalContentCache: any = null;
@@ -36,6 +37,7 @@ export function useWebsiteContent() {
       services: INITIAL_SERVICES,
       journal: INITIAL_JOURNAL,
       about: INITIAL_ABOUT,
+      faqs: INITIAL_FAQS,
     }
   );
 
@@ -64,4 +66,3 @@ export function useWebsiteContent() {
 
   return content;
 }
-

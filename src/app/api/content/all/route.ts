@@ -12,6 +12,7 @@ import {
   INITIAL_SERVICES,
   INITIAL_JOURNAL,
   INITIAL_ABOUT,
+  INITIAL_FAQS,
 } from "@/lib/seedData";
 import { HeroSlideModel } from "@/models/HeroSlide";
 import { DestinationModel } from "@/models/Destination";
@@ -23,6 +24,7 @@ import { FooterContentModel } from "@/models/FooterContent";
 import { ServiceModel } from "@/models/Service";
 import { JournalModel } from "@/models/Journal";
 import { AboutModel } from "@/models/About";
+import { FAQModel } from "@/models/FAQ";
 
 export async function GET() {
   try {
@@ -42,6 +44,7 @@ export async function GET() {
         services: INITIAL_SERVICES,
         journal: INITIAL_JOURNAL,
         about: INITIAL_ABOUT,
+        faqs: INITIAL_FAQS,
       });
     }
 
@@ -59,6 +62,7 @@ export async function GET() {
       services,
       journal,
       aboutDoc,
+      faqs,
     ] = await Promise.all([
       HeroSlideModel.find().sort({ order: 1 }).lean(),
       DestinationModel.find().sort({ order: 1 }).lean(),
@@ -70,6 +74,7 @@ export async function GET() {
       ServiceModel.find().sort({ order: 1 }).lean(),
       JournalModel.find().sort({ order: 1 }).lean(),
       AboutModel.findOne().lean(),
+      FAQModel.find().sort({ order: 1 }).lean(),
     ]);
 
     return NextResponse.json({
@@ -84,6 +89,7 @@ export async function GET() {
       services: services.length ? services : INITIAL_SERVICES,
       journal: journal.length ? journal : INITIAL_JOURNAL,
       about: aboutDoc || INITIAL_ABOUT,
+      faqs: faqs.length ? faqs : INITIAL_FAQS,
     });
   } catch (err: any) {
     console.error("API /api/content/all error:", err);
@@ -100,7 +106,7 @@ export async function GET() {
       services: INITIAL_SERVICES,
       journal: INITIAL_JOURNAL,
       about: INITIAL_ABOUT,
+      faqs: INITIAL_FAQS,
     });
   }
 }
-

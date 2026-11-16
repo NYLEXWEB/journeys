@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { MediaUploaderWithPreview } from "@/components/admin/MediaUploaderWithPreview";
 import {
   Lock,
   User,
@@ -39,6 +40,7 @@ import {
   Sparkles,
   ShieldCheck,
   Heart,
+  HelpCircle,
 } from "lucide-react";
 
 type ActiveTab =
@@ -50,6 +52,7 @@ type ActiveTab =
   | "services"
   | "journal"
   | "reviews"
+  | "faq"
   | "enquiries"
   | "analytics"
   | "contact"
@@ -66,6 +69,8 @@ export default function AdminPage() {
   const [content, setContent] = useState<any>(null);
   const [isLoadingContent, setIsLoadingContent] = useState(false);
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
+  const [aboutStoryImage, setAboutStoryImage] = useState<string>("");
+  const [aboutJibuImage, setAboutJibuImage] = useState<string>("");
 
   // Guest Enquiries state
   const [enquiries, setEnquiries] = useState<any[]>([]);
@@ -77,14 +82,14 @@ export default function AdminPage() {
 
   // Delete modal state
   const [deleteModal, setDeleteModal] = useState<{
-    type: "destination" | "experience" | "journey" | "service" | "review" | "journal";
+    type: "destination" | "experience" | "journey" | "service" | "review" | "journal" | "faq";
     id: string;
     title: string;
   } | null>(null);
 
   // Modal edit/create forms
   const [editModal, setEditModal] = useState<{
-    section: "destination" | "experience" | "journey" | "service" | "review" | "hero" | "journal" | "about";
+    section: "destination" | "experience" | "journey" | "service" | "review" | "hero" | "journal" | "about" | "faq";
     isNew: boolean;
     data: any;
   } | null>(null);
@@ -152,6 +157,8 @@ export default function AdminPage() {
       const res = await fetch("/api/content/all");
       const data = await res.json();
       setContent(data);
+      if (data?.about?.storyImage) setAboutStoryImage(data.about.storyImage);
+      if (data?.about?.jibuImage) setAboutJibuImage(data.about.jibuImage);
     } catch {
       showToast("Failed to load website content from database.", "error");
     } finally {
@@ -269,6 +276,11 @@ export default function AdminPage() {
     if (!editModal) return;
 
     const { section, isNew, data } = editModal;
+
+    if (["destination", "experience", "journey", "service", "journal"].includes(section) && !data.image) {
+      showToast("Please upload a photo before saving.", "error");
+      return;
+    }
     let url = "";
     let method = isNew ? "POST" : "PUT";
 
@@ -284,6 +296,8 @@ export default function AdminPage() {
       url = isNew ? "/api/content/reviews" : `/api/content/reviews/${data._id || data.id}`;
     } else if (section === "journal") {
       url = isNew ? "/api/content/journal" : `/api/content/journal/${data.id || data._id}`;
+    } else if (section === "faq") {
+      url = isNew ? "/api/content/faq" : `/api/content/faq/${data.id || data._id}`;
     } else if (section === "about") {
       url = "/api/content/about";
       method = "PUT";
@@ -326,6 +340,7 @@ export default function AdminPage() {
     if (type === "service") url = `/api/content/services/${id}`;
     if (type === "review") url = `/api/content/reviews/${id}`;
     if (type === "journal") url = `/api/content/journal/${id}`;
+    if (type === "faq") url = `/api/content/faq/${id}`;
 
     try {
       const res = await fetch(url, { method: "DELETE" });
@@ -589,6 +604,7 @@ export default function AdminPage() {
               { id: "services", label: `Ways to Travel / Stays (${content?.services?.length || 5})`, icon: Bed },
               { id: "journal", label: `Blog & Journal (${content?.journal?.length || 2})`, icon: BookOpen },
               { id: "reviews", label: `Google Reviews (${content?.reviews?.length || 6})`, icon: Star },
+              { id: "faq", label: `FAQs (${content?.faqs?.length || 5})`, icon: HelpCircle },
               {
                 id: "enquiries",
                 label: `Guest Enquiries (${enquiries.filter((e) => e.status === "new").length > 0 ? `${enquiries.filter((e) => e.status === "new").length} New` : enquiries.length})`,
@@ -747,32 +763,17 @@ export default function AdminPage() {
                         </div>
 
                         <div className="md:col-span-2">
-                          <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1">
-                            Story Photo with Upload
-                          </label>
-                          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-                            <input
-                              id="about-story-photo-input"
-                              name="storyImage"
-                              defaultValue={content?.about?.storyImage || "/images/generated/tea-plantation-approach.jpg"}
-                              className="flex-1 px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none bg-white"
-                            />
-                            <label className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-white hover:bg-[#FAF6EF] border border-[#E9E0D2] text-xs font-semibold text-[#183D2B] cursor-pointer shrink-0 transition-colors">
-                              <Upload className="w-3.5 h-3.5" />
-                              <span>Upload Photo</span>
-                              <input
-                                type="file"
-                                accept="image/*"
-                                className="hidden"
-                                onChange={(e) =>
-                                  handleUploadImageFile(e, (url) => {
-                                    const inp = document.getElementById("about-story-photo-input") as HTMLInputElement;
-                                    if (inp) inp.value = url;
-                                  })
-                                }
-                              />
-                            </label>
-                          </div>
+                          <input
+                            type="hidden"
+                            name="storyImage"
+                            value={aboutStoryImage || content?.about?.storyImage || "/images/generated/tea-plantation-approach.jpg"}
+                          />
+                          <MediaUploaderWithPreview
+                            label="Story Photo *"
+                            value={aboutStoryImage || content?.about?.storyImage || "/images/generated/tea-plantation-approach.jpg"}
+                            onChange={({ url }) => setAboutStoryImage(url)}
+                            onClear={() => setAboutStoryImage("")}
+                          />
                         </div>
 
                         <div className="md:col-span-2">
@@ -831,32 +832,17 @@ export default function AdminPage() {
                         </div>
 
                         <div className="md:col-span-2">
-                          <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1">
-                            Jibu Thomas Official Photo (with Upload)
-                          </label>
-                          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-                            <input
-                              id="about-jibu-photo-input"
-                              name="jibuImage"
-                              defaultValue={content?.about?.jibuImage || "/images/generated/fort-kochi-heritage.jpg"}
-                              className="flex-1 px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none bg-white"
-                            />
-                            <label className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-white hover:bg-[#FAF6EF] border border-[#E9E0D2] text-xs font-semibold text-[#183D2B] cursor-pointer shrink-0 transition-colors">
-                              <Upload className="w-3.5 h-3.5" />
-                              <span>Upload Photo</span>
-                              <input
-                                type="file"
-                                accept="image/*"
-                                className="hidden"
-                                onChange={(e) =>
-                                  handleUploadImageFile(e, (url) => {
-                                    const inp = document.getElementById("about-jibu-photo-input") as HTMLInputElement;
-                                    if (inp) inp.value = url;
-                                  })
-                                }
-                              />
-                            </label>
-                          </div>
+                          <input
+                            type="hidden"
+                            name="jibuImage"
+                            value={aboutJibuImage || content?.about?.jibuImage || "/images/generated/fort-kochi-heritage.jpg"}
+                          />
+                          <MediaUploaderWithPreview
+                            label="Jibu Thomas Official Portrait *"
+                            value={aboutJibuImage || content?.about?.jibuImage || "/images/generated/fort-kochi-heritage.jpg"}
+                            onChange={({ url }) => setAboutJibuImage(url)}
+                            onClear={() => setAboutJibuImage("")}
+                          />
                         </div>
 
                         <div className="md:col-span-2">
@@ -960,7 +946,7 @@ export default function AdminPage() {
                             shortVibe: "",
                             overview: "",
                             highlights: ["", "", ""],
-                            image: "/images/generated/tea-plantation-approach.jpg",
+                            image: "",
                           },
                         })
                       }
@@ -1055,7 +1041,7 @@ export default function AdminPage() {
                             locations: "",
                             description: "",
                             highlights: ["", "", ""],
-                            image: "/images/generated/houseboat-backwaters.jpg",
+                            image: "",
                           },
                         })
                       }
@@ -1151,7 +1137,7 @@ export default function AdminPage() {
                             shortVibe: "",
                             overview: "",
                             highlights: ["", "", ""],
-                            image: "/images/generated/houseboat-backwaters.jpg",
+                            image: "",
                           },
                         })
                       }
@@ -1245,7 +1231,7 @@ export default function AdminPage() {
                             shortVibe: "",
                             description: "",
                             points: [],
-                            image: "/images/services/private-chauffeur.jpg",
+                            image: "",
                             order: (content?.services?.length || 0) + 1,
                           },
                         })
@@ -1952,7 +1938,7 @@ export default function AdminPage() {
                             categoryKey: "guides",
                             readTime: "5 min read",
                             date: "Kerala Atelier • Guide",
-                            image: "/images/generated/tea-plantation-approach.jpg",
+                            image: "",
                             summary: "",
                             fullContent: [],
                             takeaways: [],
@@ -2269,6 +2255,104 @@ export default function AdminPage() {
                   </div>
                 </div>
               )}
+
+              {/* SECTION: FREQUENTLY ASKED QUESTIONS (FAQ) */}
+              {activeTab === "faq" && (
+                <div className="space-y-6">
+                  <div className="pb-4 border-b border-[#E9E0D2] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                      <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#183D2B]">
+                        Frequently Asked Questions (FAQ)
+                      </h2>
+                      <p className="text-xs text-[#242424]/70 font-light">
+                        Add, edit, reorder, or remove guest questions and detailed answers. Changes are live immediately.
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={() =>
+                        setEditModal({
+                          section: "faq",
+                          isNew: true,
+                          data: {
+                            question: "",
+                            answer: "",
+                            category: "General",
+                            order: (content?.faqs?.length || 0) + 1,
+                          },
+                        })
+                      }
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#183D2B] hover:bg-[#8B5E35] text-white text-xs uppercase tracking-wider font-semibold transition-all shadow-md active:scale-95 cursor-pointer"
+                    >
+                      <Plus className="w-4 h-4" />
+                      <span>Add New Question</span>
+                    </button>
+                  </div>
+
+                  <div className="space-y-4">
+                    {(content?.faqs || []).map((faq: any, idx: number) => (
+                      <div
+                        key={faq.id || faq._id || idx}
+                        className="p-5 sm:p-6 rounded-2xl border border-[#E9E0D2] bg-white hover:border-[#8B5E35]/40 transition-all shadow-sm hover:shadow-md space-y-3"
+                      >
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                          <div className="flex items-center gap-3">
+                            <span className="w-7 h-7 rounded-full bg-[#183D2B]/5 text-[#183D2B] font-serif font-bold text-xs flex items-center justify-center shrink-0">
+                              {(idx + 1).toString().padStart(2, "0")}
+                            </span>
+                            {faq.category && (
+                              <span className="px-2.5 py-1 rounded-full bg-[#8B5E35]/10 text-[#8B5E35] text-[10px] uppercase tracking-wider font-semibold">
+                                {faq.category}
+                              </span>
+                            )}
+                            <span className="text-[11px] text-[#242424]/40 font-mono">
+                              Order: {faq.order ?? idx + 1}
+                            </span>
+                          </div>
+
+                          <div className="flex items-center gap-2 self-end sm:self-auto">
+                            <button
+                              onClick={() =>
+                                setEditModal({
+                                  section: "faq",
+                                  isNew: false,
+                                  data: { ...faq },
+                                })
+                              }
+                              className="p-2 rounded-xl text-[#183D2B] hover:bg-[#183D2B]/10 transition-colors cursor-pointer"
+                              title="Edit Question"
+                            >
+                              <Edit2 className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() =>
+                                setDeleteModal({
+                                  type: "faq",
+                                  id: faq.id || faq._id,
+                                  title: faq.question,
+                                })
+                              }
+                              className="p-2 rounded-xl text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+                              title="Delete Question"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+
+                        <div>
+                          <h3 className="text-base sm:text-lg font-medium text-[#183D2B] leading-snug">
+                            {faq.question}
+                          </h3>
+                          <p className="text-xs sm:text-sm text-[#242424]/80 font-light mt-2 leading-relaxed bg-[#FFFCF5] p-3.5 rounded-xl border border-[#E9E0D2]/60">
+                            {faq.answer}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </>
           )}
         </main>
@@ -2416,50 +2500,22 @@ export default function AdminPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
-                      Photo / Image * (with Upload)
-                    </label>
-                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-                      <input
-                        type="text"
-                        required
-                        value={editModal.data.image || ""}
-                        onChange={(e) =>
-                          setEditModal({
-                            ...editModal,
-                            data: { ...editModal.data, image: e.target.value },
-                          })
-                        }
-                        placeholder="Paste image URL or click Upload Photo ->"
-                        className="flex-1 px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
-                      />
-                      <label className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#FAF6EF] hover:bg-[#E9E0D2] border border-[#E9E0D2] text-xs font-semibold text-[#183D2B] cursor-pointer shrink-0 transition-colors">
-                        <Upload className="w-3.5 h-3.5" />
-                        <span>Upload Photo</span>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          className="hidden"
-                          onChange={(e) =>
-                            handleUploadImageFile(e, (url) => {
-                              setEditModal({
-                                ...editModal,
-                                data: { ...editModal.data, image: url },
-                              });
-                            })
-                          }
-                        />
-                      </label>
-                    </div>
-                    {editModal.data.image && (
-                      <div className="mt-2 relative h-28 w-44 rounded-xl overflow-hidden border border-[#E9E0D2] shadow-inner bg-neutral-100">
-                        <img
-                          src={editModal.data.image}
-                          alt="Preview"
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    )}
+                    <MediaUploaderWithPreview
+                      label="Destination Cover Photo *"
+                      value={editModal.data.image || ""}
+                      onChange={({ url }) =>
+                        setEditModal({
+                          ...editModal,
+                          data: { ...editModal.data, image: url },
+                        })
+                      }
+                      onClear={() =>
+                        setEditModal({
+                          ...editModal,
+                          data: { ...editModal.data, image: "" },
+                        })
+                      }
+                    />
                   </div>
                 </>
               )}
@@ -2566,49 +2622,22 @@ export default function AdminPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
-                      Photo / Image * (with Upload)
-                    </label>
-                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-                      <input
-                        type="text"
-                        value={editModal.data.image || ""}
-                        onChange={(e) =>
-                          setEditModal({
-                            ...editModal,
-                            data: { ...editModal.data, image: e.target.value },
-                          })
-                        }
-                        placeholder="Paste image URL or click Upload Photo ->"
-                        className="flex-1 px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
-                      />
-                      <label className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#FAF6EF] hover:bg-[#E9E0D2] border border-[#E9E0D2] text-xs font-semibold text-[#183D2B] cursor-pointer shrink-0 transition-colors">
-                        <Upload className="w-3.5 h-3.5" />
-                        <span>Upload Photo</span>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          className="hidden"
-                          onChange={(e) =>
-                            handleUploadImageFile(e, (url) => {
-                              setEditModal({
-                                ...editModal,
-                                data: { ...editModal.data, image: url },
-                              });
-                            })
-                          }
-                        />
-                      </label>
-                    </div>
-                    {editModal.data.image && (
-                      <div className="mt-2 relative h-28 w-44 rounded-xl overflow-hidden border border-[#E9E0D2] shadow-inner bg-neutral-100">
-                        <img
-                          src={editModal.data.image}
-                          alt="Preview"
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    )}
+                    <MediaUploaderWithPreview
+                      label="Experience Cover Photo *"
+                      value={editModal.data.image || ""}
+                      onChange={({ url }) =>
+                        setEditModal({
+                          ...editModal,
+                          data: { ...editModal.data, image: url },
+                        })
+                      }
+                      onClear={() =>
+                        setEditModal({
+                          ...editModal,
+                          data: { ...editModal.data, image: "" },
+                        })
+                      }
+                    />
                   </div>
                 </>
               )}
@@ -2691,49 +2720,22 @@ export default function AdminPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
-                      Photo / Image * (with Upload)
-                    </label>
-                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-                      <input
-                        type="text"
-                        value={editModal.data.image || ""}
-                        onChange={(e) =>
-                          setEditModal({
-                            ...editModal,
-                            data: { ...editModal.data, image: e.target.value },
-                          })
-                        }
-                        placeholder="Paste image URL or click Upload Photo ->"
-                        className="flex-1 px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
-                      />
-                      <label className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#FAF6EF] hover:bg-[#E9E0D2] border border-[#E9E0D2] text-xs font-semibold text-[#183D2B] cursor-pointer shrink-0 transition-colors">
-                        <Upload className="w-3.5 h-3.5" />
-                        <span>Upload Photo</span>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          className="hidden"
-                          onChange={(e) =>
-                            handleUploadImageFile(e, (url) => {
-                              setEditModal({
-                                ...editModal,
-                                data: { ...editModal.data, image: url },
-                              });
-                            })
-                          }
-                        />
-                      </label>
-                    </div>
-                    {editModal.data.image && (
-                      <div className="mt-2 relative h-28 w-44 rounded-xl overflow-hidden border border-[#E9E0D2] shadow-inner bg-neutral-100">
-                        <img
-                          src={editModal.data.image}
-                          alt="Preview"
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    )}
+                    <MediaUploaderWithPreview
+                      label="Journey Route Photo *"
+                      value={editModal.data.image || ""}
+                      onChange={({ url }) =>
+                        setEditModal({
+                          ...editModal,
+                          data: { ...editModal.data, image: url },
+                        })
+                      }
+                      onClear={() =>
+                        setEditModal({
+                          ...editModal,
+                          data: { ...editModal.data, image: "" },
+                        })
+                      }
+                    />
                   </div>
 
                   <div>
@@ -2815,50 +2817,22 @@ export default function AdminPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
-                      Photo / Image * (with Upload)
-                    </label>
-                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-                      <input
-                        type="text"
-                        required
-                        value={editModal.data.image || ""}
-                        onChange={(e) =>
-                          setEditModal({
-                            ...editModal,
-                            data: { ...editModal.data, image: e.target.value },
-                          })
-                        }
-                        placeholder="Paste image URL or click Upload Photo ->"
-                        className="flex-1 px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
-                      />
-                      <label className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#FAF6EF] hover:bg-[#E9E0D2] border border-[#E9E0D2] text-xs font-semibold text-[#183D2B] cursor-pointer shrink-0 transition-colors">
-                        <Upload className="w-3.5 h-3.5" />
-                        <span>Upload Photo</span>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          className="hidden"
-                          onChange={(e) =>
-                            handleUploadImageFile(e, (url) => {
-                              setEditModal({
-                                ...editModal,
-                                data: { ...editModal.data, image: url },
-                              });
-                            })
-                          }
-                        />
-                      </label>
-                    </div>
-                    {editModal.data.image && (
-                      <div className="mt-2 relative h-28 w-44 rounded-xl overflow-hidden border border-[#E9E0D2] shadow-inner bg-neutral-100">
-                        <img
-                          src={editModal.data.image}
-                          alt="Preview"
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    )}
+                    <MediaUploaderWithPreview
+                      label="Service Feature Photo *"
+                      value={editModal.data.image || ""}
+                      onChange={({ url }) =>
+                        setEditModal({
+                          ...editModal,
+                          data: { ...editModal.data, image: url },
+                        })
+                      }
+                      onClear={() =>
+                        setEditModal({
+                          ...editModal,
+                          data: { ...editModal.data, image: "" },
+                        })
+                      }
+                    />
                   </div>
 
                   <div>
@@ -3099,40 +3073,24 @@ export default function AdminPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
-                      Slide Media / Photo / Video URL (with Upload)
-                    </label>
-                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-                      <input
-                        type="text"
-                        value={editModal.data.src || ""}
-                        onChange={(e) =>
-                          setEditModal({
-                            ...editModal,
-                            data: { ...editModal.data, src: e.target.value },
-                          })
-                        }
-                        placeholder="/video/video-1.mp4 or photo URL"
-                        className="flex-1 px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
-                      />
-                      <label className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#FAF6EF] hover:bg-[#E9E0D2] border border-[#E9E0D2] text-xs font-semibold text-[#183D2B] cursor-pointer shrink-0 transition-colors">
-                        <Upload className="w-3.5 h-3.5" />
-                        <span>Upload Photo</span>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          className="hidden"
-                          onChange={(e) =>
-                            handleUploadImageFile(e, (url) => {
-                              setEditModal({
-                                ...editModal,
-                                data: { ...editModal.data, src: url },
-                              });
-                            })
-                          }
-                        />
-                      </label>
-                    </div>
+                    <MediaUploaderWithPreview
+                      label="Slide Media (Photo or Video) *"
+                      value={editModal.data.src || ""}
+                      mediaType={editModal.data.type === "video" ? "video" : "image"}
+                      maxSizeMb={editModal.data.type === "video" ? 15 : 10}
+                      onChange={({ url, type }) =>
+                        setEditModal({
+                          ...editModal,
+                          data: { ...editModal.data, src: url, type: type || editModal.data.type },
+                        })
+                      }
+                      onClear={() =>
+                        setEditModal({
+                          ...editModal,
+                          data: { ...editModal.data, src: "" },
+                        })
+                      }
+                    />
                   </div>
                 </>
               )}
@@ -3260,49 +3218,22 @@ export default function AdminPage() {
                     </div>
 
                     <div className="sm:col-span-2">
-                      <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
-                        Cover Image URL (with Upload)
-                      </label>
-                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-                        <input
-                          type="text"
-                          value={editModal.data.image || ""}
-                          onChange={(e) =>
-                            setEditModal({
-                              ...editModal,
-                              data: { ...editModal.data, image: e.target.value },
-                            })
-                          }
-                          placeholder="Paste image URL or click Upload Photo ->"
-                          className="flex-1 px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
-                        />
-                        <label className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#FAF6EF] hover:bg-[#E9E0D2] border border-[#E9E0D2] text-xs font-semibold text-[#183D2B] cursor-pointer shrink-0 transition-colors">
-                          <Upload className="w-3.5 h-3.5" />
-                          <span>Upload Photo</span>
-                          <input
-                            type="file"
-                            accept="image/*"
-                            className="hidden"
-                            onChange={(e) =>
-                              handleUploadImageFile(e, (url) => {
-                                setEditModal({
-                                  ...editModal,
-                                  data: { ...editModal.data, image: url },
-                                });
-                              })
-                            }
-                          />
-                        </label>
-                      </div>
-                      {editModal.data.image && (
-                        <div className="mt-2 relative h-28 w-44 rounded-xl overflow-hidden border border-[#E9E0D2] shadow-inner bg-neutral-100">
-                          <img
-                            src={editModal.data.image}
-                            alt="Preview"
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                      )}
+                      <MediaUploaderWithPreview
+                        label="Article Cover Photo *"
+                        value={editModal.data.image || ""}
+                        onChange={({ url }) =>
+                          setEditModal({
+                            ...editModal,
+                            data: { ...editModal.data, image: url },
+                          })
+                        }
+                        onClear={() =>
+                          setEditModal({
+                            ...editModal,
+                            data: { ...editModal.data, image: "" },
+                          })
+                        }
+                      />
                     </div>
                   </div>
 
@@ -3377,6 +3308,86 @@ export default function AdminPage() {
                       }
                       className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
                       placeholder="e.g. Best Time: October through March&#10;Stay in authentic restored planters' bungalows"
+                    />
+                  </div>
+                </>
+              )}
+
+              {/* FAQ Form Fields */}
+              {editModal.section === "faq" && (
+                <>
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
+                      Question *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={editModal.data.question || ""}
+                      onChange={(e) =>
+                        setEditModal({
+                          ...editModal,
+                          data: { ...editModal.data, question: e.target.value },
+                        })
+                      }
+                      placeholder="e.g. How does private chauffeur-driven travel work?"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none font-medium text-[#183D2B]"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
+                        Category Tag
+                      </label>
+                      <input
+                        type="text"
+                        value={editModal.data.category || ""}
+                        onChange={(e) =>
+                          setEditModal({
+                            ...editModal,
+                            data: { ...editModal.data, category: e.target.value },
+                          })
+                        }
+                        placeholder="e.g. Logistics & Transport, Planning & Pacing"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
+                        Display Order
+                      </label>
+                      <input
+                        type="number"
+                        value={editModal.data.order ?? 1}
+                        onChange={(e) =>
+                          setEditModal({
+                            ...editModal,
+                            data: { ...editModal.data, order: Number(e.target.value) },
+                          })
+                        }
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-1.5">
+                      Detailed Answer *
+                    </label>
+                    <textarea
+                      rows={5}
+                      required
+                      value={editModal.data.answer || ""}
+                      onChange={(e) =>
+                        setEditModal({
+                          ...editModal,
+                          data: { ...editModal.data, answer: e.target.value },
+                        })
+                      }
+                      placeholder="Enter the complete, thoughtful answer for your guests..."
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#E9E0D2] text-xs focus:border-[#183D2B] outline-none leading-relaxed"
                     />
                   </div>
                 </>

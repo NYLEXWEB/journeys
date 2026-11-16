@@ -7,6 +7,7 @@ import TravelWithJibu from "@/components/TravelWithJibu";
 import OurServices from "@/components/OurServices";
 import TravelJournal from "@/components/TravelJournal";
 import GoogleReviews from "@/components/GoogleReviews";
+import FAQ from "@/components/FAQ";
 import ContactUs from "@/components/ContactUs";
 import Footer from "@/components/Footer";
 import SmoothScroll from "@/components/SmoothScroll";
@@ -51,15 +52,14 @@ export default function Home() {
             <CuratedExperiences />
           </StackingSection>
 
-          {/* Fixed Background Image Curtain Reveal between Curated Experiences & Travel With Jibu */}
+          {/* Full Single-Screen Editorial Cover Image between Curated Experiences & Travel With Jibu */}
           <CurtainImageReveal
             imageSrc="/images/generated/hero-kerala.jpg"
             alt="Misty Western Ghats and Emerald Waterways of Kerala"
             tag="Curated Perspective"
             quote="&ldquo;Travel is the art of seeing what others only glance at.&rdquo;"
             subQuote="Western Ghats · God's Own Country"
-            heightClass="h-[100vh] sm:h-[100vh] lg:h-[100vh]"
-            portalZIndex={6}
+            isFullCover={true}
           />
 
           {/* 4. TRAVEL WITH JIBU: Page 4 */}
@@ -73,14 +73,7 @@ export default function Home() {
           </StackingSection>
 
           {/* Fixed Background Video Curtain Reveal between Our Services & Travel Blog */}
-          <CurtainVideoReveal
-            videoSrc="/video/video-4.mp4"
-            tag="The Living Chronicle"
-            quote="&ldquo;Every journey writes a story that time cannot erase.&rdquo;"
-            subQuote="Travel Blog · Dispatches · Slow Living"
-            heightClass="h-[100vh] sm:h-[100vh] lg:h-[100vh]"
-            portalZIndex={7}
-          />
+          <CurtainVideoReveal videoSrc="/video/video-4.mp4" />
 
           {/* 6. TRAVEL BLOG: Page 6 */}
           <StackingSection zIndex={20}>
@@ -92,13 +85,18 @@ export default function Home() {
             <GoogleReviews />
           </StackingSection>
 
-          {/* 7. CONTACT US: Page 8 */}
+          {/* 7. FREQUENTLY ASKED QUESTIONS: Page 8 (100% Admin Editable Accordion) */}
+          <StackingSection zIndex={23}>
+            <FAQ />
+          </StackingSection>
+
+          {/* 8. CONTACT US: Page 9 */}
           <StackingSection zIndex={24} disableOverlap={true}>
             <ContactUs />
           </StackingSection>
         </main>
 
-        {/* Structured Brand Footer: Page 9 */}
+        {/* Structured Brand Footer: Page 10 */}
         <StackingSection zIndex={26} isFooter={true}>
           <Footer />
         </StackingSection>

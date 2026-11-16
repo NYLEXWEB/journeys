@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { connectToDatabase } from "@/lib/db";
 import { verifyAuthRequest } from "@/lib/auth";
 import { DestinationModel } from "@/models/Destination";
+import { deleteUploadThingFiles } from "@/lib/uploadthing-server";
 
 export async function PUT(
   req: NextRequest,
@@ -74,10 +75,16 @@ export async function DELETE(
       return NextResponse.json({ error: "Destination not found" }, { status: 404 });
     }
 
+    // Automatically purge remote cloud assets from UploadThing if uploaded
+    if (deleted.image) {
+      deleteUploadThingFiles([deleted.image]).catch((err) => {
+        console.warn("[UploadThing] Failed to delete file after destination deletion:", err);
+      });
+    }
+
     return NextResponse.json({ success: true, message: `Destination ${deleted.name} deleted successfully.` });
   } catch (err: any) {
     console.error("DELETE Destination error:", err);
     return NextResponse.json({ error: err.message || "Failed to delete destination" }, { status: 500 });
   }
 }
-

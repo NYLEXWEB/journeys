@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import { JournalModel } from "@/models/Journal";
 import { getAdminSession } from "@/lib/auth";
+import { deleteUploadThingFiles } from "@/lib/uploadthing-server";
 
 export async function PUT(
   req: NextRequest,
@@ -56,10 +57,16 @@ export async function DELETE(
       return NextResponse.json({ error: "Article not found" }, { status: 404 });
     }
 
+    // Automatically purge remote cloud assets from UploadThing if uploaded
+    if (deleted.image) {
+      deleteUploadThingFiles([deleted.image]).catch((err) => {
+        console.warn("[UploadThing] Failed to delete file after journal deletion:", err);
+      });
+    }
+
     return NextResponse.json({ success: true, message: "Article deleted." });
   } catch (error: any) {
     console.error("[Journal DELETE Error]:", error);
     return NextResponse.json({ error: "Failed to delete article." }, { status: 500 });
   }
 }
-

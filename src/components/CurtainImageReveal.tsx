@@ -11,16 +11,18 @@ interface CurtainImageRevealProps {
   quote?: string;
   subQuote?: string;
   portalZIndex?: number;
+  isFullCover?: boolean;
 }
 
 export default function CurtainImageReveal({
   imageSrc = "/images/generated/hero-kerala.jpg",
   alt = "Curated Kerala Landscape",
-  heightClass = "h-[100vh] sm:h-[100vh] lg:h-[100vh]",
+  heightClass,
   tag = "Curated Perspective",
   quote = "“Travel is the art of seeing what others only glance at.”",
   subQuote,
   portalZIndex = 6,
+  isFullCover = false,
 }: CurtainImageRevealProps) {
   const [mounted, setMounted] = useState(false);
   const [isActive, setIsActive] = useState(false);
@@ -31,6 +33,8 @@ export default function CurtainImageReveal({
   }, []);
 
   useEffect(() => {
+    if (isFullCover) return;
+
     const handleScroll = () => {
       if (!spacerRef.current) return;
       const rect = spacerRef.current.getBoundingClientRect();
@@ -69,8 +73,51 @@ export default function CurtainImageReveal({
       window.removeEventListener("scroll", onScrollOrResize);
       window.removeEventListener("resize", onScrollOrResize);
     };
-  }, [mounted]);
+  }, [isFullCover, mounted]);
 
+  // ---------------------------------------------------------------------------
+  // 1. SINGLE SCREEN COVER MODE (Full Viewport Screen Cover)
+  // ---------------------------------------------------------------------------
+  if (isFullCover) {
+    const finalHeight = heightClass || "h-[100dvh]";
+    return (
+      <div
+        ref={spacerRef}
+        className={`relative w-full ${finalHeight} min-h-[600px] overflow-hidden flex items-center justify-center bg-[#0d1f16]`}
+      >
+        <img
+          src={imageSrc}
+          alt={alt}
+          className="absolute inset-0 w-full h-full object-cover select-none"
+          loading="eager"
+        />
+        {/* Subtle luxury editorial gradient overlays */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#183D2B]/35 via-black/20 to-[#183D2B]/50 pointer-events-none" />
+        <div className="absolute inset-0 bg-black/20 pointer-events-none" />
+
+        {/* Centered luxury editorial tag and quote */}
+        <div className="relative z-10 text-center px-4 max-w-3xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white text-[11px] uppercase tracking-[0.25em] font-medium shadow-lg mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+            <span>{tag}</span>
+          </div>
+          <p className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-light italic drop-shadow-[0_2px_15px_rgba(0,0,0,0.65)] leading-tight sm:leading-snug">
+            {quote}
+          </p>
+          {subQuote && (
+            <p className="text-white/85 text-xs sm:text-sm tracking-[0.25em] uppercase mt-3 font-sans font-light drop-shadow">
+              {subQuote}
+            </p>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // 2. FIXED BACKGROUND CURTAIN REVEAL MODE (Transparent Scroll Window)
+  // ---------------------------------------------------------------------------
+  const fallbackHeight = heightClass || "h-[100vh] sm:h-[100vh] lg:h-[100vh]";
   const fixedImagePortal =
     mounted && typeof document !== "undefined"
       ? createPortal(
@@ -107,7 +154,7 @@ export default function CurtainImageReveal({
       {/* Transparent Scroll Window / Spacer that uncovers the fixed image */}
       <div
         ref={spacerRef}
-        className={`relative w-full ${heightClass} pointer-events-none flex items-center justify-center`}
+        className={`relative w-full ${fallbackHeight} pointer-events-none flex items-center justify-center`}
       >
         {/* Subtle, luxury center brand tag */}
         <div className="text-center px-4 max-w-xl transition-all duration-700">

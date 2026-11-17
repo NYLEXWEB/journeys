@@ -22,6 +22,8 @@ import {
 
 
 
+export const revalidate = 60;
+
 interface Props {
   params: Promise<{ id: string }>;
 }

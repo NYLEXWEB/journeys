@@ -31,6 +31,9 @@ if (!global.mongooseCache) {
   global.mongooseCache = cached;
 }
 
+let lastFailureTime = 0;
+const FAILURE_COOLDOWN_MS = 20000; // 20s cooldown: prevents blocking on every route navigation if Atlas is unreachable
+
 export async function connectToDatabase(): Promise<typeof mongoose | null> {
   const uri = process.env.MONGODB_URI;
 
@@ -43,20 +46,28 @@ export async function connectToDatabase(): Promise<typeof mongoose | null> {
     return cached.conn;
   }
 
+  // Fast-fail if recent connection attempt timed out/failed, avoiding 2-5s thread freeze
+  const now = Date.now();
+  if (lastFailureTime && now - lastFailureTime < FAILURE_COOLDOWN_MS) {
+    return null;
+  }
+
   if (!cached.promise) {
     const opts = {
       bufferCommands: false,
       maxPoolSize: 10,
-      serverSelectionTimeoutMS: 5000,
+      serverSelectionTimeoutMS: 2000,
     };
 
     cached.promise = mongoose
       .connect(uri, opts)
       .then((m) => {
+        lastFailureTime = 0;
         return m;
       })
       .catch((err) => {
         cached.promise = null;
+        lastFailureTime = Date.now();
         console.error("MongoDB connection error:", err.message);
         return null;
       });
@@ -66,6 +77,7 @@ export async function connectToDatabase(): Promise<typeof mongoose | null> {
     cached.conn = await cached.promise;
   } catch (e) {
     cached.promise = null;
+    lastFailureTime = Date.now();
     return null;
   }
 
@@ -73,4 +85,3 @@ export async function connectToDatabase(): Promise<typeof mongoose | null> {
 }
 
 export const connectDB = connectToDatabase;
-

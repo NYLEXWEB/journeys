@@ -536,8 +536,7 @@ export default function Destinations() {
 
       {/* Explore Full Directory CTA Button */}
       <div className="mt-8 sm:mt-10 text-center px-4 relative z-10">
-        <Link
-          href="/destinations"
+        <Link prefetch={true} href="/destinations"
           className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 sm:px-8 py-3.5 sm:py-4 rounded-full bg-[#183D2B] hover:bg-[#8B5E35] text-[#FFFCF5] text-[11px] sm:text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
         >
           <span>View the Full Destinations Directory</span>

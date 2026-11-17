@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import { connectToDatabase } from "@/lib/db";
 import { seedInitialDataIfEmpty } from "@/lib/seedDatabase";
 import {
@@ -58,11 +59,16 @@ export const FALLBACK_CONTENT: WebsiteContentData = {
 // In-memory server-side cache
 let cachedContent: WebsiteContentData | null = null;
 let lastFetchTime = 0;
-const CACHE_TTL_MS = 6000; // 6 seconds cache for blazing fast response times
+const CACHE_TTL_MS = 300000; // 5 minutes cache (instantly invalidated whenever Admin updates content)
 
 export function invalidateContentCache() {
   cachedContent = null;
   lastFetchTime = 0;
+  try {
+    revalidatePath("/", "layout");
+  } catch {
+    // Graceful fallback outside request scope
+  }
 }
 
 /**
@@ -80,7 +86,11 @@ export async function getLiveWebsiteContent(): Promise<WebsiteContentData> {
     const db = await connectToDatabase();
 
     if (!db) {
-      return FALLBACK_CONTENT;
+      if (!cachedContent) {
+        cachedContent = FALLBACK_CONTENT;
+        lastFetchTime = now;
+      }
+      return cachedContent || FALLBACK_CONTENT;
     }
 
     // Fast check once per runtime
@@ -134,6 +144,10 @@ export async function getLiveWebsiteContent(): Promise<WebsiteContentData> {
     return serialized;
   } catch (err: any) {
     console.error("[getLiveWebsiteContent] Error:", err.message);
+    if (!cachedContent) {
+      cachedContent = FALLBACK_CONTENT;
+      lastFetchTime = now;
+    }
     return cachedContent || FALLBACK_CONTENT;
   }
 }

@@ -303,8 +303,7 @@ export default function TravelWithJibu() {
                   </div>
 
                   {/* VIEW MORE DETAILS BUTTON */}
-                  <Link
-                    href="/journeys#bespoke"
+                  <Link prefetch={true} href="/journeys#bespoke"
                     className="w-full py-2 px-3 rounded-full bg-[#183D2B]/5 hover:bg-[#183D2B] text-[#183D2B] hover:text-white text-[11px] uppercase tracking-wider font-medium transition-all duration-200 flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
                   >
                     <span>View More Details</span>

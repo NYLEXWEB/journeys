@@ -15,14 +15,10 @@ import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import StackingSection from "@/components/StackingSection";
 import CurtainVideoReveal from "@/components/CurtainVideoReveal";
 import CurtainImageReveal from "@/components/CurtainImageReveal";
-import AssetPreloader from "@/components/AssetPreloader";
 
 export default function Home() {
   return (
     <SmoothScroll>
-      {/* Real-time Website Asset Preloader & Luxury Loading Screen */}
-      <AssetPreloader />
-
       <div className="min-h-screen bg-[#FFFCF5] text-[#242424] flex flex-col font-sans selection:bg-[#183D2B] selection:text-[#FFFCF5]">
         {/* Editorial Navigation with Exact Site Hierarchy Mega-menus */}
         <Navbar />

@@ -174,8 +174,7 @@ export default function CuratedExperiences() {
             <span className="h-[1.5px] w-8 min-[400px]:w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent shrink-0" />
           </div>
 
-          <Link
-            href="/experiences"
+          <Link prefetch={true} href="/experiences"
             className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#E9E0D2] bg-white/80 hover:bg-[#183D2B] text-[#183D2B] hover:text-white text-xs font-semibold uppercase tracking-wider transition-all duration-300 shadow-sm self-start sm:self-auto"
           >
             <span>Explore All Experiences</span>

@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import BlogClient from "./BlogClient";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Kerala Travel Blog & Journal | Stories by Jibu Thomas",

@@ -151,8 +151,7 @@ export default function AboutUs() {
                 </p>
 
                 <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                  <Link
-                    href="/about#story"
+                  <Link prefetch={true} href="/about#story"
                     className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-[#183D2B] hover:bg-[#8B5E35] text-[#FFFCF5] text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-md active:scale-95 cursor-pointer"
                   >
                     <span>View More Details</span>
@@ -224,8 +223,7 @@ export default function AboutUs() {
                 </div>
 
                 <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                  <Link
-                    href="/about#jibu"
+                  <Link prefetch={true} href="/about#jibu"
                     className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-[#183D2B] hover:bg-[#8B5E35] text-[#FFFCF5] text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-md active:scale-95 cursor-pointer"
                   >
                     <span>View More Details</span>
@@ -268,8 +266,7 @@ export default function AboutUs() {
               </div>
 
               <div className="flex items-center justify-between pt-2">
-                <Link
-                    href="/about#philosophy"
+                <Link prefetch={true} href="/about#philosophy"
                     className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#183D2B] hover:bg-[#8B5E35] text-[#FFFCF5] text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-md active:scale-95 cursor-pointer"
                   >
                     <span>View More Details</span>
@@ -306,8 +303,7 @@ export default function AboutUs() {
               </div>
 
               <div className="flex items-center justify-between pt-2">
-                <Link
-                    href="/about#why-us"
+                <Link prefetch={true} href="/about#why-us"
                     className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#183D2B] hover:bg-[#8B5E35] text-[#FFFCF5] text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-md active:scale-95 cursor-pointer"
                   >
                     <span>View More Details</span>

@@ -149,8 +149,7 @@ export default function TravelJournal() {
             <span className="hidden md:inline font-serif italic text-sm sm:text-base text-[#8B5E35] font-light">
               Stories &amp; Dispatches by Jibu Thomas
             </span>
-            <Link
-              href="/blog"
+            <Link prefetch={true} href="/blog"
               className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#E9E0D2] bg-white/80 hover:bg-[#183D2B] text-[#183D2B] hover:text-white text-xs font-semibold uppercase tracking-wider transition-all duration-300 shadow-sm"
             >
               <span>Explore All Stories</span>
@@ -267,8 +266,7 @@ export default function TravelJournal() {
 
         {/* View All Blog Dispatches Banner on Mobile / Tablet */}
         <div className="mt-8 text-center sm:hidden">
-          <Link
-            href="/blog"
+          <Link prefetch={true} href="/blog"
             className="inline-flex items-center justify-center gap-2 w-full py-3.5 rounded-full bg-[#183D2B] text-white text-xs font-semibold uppercase tracking-wider shadow-md hover:bg-[#8B5E35] transition-all"
           >
             <span>Read All Travel Blog Stories</span>

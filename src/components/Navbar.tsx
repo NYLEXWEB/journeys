@@ -516,8 +516,7 @@ export default function Navbar() {
           {/* RIGHT ACTION BUTTON: Shown when docked at the top */}
           {isDocked && (
             <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
-              <Link
-                href="/plan-your-journey"
+              <Link prefetch={true} href="/plan-your-journey"
                 className="inline-flex items-center gap-1 sm:gap-1.5 transition-all duration-300 uppercase tracking-widest font-semibold shadow-md hover:shadow-xl hover:scale-105 active:scale-95 whitespace-nowrap px-3 sm:px-5 py-1.5 sm:py-2 rounded-full text-[10px] sm:text-xs bg-[#183D2B] text-[#FFFCF5] hover:bg-[#8B5E35]"
               >
                 <span className="hidden sm:inline">PLAN YOUR JOURNEY</span>
@@ -645,8 +644,7 @@ export default function Navbar() {
 
             {/* Bottom Actions: Large Primary CTA & WhatsApp Contact */}
             <div className="max-w-lg mx-auto w-full pt-4 space-y-3 pb-6 border-t border-white/10">
-              <Link
-                href="/plan-your-journey"
+              <Link prefetch={true} href="/plan-your-journey"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="w-full py-3.5 rounded-full bg-[#8B5E35] hover:bg-[#A26D3F] text-[#FFFCF5] text-xs uppercase tracking-widest font-semibold flex items-center justify-center gap-2 shadow-xl transition-all active:scale-95"
               >

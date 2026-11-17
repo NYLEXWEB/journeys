@@ -4,19 +4,40 @@ import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useRealtimeAssetLoader } from "@/hooks/useRealtimeAssetLoader";
 
+// Global in-memory flag for the client session.
+// In Next.js client-side SPA routing, this persists across all route transitions
+// and resets ONLY when the user does a full browser refresh (F5 / reload).
+let hasAppSessionLoaded = false;
+
+export function isAppSessionLoaded() {
+  return hasAppSessionLoaded;
+}
+
+export function resetAppSessionLoaded() {
+  hasAppSessionLoaded = false;
+}
+
 export default function AssetPreloader() {
+  // If already finished in this session, return null immediately (0ms, no DOM, no scroll freeze)
+  if (hasAppSessionLoaded) {
+    return null;
+  }
+
+  return <AssetPreloaderInner />;
+}
+
+function AssetPreloaderInner() {
   const { progress: realProgress, isLoading } = useRealtimeAssetLoader();
 
-  // Initialize consistently between SSR and client initial hydration (no mismatch)
   const [displayProgress, setDisplayProgress] = useState<number>(0);
   const [shouldFadeOut, setShouldFadeOut] = useState<boolean>(false);
   const [hasFinished, setHasFinished] = useState<boolean>(false);
 
   const animFrameRef = useRef<number | null>(null);
 
-  // Freeze background scrolling while preloading
+  // Freeze background scrolling ONLY during active initial preloading
   useEffect(() => {
-    if (hasFinished) {
+    if (hasFinished || hasAppSessionLoaded) {
       document.body.style.overflow = "";
       document.documentElement.style.overflow = "";
       document.body.classList.remove("modal-open");
@@ -40,12 +61,12 @@ export default function AssetPreloader() {
   // Smooth progress interpolator: ensures continuous progression
   // tracking real network assets while guaranteeing a polished luxury feel
   useEffect(() => {
-    if (hasFinished) return;
+    if (hasFinished || hasAppSessionLoaded) return;
 
     let currentVal = 0;
     const startTime = performance.now();
-    // Minimum 1.3s smooth glide so the animation is graceful and visible
-    const minGlideDuration = 1300;
+    // Elegant, smooth glide for initial entry
+    const minGlideDuration = 1100;
 
     const updateInterval = () => {
       const elapsed = performance.now() - startTime;
@@ -59,7 +80,7 @@ export default function AssetPreloader() {
       const combinedTarget = Math.max(timeTarget, networkTarget);
 
       if (currentVal < combinedTarget) {
-        const step = Math.max(0.7, (combinedTarget - currentVal) * 0.12);
+        const step = Math.max(0.8, (combinedTarget - currentVal) * 0.15);
         currentVal = Math.min(100, currentVal + step);
         setDisplayProgress(currentVal);
       }
@@ -73,9 +94,14 @@ export default function AssetPreloader() {
         setTimeout(() => {
           setShouldFadeOut(true);
           setTimeout(() => {
+            hasAppSessionLoaded = true;
             setHasFinished(true);
-          }, 700);
-        }, 350);
+            document.body.style.overflow = "";
+            document.documentElement.style.overflow = "";
+            document.body.classList.remove("modal-open");
+            document.documentElement.classList.remove("modal-open");
+          }, 500);
+        }, 200);
       }
     };
 
@@ -86,7 +112,7 @@ export default function AssetPreloader() {
     };
   }, [realProgress, isLoading, hasFinished]);
 
-  if (hasFinished) {
+  if (hasFinished || hasAppSessionLoaded) {
     return null;
   }
 
@@ -94,7 +120,7 @@ export default function AssetPreloader() {
 
   return (
     <div
-      className={`fixed inset-0 z-[99999] flex flex-col items-center justify-center select-none bg-[#FFFCF5] px-6 transition-opacity duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+      className={`fixed inset-0 z-[99999] flex flex-col items-center justify-center select-none bg-[#FFFCF5] px-6 transition-opacity duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
         shouldFadeOut ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
       style={{ width: "100vw", height: "100vh" }}

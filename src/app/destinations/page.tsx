@@ -62,7 +62,7 @@ export default function DestinationsDirectoryPage() {
             className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-[#8B5E35] hover:text-[#183D2B] transition-colors font-medium"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Return to Overview</span>
+            <span>Return to Home</span>
           </Link>
         </div>
 
@@ -72,7 +72,7 @@ export default function DestinationsDirectoryPage() {
             <span className="w-6 h-[1.5px] bg-[#8B5E35]" />
             <span>COMPLETE DESTINATION DIRECTORY</span>
           </div>
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif text-[#183D2B] font-light tracking-tight leading-[1.08] max-w-4xl">
+          <h1 className="text-3xl min-[400px]:text-4xl sm:text-6xl lg:text-7xl font-serif text-[#183D2B] font-light tracking-tight leading-[1.08] max-w-4xl">
             Sixteen destinations,{" "}
             <span className="italic font-normal underline decoration-[#8B5E35]/40 decoration-1 underline-offset-8">
               unlocked with intimacy.
@@ -133,7 +133,7 @@ export default function DestinationsDirectoryPage() {
             <article
               key={dest.id}
               id={dest.id}
-              className="scroll-mt-32 p-6 sm:p-10 lg:p-12 rounded-[2.5rem] bg-white border border-[#E9E0D2] shadow-[0_15px_45px_rgba(24,61,43,0.06)] hover:shadow-[0_25px_60px_rgba(24,61,43,0.12)] transition-shadow duration-500"
+              className="scroll-mt-32 p-5 sm:p-10 lg:p-12 rounded-[2rem] sm:rounded-[2.5rem] bg-white border border-[#E9E0D2] shadow-[0_15px_45px_rgba(24,61,43,0.06)] hover:shadow-[0_25px_60px_rgba(24,61,43,0.12)] transition-shadow duration-500"
             >
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
                 {/* Visual Image Column */}

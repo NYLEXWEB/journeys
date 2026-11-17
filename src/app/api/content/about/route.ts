@@ -57,6 +57,27 @@ export async function PUT(req: NextRequest) {
       });
     }
 
+    // If curtainVideo1 replaced, purge old file
+    if (existing && body.curtainVideo1 && (existing as any).curtainVideo1 && body.curtainVideo1 !== (existing as any).curtainVideo1) {
+      deleteUploadThingFiles([(existing as any).curtainVideo1]).catch((err) => {
+        console.warn("[UploadThing] Failed to delete replaced curtainVideo1:", err);
+      });
+    }
+
+    // If curtainVideo2 replaced, purge old file
+    if (existing && body.curtainVideo2 && (existing as any).curtainVideo2 && body.curtainVideo2 !== (existing as any).curtainVideo2) {
+      deleteUploadThingFiles([(existing as any).curtainVideo2]).catch((err) => {
+        console.warn("[UploadThing] Failed to delete replaced curtainVideo2:", err);
+      });
+    }
+
+    // If curtainImage replaced, purge old file
+    if (existing && body.curtainImage && (existing as any).curtainImage && body.curtainImage !== (existing as any).curtainImage) {
+      deleteUploadThingFiles([(existing as any).curtainImage]).catch((err) => {
+        console.warn("[UploadThing] Failed to delete replaced curtainImage:", err);
+      });
+    }
+
     return NextResponse.json({ success: true, about: updated });
   } catch (error: any) {
     console.error("[About PUT Error]:", error);

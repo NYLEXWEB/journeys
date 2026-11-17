@@ -97,9 +97,9 @@ export default function ContactUs() {
       <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2 mb-6 sm:mb-8">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap sm:flex-nowrap">
             <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#8B5E35] to-[#B37D47] shadow-sm shrink-0" />
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] uppercase">
+            <h2 className="text-xl min-[400px]:text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.1em] sm:tracking-[0.12em] uppercase">
               <span className="bg-gradient-to-r from-[#183D2B] via-[#1E4A35] to-[#27593D] bg-clip-text text-transparent">
                 PLAN YOUR{" "}
               </span>
@@ -107,7 +107,7 @@ export default function ContactUs() {
                 JOURNEY
               </span>
             </h2>
-            <span className="h-[1.5px] w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent" />
+            <span className="h-[1.5px] w-8 min-[400px]:w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent shrink-0" />
           </div>
           <p className="font-serif italic text-sm sm:text-base text-[#8B5E35]">
             &ldquo;Your Kerala journey should feel like yours.&rdquo;
@@ -177,7 +177,7 @@ export default function ContactUs() {
             </div>
 
             {/* Link to Full Comprehensive Bespoke Planner */}
-            <div className="p-5 rounded-2xl bg-[#183D2B]/5 border border-[#183D2B]/10 flex items-center justify-between">
+            <div className="p-5 rounded-2xl bg-[#183D2B]/5 border border-[#183D2B]/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
                 <span className="text-xs font-serif text-[#183D2B] font-medium block">
                   Detailed Itinerary Planning?

@@ -26,7 +26,6 @@ import {
   Inbox,
   MessageSquare,
   RefreshCw,
-  BarChart3,
   TrendingUp,
   BookOpen,
   Globe,
@@ -41,9 +40,16 @@ import {
   ShieldCheck,
   Heart,
   HelpCircle,
+  LayoutDashboard,
+  Menu,
+  ChevronDown,
+  Video,
+  Film,
+  CheckCircle2,
 } from "lucide-react";
 
 type ActiveTab =
+  | "dashboard"
   | "hero"
   | "about"
   | "destinations"
@@ -54,7 +60,6 @@ type ActiveTab =
   | "reviews"
   | "faq"
   | "enquiries"
-  | "analytics"
   | "contact"
   | "footer";
 
@@ -65,12 +70,16 @@ export default function AdminPage() {
   const [loginError, setLoginError] = useState("");
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
-  const [activeTab, setActiveTab] = useState<ActiveTab>("destinations");
+  const [activeTab, setActiveTab] = useState<ActiveTab>("dashboard");
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const [content, setContent] = useState<any>(null);
   const [isLoadingContent, setIsLoadingContent] = useState(false);
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
   const [aboutStoryImage, setAboutStoryImage] = useState<string>("");
   const [aboutJibuImage, setAboutJibuImage] = useState<string>("");
+  const [curtainVideo1, setCurtainVideo1] = useState<string>("");
+  const [curtainVideo2, setCurtainVideo2] = useState<string>("");
+  const [curtainImage, setCurtainImage] = useState<string>("");
 
   // Guest Enquiries state
   const [enquiries, setEnquiries] = useState<any[]>([]);
@@ -159,6 +168,9 @@ export default function AdminPage() {
       setContent(data);
       if (data?.about?.storyImage) setAboutStoryImage(data.about.storyImage);
       if (data?.about?.jibuImage) setAboutJibuImage(data.about.jibuImage);
+      if (data?.about?.curtainVideo1) setCurtainVideo1(data.about.curtainVideo1);
+      if (data?.about?.curtainVideo2) setCurtainVideo2(data.about.curtainVideo2);
+      if (data?.about?.curtainImage) setCurtainImage(data.about.curtainImage);
     } catch {
       showToast("Failed to load website content from database.", "error");
     } finally {
@@ -589,15 +601,119 @@ export default function AdminPage() {
 
       {/* Main Layout */}
       <div className="flex-1 max-w-[1600px] w-full mx-auto px-4 sm:px-8 py-8 flex flex-col md:flex-row gap-8 items-start">
-        {/* Sidebar / Mobile Tabs Navigation */}
-        <aside className="w-full md:w-64 bg-white rounded-2xl md:rounded-3xl border border-[#E9E0D2] p-3 md:p-4 shadow-sm shrink-0 md:sticky md:top-24">
-          <span className="text-[10px] uppercase tracking-widest font-semibold text-[#8B5E35] px-2 md:px-3 pb-2 block border-b border-[#E9E0D2] mb-2 md:mb-3">
+        {/* MOBILE SECTION SELECTOR (Visible on < md) */}
+        <div className="md:hidden w-full bg-white rounded-2xl border border-[#E9E0D2] p-3 shadow-sm">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              {(() => {
+                const current = [
+                  { id: "dashboard", label: "Operations Dashboard", icon: LayoutDashboard },
+                  { id: "hero", label: "Hero Slideshow", icon: LayoutTemplate },
+                  { id: "about", label: "About Atelier & Media", icon: UserCheck },
+                  { id: "destinations", label: `Destinations (${content?.destinations?.length || 16})`, icon: MapPin },
+                  { id: "experiences", label: `Experiences (${content?.experiences?.length || 8})`, icon: Waves },
+                  { id: "journeys", label: `Signature Journeys (${content?.journeys?.length || 5})`, icon: Compass },
+                  { id: "services", label: `Ways to Travel / Stays (${content?.services?.length || 5})`, icon: Bed },
+                  { id: "journal", label: `Blog & Journal (${content?.journal?.length || 2})`, icon: BookOpen },
+                  { id: "reviews", label: `Google Reviews (${content?.reviews?.length || 6})`, icon: Star },
+                  { id: "faq", label: `FAQs (${content?.faqs?.length || 5})`, icon: HelpCircle },
+                  {
+                    id: "enquiries",
+                    label: `Guest Enquiries (${enquiries.filter((e) => e.status === "new").length > 0 ? `${enquiries.filter((e) => e.status === "new").length} New` : enquiries.length})`,
+                    icon: Inbox,
+                  },
+                  { id: "contact", label: "Contact & Concierge", icon: Phone },
+                  { id: "footer", label: "Footer & Social", icon: Share2 },
+                ].find((t) => t.id === activeTab) || { id: "dashboard", label: "Dashboard", icon: LayoutDashboard };
+                const Icon = current.icon;
+                return (
+                  <>
+                    <div className="w-8 h-8 rounded-xl bg-[#183D2B] text-white flex items-center justify-center">
+                      <Icon className="w-4 h-4 text-[#E9E0D2]" />
+                    </div>
+                    <div>
+                      <span className="text-[10px] uppercase tracking-wider text-[#8B5E35] font-semibold block">
+                        Active Section
+                      </span>
+                      <span className="text-xs font-bold text-[#183D2B]">
+                        {current.label}
+                      </span>
+                    </div>
+                  </>
+                );
+              })()}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setIsMobileNavOpen(!isMobileNavOpen)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[#E9E0D2] bg-[#FFFCF5] text-xs font-semibold text-[#183D2B] hover:bg-[#183D2B]/5 transition-colors cursor-pointer"
+            >
+              <span>Sections</span>
+              <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isMobileNavOpen ? "rotate-180" : ""}`} />
+            </button>
+          </div>
+
+          {/* Mobile Dropdown Drawer */}
+          {isMobileNavOpen && (
+            <div className="mt-3 pt-3 border-t border-[#E9E0D2] grid grid-cols-1 gap-1 animate-in fade-in slide-in-from-top-2 duration-200">
+              {[
+                { id: "dashboard", label: "Operations Dashboard", icon: LayoutDashboard },
+                { id: "hero", label: "Hero Slideshow", icon: LayoutTemplate },
+                { id: "about", label: "About Atelier & Media", icon: UserCheck },
+                { id: "destinations", label: `Destinations (${content?.destinations?.length || 16})`, icon: MapPin },
+                { id: "experiences", label: `Experiences (${content?.experiences?.length || 8})`, icon: Waves },
+                { id: "journeys", label: `Signature Journeys (${content?.journeys?.length || 5})`, icon: Compass },
+                { id: "services", label: `Ways to Travel / Stays (${content?.services?.length || 5})`, icon: Bed },
+                { id: "journal", label: `Blog & Journal (${content?.journal?.length || 2})`, icon: BookOpen },
+                { id: "reviews", label: `Google Reviews (${content?.reviews?.length || 6})`, icon: Star },
+                { id: "faq", label: `FAQs (${content?.faqs?.length || 5})`, icon: HelpCircle },
+                {
+                  id: "enquiries",
+                  label: `Guest Enquiries (${enquiries.filter((e) => e.status === "new").length > 0 ? `${enquiries.filter((e) => e.status === "new").length} New` : enquiries.length})`,
+                  icon: Inbox,
+                },
+                { id: "contact", label: "Contact & Concierge", icon: Phone },
+                { id: "footer", label: "Footer & Social", icon: Share2 },
+              ].map((tab) => {
+                const Icon = tab.icon;
+                const isActive = activeTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    onClick={() => {
+                      setActiveTab(tab.id as ActiveTab);
+                      setIsMobileNavOpen(false);
+                    }}
+                    className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all text-left ${
+                      isActive
+                        ? "bg-[#183D2B] text-white shadow-sm"
+                        : "text-[#242424]/80 hover:bg-[#183D2B]/5 hover:text-[#183D2B]"
+                    }`}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <Icon className={`w-4 h-4 ${isActive ? "text-[#E9E0D2]" : "text-[#8B5E35]"}`} />
+                      <span>{tab.label}</span>
+                    </div>
+                    {isActive && <Check className="w-3.5 h-3.5 text-[#E9E0D2]" />}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* DESKTOP SIDEBAR (Visible on md+) */}
+        <aside className="hidden md:block w-64 bg-white rounded-3xl border border-[#E9E0D2] p-4 shadow-sm shrink-0 md:sticky md:top-24">
+          <span className="text-[10px] uppercase tracking-widest font-semibold text-[#8B5E35] px-3 pb-2 block border-b border-[#E9E0D2] mb-3">
             Website Sections
           </span>
-          <nav className="flex md:flex-col gap-1.5 md:space-y-1 overflow-x-auto no-scrollbar pb-1 md:pb-0">
+          <nav className="flex flex-col space-y-1">
             {[
+              { id: "dashboard", label: "Operations Dashboard", icon: LayoutDashboard },
               { id: "hero", label: "Hero Slideshow", icon: LayoutTemplate },
-              { id: "about", label: "About Atelier & Jibu", icon: UserCheck },
+              { id: "about", label: "About Atelier & Media", icon: UserCheck },
               { id: "destinations", label: `Destinations (${content?.destinations?.length || 16})`, icon: MapPin },
               { id: "experiences", label: `Experiences (${content?.experiences?.length || 8})`, icon: Waves },
               { id: "journeys", label: `Signature Journeys (${content?.journeys?.length || 5})`, icon: Compass },
@@ -610,7 +726,6 @@ export default function AdminPage() {
                 label: `Guest Enquiries (${enquiries.filter((e) => e.status === "new").length > 0 ? `${enquiries.filter((e) => e.status === "new").length} New` : enquiries.length})`,
                 icon: Inbox,
               },
-              { id: "analytics", label: "Google Analytics", icon: BarChart3 },
               { id: "contact", label: "Contact & Concierge", icon: Phone },
               { id: "footer", label: "Footer & Social", icon: Share2 },
             ].map((tab) => {
@@ -620,14 +735,14 @@ export default function AdminPage() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as ActiveTab)}
-                  className={`flex items-center gap-2 px-3 py-2 md:px-3.5 md:py-2.5 rounded-xl md:rounded-2xl text-xs font-semibold tracking-wide transition-all whitespace-nowrap cursor-pointer shrink-0 md:w-full text-left ${
+                  className={`flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl text-xs font-semibold tracking-wide transition-all cursor-pointer w-full text-left ${
                     isActive
                       ? "bg-[#183D2B] text-white shadow-md"
-                      : "text-[#242424]/80 hover:bg-[#183D2B]/5 hover:text-[#183D2B] bg-[#183D2B]/[0.02] md:bg-transparent"
+                      : "text-[#242424]/80 hover:bg-[#183D2B]/5 hover:text-[#183D2B] bg-transparent"
                   }`}
                 >
-                  <Icon className={`w-3.5 h-3.5 md:w-4 md:h-4 ${isActive ? "text-[#E9E0D2]" : "text-[#8B5E35]"}`} />
-                  <span>{tab.label}</span>
+                  <Icon className={`w-4 h-4 ${isActive ? "text-[#E9E0D2]" : "text-[#8B5E35]"}`} />
+                  <span className="truncate">{tab.label}</span>
                 </button>
               );
             })}
@@ -643,6 +758,509 @@ export default function AdminPage() {
             </div>
           ) : (
             <>
+              {/* SECTION: OPERATIONS DASHBOARD (CENTRAL SINGLE-WINDOW HUB) */}
+              {activeTab === "dashboard" && (
+                <div className="space-y-8">
+                  {/* Dashboard Header */}
+                  <div className="pb-6 border-b border-[#E9E0D2] flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <div>
+                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#183D2B]/5 text-[#183D2B] text-[11px] uppercase tracking-wider font-semibold mb-2">
+                        <LayoutDashboard className="w-3 h-3 text-[#8B5E35]" />
+                        <span>Central Operations Hub</span>
+                      </div>
+                      <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#183D2B]">
+                        Atelier Overview &amp; Control
+                      </h2>
+                      <p className="text-xs text-[#242424]/70 font-light mt-1 max-w-2xl">
+                        Manage all website content, media assets, visitor inquiries, and bespoke itineraries from this unified operations hub.
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-3 shrink-0">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          loadContent();
+                          loadEnquiries(enquiryStatusFilter);
+                          showToast("Database content refreshed!");
+                        }}
+                        className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full border border-[#E9E0D2] bg-white hover:bg-[#183D2B]/5 text-[#183D2B] text-xs font-semibold transition-all shadow-sm cursor-pointer"
+                      >
+                        <RefreshCw className={`w-3.5 h-3.5 text-[#8B5E35] ${isLoadingContent || isLoadingEnquiries ? "animate-spin" : ""}`} />
+                        <span>Refresh Data</span>
+                      </button>
+
+                      <Link
+                        href="/"
+                        target="_blank"
+                        className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#183D2B] hover:bg-[#8B5E35] text-white text-xs font-semibold transition-all shadow-sm"
+                      >
+                        <span>View Live Website</span>
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </Link>
+                    </div>
+                  </div>
+
+                  {/* System Status Indicators */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div className="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-200/80 flex items-center gap-3">
+                      <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                      <div>
+                        <span className="text-[10px] uppercase tracking-wider font-semibold text-emerald-800 block">Database</span>
+                        <span className="text-xs font-bold text-[#183D2B]">MongoDB Atlas Connected</span>
+                      </div>
+                    </div>
+                    <div className="p-3.5 rounded-2xl bg-sky-50/70 border border-sky-200/80 flex items-center gap-3">
+                      <div className="w-2.5 h-2.5 rounded-full bg-sky-500 animate-pulse" />
+                      <div>
+                        <span className="text-[10px] uppercase tracking-wider font-semibold text-sky-800 block">Cloud Storage</span>
+                        <span className="text-xs font-bold text-[#183D2B]">UploadThing Active (16MB Video &amp; Image)</span>
+                      </div>
+                    </div>
+                    <div className="p-3.5 rounded-2xl bg-[#8B5E35]/10 border border-[#8B5E35]/20 flex items-center gap-3">
+                      <div className="w-2.5 h-2.5 rounded-full bg-[#8B5E35]" />
+                      <div>
+                        <span className="text-[10px] uppercase tracking-wider font-semibold text-[#8B5E35] block">Security</span>
+                        <span className="text-xs font-bold text-[#183D2B]">JWT Admin Session Active</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 8 Primary Content Metrics Cards */}
+                  <div>
+                    <h3 className="text-xs font-semibold uppercase tracking-wider text-[#8B5E35] mb-3">
+                      Live Website Content Architecture
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                      {/* Metric 1: Destinations */}
+                      <div
+                        onClick={() => setActiveTab("destinations")}
+                        className="p-5 rounded-2xl bg-white border border-[#E9E0D2] hover:border-[#183D2B] transition-all shadow-sm hover:shadow-md cursor-pointer group"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="text-[11px] uppercase tracking-wider text-[#242424]/60 font-semibold">
+                            Destinations
+                          </span>
+                          <MapPin className="w-4 h-4 text-[#8B5E35] group-hover:scale-110 transition-transform" />
+                        </div>
+                        <div className="mt-3 flex items-baseline gap-2">
+                          <span className="text-3xl font-serif font-bold text-[#183D2B]">
+                            {content?.destinations?.length || 16}
+                          </span>
+                          <span className="text-[11px] text-[#242424]/60 font-medium">Locations</span>
+                        </div>
+                        <p className="text-[11px] text-[#242424]/60 mt-1 font-light">
+                          Highlands, waterways, coasts &amp; heritage
+                        </p>
+                      </div>
+
+                      {/* Metric 2: Signature Journeys */}
+                      <div
+                        onClick={() => setActiveTab("journeys")}
+                        className="p-5 rounded-2xl bg-white border border-[#E9E0D2] hover:border-[#183D2B] transition-all shadow-sm hover:shadow-md cursor-pointer group"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="text-[11px] uppercase tracking-wider text-[#242424]/60 font-semibold">
+                            Journeys
+                          </span>
+                          <Compass className="w-4 h-4 text-[#8B5E35] group-hover:scale-110 transition-transform" />
+                        </div>
+                        <div className="mt-3 flex items-baseline gap-2">
+                          <span className="text-3xl font-serif font-bold text-[#183D2B]">
+                            {content?.journeys?.length || 5}
+                          </span>
+                          <span className="text-[11px] text-[#242424]/60 font-medium">Signature Routes</span>
+                        </div>
+                        <p className="text-[11px] text-[#242424]/60 mt-1 font-light">
+                          Private multi-day curated itineraries
+                        </p>
+                      </div>
+
+                      {/* Metric 3: Experiences */}
+                      <div
+                        onClick={() => setActiveTab("experiences")}
+                        className="p-5 rounded-2xl bg-white border border-[#E9E0D2] hover:border-[#183D2B] transition-all shadow-sm hover:shadow-md cursor-pointer group"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="text-[11px] uppercase tracking-wider text-[#242424]/60 font-semibold">
+                            Experiences
+                          </span>
+                          <Waves className="w-4 h-4 text-[#8B5E35] group-hover:scale-110 transition-transform" />
+                        </div>
+                        <div className="mt-3 flex items-baseline gap-2">
+                          <span className="text-3xl font-serif font-bold text-[#183D2B]">
+                            {content?.experiences?.length || 8}
+                          </span>
+                          <span className="text-[11px] text-[#242424]/60 font-medium">Bespoke Activities</span>
+                        </div>
+                        <p className="text-[11px] text-[#242424]/60 mt-1 font-light">
+                          Plantation walks, houseboats &amp; spices
+                        </p>
+                      </div>
+
+                      {/* Metric 4: Services / Ways to Travel */}
+                      <div
+                        onClick={() => setActiveTab("services")}
+                        className="p-5 rounded-2xl bg-white border border-[#E9E0D2] hover:border-[#183D2B] transition-all shadow-sm hover:shadow-md cursor-pointer group"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="text-[11px] uppercase tracking-wider text-[#242424]/60 font-semibold">
+                            Stays &amp; Styles
+                          </span>
+                          <Bed className="w-4 h-4 text-[#8B5E35] group-hover:scale-110 transition-transform" />
+                        </div>
+                        <div className="mt-3 flex items-baseline gap-2">
+                          <span className="text-3xl font-serif font-bold text-[#183D2B]">
+                            {content?.services?.length || 5}
+                          </span>
+                          <span className="text-[11px] text-[#242424]/60 font-medium">Ways to Travel</span>
+                        </div>
+                        <p className="text-[11px] text-[#242424]/60 mt-1 font-light">
+                          Heritage bungalows, retreats &amp; chauffeur
+                        </p>
+                      </div>
+
+                      {/* Metric 5: Google Reviews */}
+                      <div
+                        onClick={() => setActiveTab("reviews")}
+                        className="p-5 rounded-2xl bg-white border border-[#E9E0D2] hover:border-[#183D2B] transition-all shadow-sm hover:shadow-md cursor-pointer group"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="text-[11px] uppercase tracking-wider text-[#242424]/60 font-semibold">
+                            Google Reviews
+                          </span>
+                          <Star className="w-4 h-4 text-amber-500 fill-amber-500 group-hover:scale-110 transition-transform" />
+                        </div>
+                        <div className="mt-3 flex items-baseline gap-2">
+                          <span className="text-3xl font-serif font-bold text-[#183D2B]">
+                            {content?.reviews?.length || 6}
+                          </span>
+                          <span className="text-[11px] text-amber-700 font-semibold">★ 4.9 Rating</span>
+                        </div>
+                        <p className="text-[11px] text-[#242424]/60 mt-1 font-light">
+                          Verified international traveler feedback
+                        </p>
+                      </div>
+
+                      {/* Metric 6: Journal & Blog */}
+                      <div
+                        onClick={() => setActiveTab("journal")}
+                        className="p-5 rounded-2xl bg-white border border-[#E9E0D2] hover:border-[#183D2B] transition-all shadow-sm hover:shadow-md cursor-pointer group"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="text-[11px] uppercase tracking-wider text-[#242424]/60 font-semibold">
+                            Blog &amp; Journal
+                          </span>
+                          <BookOpen className="w-4 h-4 text-[#8B5E35] group-hover:scale-110 transition-transform" />
+                        </div>
+                        <div className="mt-3 flex items-baseline gap-2">
+                          <span className="text-3xl font-serif font-bold text-[#183D2B]">
+                            {content?.journal?.length || 2}
+                          </span>
+                          <span className="text-[11px] text-[#242424]/60 font-medium">Articles</span>
+                        </div>
+                        <p className="text-[11px] text-[#242424]/60 mt-1 font-light">
+                          Travel stories, routes &amp; insider guides
+                        </p>
+                      </div>
+
+                      {/* Metric 7: FAQs */}
+                      <div
+                        onClick={() => setActiveTab("faq")}
+                        className="p-5 rounded-2xl bg-white border border-[#E9E0D2] hover:border-[#183D2B] transition-all shadow-sm hover:shadow-md cursor-pointer group"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="text-[11px] uppercase tracking-wider text-[#242424]/60 font-semibold">
+                            FAQs Answered
+                          </span>
+                          <HelpCircle className="w-4 h-4 text-[#8B5E35] group-hover:scale-110 transition-transform" />
+                        </div>
+                        <div className="mt-3 flex items-baseline gap-2">
+                          <span className="text-3xl font-serif font-bold text-[#183D2B]">
+                            {content?.faqs?.length || 5}
+                          </span>
+                          <span className="text-[11px] text-[#242424]/60 font-medium">Questions</span>
+                        </div>
+                        <p className="text-[11px] text-[#242424]/60 mt-1 font-light">
+                          Planning, seasonal advice &amp; logistics
+                        </p>
+                      </div>
+
+                      {/* Metric 8: Guest Enquiries */}
+                      <div
+                        onClick={() => setActiveTab("enquiries")}
+                        className="p-5 rounded-2xl bg-white border border-[#E9E0D2] hover:border-[#183D2B] transition-all shadow-sm hover:shadow-md cursor-pointer group"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="text-[11px] uppercase tracking-wider text-[#242424]/60 font-semibold">
+                            Guest Enquiries
+                          </span>
+                          <Inbox className="w-4 h-4 text-[#8B5E35] group-hover:scale-110 transition-transform" />
+                        </div>
+                        <div className="mt-3 flex items-baseline gap-2">
+                          <span className="text-3xl font-serif font-bold text-[#183D2B]">
+                            {enquiries.length}
+                          </span>
+                          {enquiries.filter((e) => e.status === "new").length > 0 && (
+                            <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-bold">
+                              {enquiries.filter((e) => e.status === "new").length} New
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-[11px] text-[#242424]/60 mt-1 font-light">
+                          Active travel inquiries &amp; consultation leads
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Quick Action Shortcuts */}
+                  <div className="p-6 rounded-3xl bg-neutral-50/70 border border-[#E9E0D2] space-y-4">
+                    <div className="flex items-center gap-2 text-[#8B5E35] font-semibold text-xs uppercase tracking-wider">
+                      <Sparkles className="w-4 h-4" />
+                      <span>Quick Creation &amp; Media Management Shortcuts</span>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2.5">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setEditModal({
+                            section: "destination",
+                            isNew: true,
+                            data: {
+                              state: "Kerala",
+                              region: "Highlands",
+                              tags: [],
+                              highlights: [],
+                              bestTimeToVisit: "October to March",
+                              idealDays: "3-4 Days",
+                              heroBadge: "Bespoke Kerala",
+                            },
+                          })
+                        }
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-[#E9E0D2] hover:border-[#183D2B] hover:bg-[#183D2B] hover:text-white text-xs font-semibold text-[#183D2B] transition-all shadow-sm cursor-pointer"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                        <span>Add New Destination</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setEditModal({
+                            section: "experience",
+                            isNew: true,
+                            data: {
+                              location: "Kerala",
+                              category: "Cultural",
+                              duration: "Half Day",
+                              highlights: [],
+                            },
+                          })
+                        }
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-[#E9E0D2] hover:border-[#183D2B] hover:bg-[#183D2B] hover:text-white text-xs font-semibold text-[#183D2B] transition-all shadow-sm cursor-pointer"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                        <span>Add New Experience</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setEditModal({
+                            section: "journey",
+                            isNew: true,
+                            data: {
+                              duration: "7 Days / 6 Nights",
+                              idealFor: "Couples & Families",
+                              highlights: [],
+                              itinerary: [],
+                            },
+                          })
+                        }
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-[#E9E0D2] hover:border-[#183D2B] hover:bg-[#183D2B] hover:text-white text-xs font-semibold text-[#183D2B] transition-all shadow-sm cursor-pointer"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                        <span>Add Signature Journey</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setEditModal({
+                            section: "review",
+                            isNew: true,
+                            data: {
+                              rating: 5,
+                              relativeTime: "Recently",
+                              avatarInitial: "J",
+                              avatarColor: "bg-[#183D2B]",
+                            },
+                          })
+                        }
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-[#E9E0D2] hover:border-[#183D2B] hover:bg-[#183D2B] hover:text-white text-xs font-semibold text-[#183D2B] transition-all shadow-sm cursor-pointer"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                        <span>Add Google Review</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setEditModal({
+                            section: "faq",
+                            isNew: true,
+                            data: {
+                              category: "Planning & Booking",
+                              order: (content?.faqs?.length || 0) + 1,
+                            },
+                          })
+                        }
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-[#E9E0D2] hover:border-[#183D2B] hover:bg-[#183D2B] hover:text-white text-xs font-semibold text-[#183D2B] transition-all shadow-sm cursor-pointer"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                        <span>Add FAQ</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setActiveTab("hero")}
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-[#E9E0D2] hover:border-[#183D2B] hover:bg-[#183D2B] hover:text-white text-xs font-semibold text-[#183D2B] transition-all shadow-sm cursor-pointer"
+                      >
+                        <Film className="w-3.5 h-3.5" />
+                        <span>Edit Hero Slideshow</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setActiveTab("about")}
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-[#E9E0D2] hover:border-[#183D2B] hover:bg-[#183D2B] hover:text-white text-xs font-semibold text-[#183D2B] transition-all shadow-sm cursor-pointer"
+                      >
+                        <Video className="w-3.5 h-3.5" />
+                        <span>Edit Curtain Videos &amp; Photos</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setActiveTab("contact")}
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-[#E9E0D2] hover:border-[#183D2B] hover:bg-[#183D2B] hover:text-white text-xs font-semibold text-[#183D2B] transition-all shadow-sm cursor-pointer"
+                      >
+                        <Phone className="w-3.5 h-3.5" />
+                        <span>Update Contact &amp; Concierge</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setActiveTab("footer")}
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-[#E9E0D2] hover:border-[#183D2B] hover:bg-[#183D2B] hover:text-white text-xs font-semibold text-[#183D2B] transition-all shadow-sm cursor-pointer"
+                      >
+                        <Share2 className="w-3.5 h-3.5" />
+                        <span>Update Footer &amp; Social</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Recent Guest Enquiries & Leads */}
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between pb-2 border-b border-[#E9E0D2]">
+                      <div>
+                        <h3 className="text-base font-serif font-bold text-[#183D2B]">
+                          Recent Guest Consultations &amp; Enquiries
+                        </h3>
+                        <p className="text-xs text-[#242424]/60 font-light">
+                          Latest 5 inquiries received from the public website consultation form.
+                        </p>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => setActiveTab("enquiries")}
+                        className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#183D2B] hover:text-[#8B5E35] transition-colors cursor-pointer"
+                      >
+                        <span>View All ({enquiries.length})</span>
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+
+                    {enquiries.length === 0 ? (
+                      <div className="p-8 rounded-2xl bg-neutral-50 border border-[#E9E0D2] text-center text-xs text-[#242424]/60">
+                        No guest inquiries found. When visitors submit the consultation form on the website, they will appear here.
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        {enquiries.slice(0, 5).map((enq) => {
+                          const id = enq._id || enq.id;
+                          const phoneClean = (enq.phone || "").replace(/[^0-9]/g, "");
+                          return (
+                            <div
+                              key={id}
+                              className="p-4 rounded-2xl border border-[#E9E0D2] bg-white hover:border-[#183D2B]/40 transition-all shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4"
+                            >
+                              <div className="space-y-1">
+                                <div className="flex items-center gap-2">
+                                  <span className="text-sm font-bold text-[#183D2B]">
+                                    {enq.name || "Guest Traveler"}
+                                  </span>
+                                  <span
+                                    className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                                      enq.status === "new"
+                                        ? "bg-amber-100 text-amber-800"
+                                        : enq.status === "contacted"
+                                        ? "bg-blue-100 text-blue-800"
+                                        : enq.status === "converted"
+                                        ? "bg-emerald-100 text-emerald-800"
+                                        : "bg-neutral-100 text-neutral-700"
+                                    }`}
+                                  >
+                                    {enq.status || "new"}
+                                  </span>
+                                </div>
+                                <div className="flex flex-wrap items-center gap-3 text-xs text-[#242424]/70 font-light">
+                                  {enq.email && <span>{enq.email}</span>}
+                                  {enq.phone && <span>&bull; {enq.phone}</span>}
+                                  {enq.destination && <span>&bull; Destination: <strong>{enq.destination}</strong></span>}
+                                  {enq.dates && <span>&bull; Dates: {enq.dates}</span>}
+                                </div>
+                                {enq.notes && (
+                                  <p className="text-xs text-[#242424]/75 italic mt-1 line-clamp-1">
+                                    &ldquo;{enq.notes}&rdquo;
+                                  </p>
+                                )}
+                              </div>
+
+                              <div className="flex items-center gap-2 shrink-0">
+                                {phoneClean && (
+                                  <a
+                                    href={`https://wa.me/${phoneClean}?text=Hello%20${encodeURIComponent(enq.name || "there")}%2C%20thank%20you%20for%20contacting%20Journeys%20by%20Jibu%20Thomas.%20I%20am%20reviewing%20your%20inquiry%20regarding%20${encodeURIComponent(enq.destination || "Kerala")}.`}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold transition-all shadow-sm"
+                                  >
+                                    <MessageSquare className="w-3.5 h-3.5" />
+                                    <span>WhatsApp</span>
+                                  </a>
+                                )}
+
+                                <select
+                                  value={enq.status || "new"}
+                                  onChange={(e) => handleUpdateEnquiryStatus(id, e.target.value)}
+                                  className="px-2.5 py-1.5 rounded-full border border-[#E9E0D2] bg-white text-xs font-semibold text-[#183D2B] outline-none cursor-pointer"
+                                >
+                                  <option value="new">New</option>
+                                  <option value="contacted">Contacted</option>
+                                  <option value="converted">Converted</option>
+                                  <option value="closed">Closed</option>
+                                </select>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
               {/* SECTION: ABOUT ATELIER & FOUNDER JIBU */}
               {activeTab === "about" && (
                 <div className="space-y-8">
@@ -701,6 +1319,10 @@ export default function AdminPage() {
                         whyUsBadge: formData.get("whyUsBadge") as string,
                         whyUsTitle: formData.get("whyUsTitle") as string,
                         whyUsQuote: formData.get("whyUsQuote") as string,
+
+                        curtainVideo1: (formData.get("curtainVideo1") as string) || curtainVideo1 || content?.about?.curtainVideo1 || "/curtainvideo1.mp4",
+                        curtainVideo2: (formData.get("curtainVideo2") as string) || curtainVideo2 || content?.about?.curtainVideo2 || "/curtainvideo2.mp4",
+                        curtainImage: (formData.get("curtainImage") as string) || curtainImage || content?.about?.curtainImage || "/images/generated/hero-kerala.webp",
                       };
 
                       try {
@@ -904,6 +1526,91 @@ export default function AdminPage() {
                         <div>
                           <label className="block text-xs font-semibold uppercase text-[#183D2B] mb-1">Why Us Quote</label>
                           <input name="whyUsQuote" defaultValue={content?.about?.whyUsQuote || "No middle-tier sales reps, no hidden commissions, pristine standards."} className="w-full px-3 py-2 rounded-xl border border-[#E9E0D2] text-xs bg-white" />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Part 5: Cinematic Curtain Video & Image Reveals */}
+                    <div className="p-6 rounded-3xl bg-neutral-50/70 border border-[#E9E0D2] space-y-6">
+                      <div className="flex items-center gap-2 text-[#8B5E35] font-semibold text-xs uppercase tracking-wider">
+                        <Film className="w-4 h-4" />
+                        <span>Part 5: Full-Width Cinematic Curtain Video &amp; Image Reveals</span>
+                      </div>
+                      <p className="text-xs text-[#242424]/70 font-light leading-relaxed">
+                        These are the luxury full-width media reveal curtains seen as guests scroll down the website. Upload MP4/WebM videos (up to 16MB) or high-res photos. Uploading replaces the live background seamlessly.
+                      </p>
+
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {/* Curtain Video 1 */}
+                        <div className="p-4 rounded-2xl bg-white border border-[#E9E0D2] space-y-3">
+                          <div className="flex items-center gap-2 text-xs font-bold text-[#183D2B]">
+                            <Video className="w-4 h-4 text-[#8B5E35]" />
+                            <span>Curtain Video Reveal #1</span>
+                          </div>
+                          <span className="text-[11px] text-[#242424]/60 block font-light">
+                            First scroll curtain reveal (Backwaters / Landscape)
+                          </span>
+                          <input
+                            type="hidden"
+                            name="curtainVideo1"
+                            value={curtainVideo1 || content?.about?.curtainVideo1 || "/curtainvideo1.mp4"}
+                          />
+                          <MediaUploaderWithPreview
+                            label="Video 1 (MP4/WebM up to 16MB) *"
+                            value={curtainVideo1 || content?.about?.curtainVideo1 || "/curtainvideo1.mp4"}
+                            mediaType="video"
+                            maxSizeMb={16}
+                            onChange={({ url }) => setCurtainVideo1(url)}
+                            onClear={() => setCurtainVideo1("")}
+                          />
+                        </div>
+
+                        {/* Curtain Video 2 */}
+                        <div className="p-4 rounded-2xl bg-white border border-[#E9E0D2] space-y-3">
+                          <div className="flex items-center gap-2 text-xs font-bold text-[#183D2B]">
+                            <Video className="w-4 h-4 text-[#8B5E35]" />
+                            <span>Curtain Video Reveal #2</span>
+                          </div>
+                          <span className="text-[11px] text-[#242424]/60 block font-light">
+                            Second scroll curtain reveal (Western Ghats / Highlands)
+                          </span>
+                          <input
+                            type="hidden"
+                            name="curtainVideo2"
+                            value={curtainVideo2 || content?.about?.curtainVideo2 || "/curtainvideo2.mp4"}
+                          />
+                          <MediaUploaderWithPreview
+                            label="Video 2 (MP4/WebM up to 16MB) *"
+                            value={curtainVideo2 || content?.about?.curtainVideo2 || "/curtainvideo2.mp4"}
+                            mediaType="video"
+                            maxSizeMb={16}
+                            onChange={({ url }) => setCurtainVideo2(url)}
+                            onClear={() => setCurtainVideo2("")}
+                          />
+                        </div>
+
+                        {/* Curtain Image */}
+                        <div className="p-4 rounded-2xl bg-white border border-[#E9E0D2] space-y-3">
+                          <div className="flex items-center gap-2 text-xs font-bold text-[#183D2B]">
+                            <Sparkles className="w-4 h-4 text-[#8B5E35]" />
+                            <span>Curtain Photo Reveal</span>
+                          </div>
+                          <span className="text-[11px] text-[#242424]/60 block font-light">
+                            Editorial photographic reveal curtain
+                          </span>
+                          <input
+                            type="hidden"
+                            name="curtainImage"
+                            value={curtainImage || content?.about?.curtainImage || "/images/generated/hero-kerala.webp"}
+                          />
+                          <MediaUploaderWithPreview
+                            label="Photo (JPG/PNG/WebP up to 10MB) *"
+                            value={curtainImage || content?.about?.curtainImage || "/images/generated/hero-kerala.webp"}
+                            mediaType="image"
+                            maxSizeMb={10}
+                            onChange={({ url }) => setCurtainImage(url)}
+                            onClear={() => setCurtainImage("")}
+                          />
                         </div>
                       </div>
                     </div>
@@ -1729,6 +2436,18 @@ export default function AdminPage() {
 
                     <div>
                       <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-2">
+                        Direct Dial Phone (e.g. +919447000000)
+                      </label>
+                      <input
+                        name="phoneNumber"
+                        defaultValue={content?.contactInfo?.phoneNumber || ""}
+                        placeholder="+919447000000"
+                        className="w-full px-4 py-3 rounded-2xl border border-[#E9E0D2] focus:border-[#183D2B] outline-none text-xs"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-2">
                         Official Inquiry Email
                       </label>
                       <input
@@ -1739,9 +2458,9 @@ export default function AdminPage() {
                       />
                     </div>
 
-                    <div>
+                    <div className="md:col-span-2">
                       <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-2">
-                        Kerala Atelier Address
+                        Kerala Atelier Physical Address
                       </label>
                       <input
                         name="address"
@@ -1757,6 +2476,39 @@ export default function AdminPage() {
                       <input
                         name="whatsappMessage"
                         defaultValue={content?.contactInfo?.whatsappMessage || ""}
+                        className="w-full px-4 py-3 rounded-2xl border border-[#E9E0D2] focus:border-[#183D2B] outline-none text-xs"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-2">
+                        Concierge Banner Title
+                      </label>
+                      <input
+                        name="conciergeTitle"
+                        defaultValue={content?.contactInfo?.conciergeTitle || "Private Concierge & Direct Atelier Access"}
+                        className="w-full px-4 py-3 rounded-2xl border border-[#E9E0D2] focus:border-[#183D2B] outline-none text-xs"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-2">
+                        Concierge Subtitle
+                      </label>
+                      <input
+                        name="conciergeSubtitle"
+                        defaultValue={content?.contactInfo?.conciergeSubtitle || "Every journey begins with a conversation."}
+                        className="w-full px-4 py-3 rounded-2xl border border-[#E9E0D2] focus:border-[#183D2B] outline-none text-xs"
+                      />
+                    </div>
+
+                    <div className="md:col-span-2">
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-2">
+                        Concierge Reassurance Note
+                      </label>
+                      <input
+                        name="conciergeNote"
+                        defaultValue={content?.contactInfo?.conciergeNote || "Expect a response within 4 hours. No obligation."}
                         className="w-full px-4 py-3 rounded-2xl border border-[#E9E0D2] focus:border-[#183D2B] outline-none text-xs"
                       />
                     </div>
@@ -1856,6 +2608,17 @@ export default function AdminPage() {
                           rows={2}
                           name="atelierDescription"
                           defaultValue={content?.footerContent?.atelierDescription || ""}
+                          className="w-full px-4 py-3 rounded-2xl border border-[#E9E0D2] focus:border-[#183D2B] outline-none text-xs"
+                        />
+                      </div>
+
+                      <div className="md:col-span-2">
+                        <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-2">
+                          Copyright Notice Text
+                        </label>
+                        <input
+                          name="copyrightText"
+                          defaultValue={content?.footerContent?.copyrightText || "© 2026 Journeys by Jibu Thomas. All Rights Reserved."}
                           className="w-full px-4 py-3 rounded-2xl border border-[#E9E0D2] focus:border-[#183D2B] outline-none text-xs"
                         />
                       </div>
@@ -2026,235 +2789,9 @@ export default function AdminPage() {
                 </div>
               )}
 
-              {/* SECTION: GOOGLE ANALYTICS & TRAFFIC INSIGHTS */}
-              {activeTab === "analytics" && (
-                <div className="space-y-8">
-                  <div className="pb-4 border-b border-[#E9E0D2] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div>
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-3 h-3 rounded-full bg-[#34A853] animate-pulse" />
-                        <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#183D2B]">
-                          Google Analytics &amp; Visitor Intelligence
-                        </h2>
-                      </div>
-                      <p className="text-xs text-[#242424]/70 font-light mt-1">
-                        Executive live tracking, audience geography, and conversion channels for Journeys by Jibu Thomas.
-                      </p>
-                    </div>
 
-                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold">
-                      <TrendingUp className="w-3.5 h-3.5" />
-                      <span>Traffic +18.4% this month</span>
-                    </div>
-                  </div>
 
-                  {/* 4 CORE KPI METRICS */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div className="p-5 rounded-2xl bg-white border border-[#E9E0D2] shadow-sm">
-                      <span className="text-[11px] uppercase tracking-wider text-[#242424]/60 font-semibold block">
-                        Monthly Unique Visitors
-                      </span>
-                      <div className="flex items-baseline gap-2 mt-2">
-                        <span className="text-3xl font-serif font-bold text-[#183D2B]">14,820</span>
-                        <span className="text-xs text-emerald-600 font-semibold">+18.4%</span>
-                      </div>
-                      <span className="text-[11px] text-[#242424]/50 font-light mt-1 block">
-                        Verified Google Analytics sessions
-                      </span>
-                    </div>
 
-                    <div className="p-5 rounded-2xl bg-white border border-[#E9E0D2] shadow-sm">
-                      <span className="text-[11px] uppercase tracking-wider text-[#242424]/60 font-semibold block">
-                        Avg. Reading Duration
-                      </span>
-                      <div className="flex items-baseline gap-2 mt-2">
-                        <span className="text-3xl font-serif font-bold text-[#183D2B]">3m 52s</span>
-                        <span className="text-xs text-emerald-600 font-semibold">High intent</span>
-                      </div>
-                      <span className="text-[11px] text-[#242424]/50 font-light mt-1 block">
-                        Deep editorial &amp; route engagement
-                      </span>
-                    </div>
-
-                    <div className="p-5 rounded-2xl bg-white border border-[#E9E0D2] shadow-sm">
-                      <span className="text-[11px] uppercase tracking-wider text-[#242424]/60 font-semibold block">
-                        WhatsApp Atelier Leads
-                      </span>
-                      <div className="flex items-baseline gap-2 mt-2">
-                        <span className="text-3xl font-serif font-bold text-[#183D2B]">156</span>
-                        <span className="text-xs text-emerald-600 font-semibold">+32 vs last mo</span>
-                      </div>
-                      <span className="text-[11px] text-[#242424]/50 font-light mt-1 block">
-                        Direct high-value traveler inquiries
-                      </span>
-                    </div>
-
-                    <div className="p-5 rounded-2xl bg-white border border-[#E9E0D2] shadow-sm">
-                      <span className="text-[11px] uppercase tracking-wider text-[#242424]/60 font-semibold block">
-                        Bespoke Plan Inquiries
-                      </span>
-                      <div className="flex items-baseline gap-2 mt-2">
-                        <span className="text-3xl font-serif font-bold text-[#183D2B]">92</span>
-                        <span className="text-xs text-emerald-600 font-semibold">100% routed</span>
-                      </div>
-                      <span className="text-[11px] text-[#242424]/50 font-light mt-1 block">
-                        Via Plan Your Journey atelier
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* CHANNEL BREAKDOWN & GEOGRAPHY */}
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    {/* Traffic Channels */}
-                    <div className="p-6 rounded-3xl bg-white border border-[#E9E0D2] shadow-sm space-y-4">
-                      <h3 className="text-sm font-semibold uppercase tracking-wider text-[#183D2B]">
-                        Traffic Acquisition Channels
-                      </h3>
-                      <div className="space-y-3">
-                        <div>
-                          <div className="flex justify-between text-xs mb-1">
-                            <span className="font-medium text-[#242424]">Organic Search (Google &amp; AI Search)</span>
-                            <span className="font-semibold text-[#183D2B]">48% (7,113)</span>
-                          </div>
-                          <div className="w-full h-2 rounded-full bg-neutral-100 overflow-hidden">
-                            <div className="h-full bg-[#183D2B] rounded-full" style={{ width: "48%" }} />
-                          </div>
-                        </div>
-
-                        <div>
-                          <div className="flex justify-between text-xs mb-1">
-                            <span className="font-medium text-[#242424]">Direct &amp; Discerning Referrals</span>
-                            <span className="font-semibold text-[#183D2B]">24% (3,556)</span>
-                          </div>
-                          <div className="w-full h-2 rounded-full bg-neutral-100 overflow-hidden">
-                            <div className="h-full bg-[#8B5E35] rounded-full" style={{ width: "24%" }} />
-                          </div>
-                        </div>
-
-                        <div>
-                          <div className="flex justify-between text-xs mb-1">
-                            <span className="font-medium text-[#242424]">Instagram &amp; Visual Discovery</span>
-                            <span className="font-semibold text-[#183D2B]">18% (2,667)</span>
-                          </div>
-                          <div className="w-full h-2 rounded-full bg-neutral-100 overflow-hidden">
-                            <div className="h-full bg-pink-600 rounded-full" style={{ width: "18%" }} />
-                          </div>
-                        </div>
-
-                        <div>
-                          <div className="flex justify-between text-xs mb-1">
-                            <span className="font-medium text-[#242424]">Google Business Profile &amp; Maps</span>
-                            <span className="font-semibold text-[#183D2B]">10% (1,482)</span>
-                          </div>
-                          <div className="w-full h-2 rounded-full bg-neutral-100 overflow-hidden">
-                            <div className="h-full bg-blue-600 rounded-full" style={{ width: "10%" }} />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Guest Geography */}
-                    <div className="p-6 rounded-3xl bg-white border border-[#E9E0D2] shadow-sm space-y-4">
-                      <h3 className="text-sm font-semibold uppercase tracking-wider text-[#183D2B]">
-                        Discerning Guest Geography (Top Markets)
-                      </h3>
-                      <div className="space-y-3">
-                        {[
-                          { country: "United Kingdom (London, Edinburgh)", share: "36%", bar: 36 },
-                          { country: "United States (California, New York)", share: "26%", bar: 26 },
-                          { country: "United Arab Emirates & GCC", share: "18%", bar: 18 },
-                          { country: "Australia & Western Europe", share: "12%", bar: 12 },
-                          { country: "India (Metros: Mumbai, Delhi, BLR)", share: "8%", bar: 8 },
-                        ].map((geo, i) => (
-                          <div key={i}>
-                            <div className="flex justify-between text-xs mb-1">
-                              <span className="font-medium text-[#242424]">{geo.country}</span>
-                              <span className="font-semibold text-[#8B5E35]">{geo.share}</span>
-                            </div>
-                            <div className="w-full h-2 rounded-full bg-neutral-100 overflow-hidden">
-                              <div
-                                className="h-full bg-gradient-to-r from-[#183D2B] to-[#8B5E35] rounded-full"
-                                style={{ width: `${geo.bar}%` }}
-                              />
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* GOOGLE ANALYTICS INTEGRATION CONFIGURATION */}
-                  <div className="p-6 sm:p-8 rounded-3xl bg-white border border-[#E9E0D2] shadow-sm space-y-6">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-700">
-                        <BarChart3 className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h3 className="text-base font-serif font-bold text-[#183D2B]">
-                          Google Analytics 4 &amp; Webmaster Configuration
-                        </h3>
-                        <p className="text-xs text-[#242424]/70 font-light">
-                          Manage your live tracking IDs for Google Analytics 4, Tag Manager, and Google Search Console.
-                        </p>
-                      </div>
-                    </div>
-
-                    <form
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        showToast("Google Analytics & Search Console configuration verified & active!");
-                      }}
-                      className="grid grid-cols-1 md:grid-cols-2 gap-5"
-                    >
-                      <div>
-                        <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-2">
-                          Google Analytics 4 Measurement ID
-                        </label>
-                        <input
-                          type="text"
-                          defaultValue="G-JIBUKERALA1"
-                          placeholder="G-XXXXXXXXXX"
-                          className="w-full px-4 py-3 rounded-2xl border border-[#E9E0D2] focus:border-[#183D2B] outline-none text-xs font-mono"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-2">
-                          Google Tag Manager ID
-                        </label>
-                        <input
-                          type="text"
-                          defaultValue="GTM-JBJT789"
-                          placeholder="GTM-XXXXXXX"
-                          className="w-full px-4 py-3 rounded-2xl border border-[#E9E0D2] focus:border-[#183D2B] outline-none text-xs font-mono"
-                        />
-                      </div>
-
-                      <div className="md:col-span-2">
-                        <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-2">
-                          Google Search Console Meta Verification
-                        </label>
-                        <input
-                          type="text"
-                          defaultValue="google-site-verification=jbjt-discerning-travel-official"
-                          placeholder="google-site-verification=..."
-                          className="w-full px-4 py-3 rounded-2xl border border-[#E9E0D2] focus:border-[#183D2B] outline-none text-xs font-mono"
-                        />
-                      </div>
-
-                      <div className="md:col-span-2 pt-2">
-                        <button
-                          type="submit"
-                          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#183D2B] hover:bg-[#8B5E35] text-white text-xs uppercase tracking-widest font-semibold transition-all shadow-md active:scale-95 cursor-pointer"
-                        >
-                          <Save className="w-4 h-4" />
-                          <span>Save &amp; Verify Google Analytics Tracking</span>
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              )}
 
               {/* SECTION: FREQUENTLY ASKED QUESTIONS (FAQ) */}
               {activeTab === "faq" && (
@@ -2360,23 +2897,31 @@ export default function AdminPage() {
 
       {/* EDIT / CREATE MODAL */}
       {editModal && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-3xl border border-[#E9E0D2] max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative my-8">
-            <button
-              onClick={() => setEditModal(null)}
-              className="absolute top-6 right-6 p-2 rounded-full text-[#242424]/60 hover:text-[#183D2B] hover:bg-[#183D2B]/5 transition-colors cursor-pointer"
-            >
-              <X className="w-5 h-5" />
-            </button>
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 overflow-hidden">
+          <div className="bg-white rounded-3xl border border-[#E9E0D2] max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            {/* STICKY HEADER - NEVER CUT OFF ON ANY SCREEN */}
+            <div className="flex items-center justify-between p-5 sm:p-6 border-b border-[#E9E0D2] shrink-0 bg-white">
+              <div>
+                <h3 className="text-lg sm:text-xl font-serif font-bold text-[#183D2B]">
+                  {editModal.isNew ? `Add New ${editModal.section}` : `Edit ${editModal.section}`}
+                </h3>
+                <p className="text-[11px] text-[#242424]/60 font-light mt-0.5">
+                  Fill in the details below. Changes reflect on the live website immediately upon saving.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setEditModal(null)}
+                className="p-2 rounded-full text-[#242424]/60 hover:text-[#183D2B] hover:bg-[#183D2B]/5 transition-colors cursor-pointer shrink-0"
+                title="Close modal"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
 
-            <h3 className="text-xl font-serif font-bold text-[#183D2B] mb-1">
-              {editModal.isNew ? `Add New ${editModal.section}` : `Edit ${editModal.section}`}
-            </h3>
-            <p className="text-xs text-[#242424]/60 font-light mb-6">
-              Fill in the textual content below. Changes reflect on the public website immediately after saving.
-            </p>
-
-            <form onSubmit={handleSaveEntity} className="space-y-4">
+            {/* SCROLLABLE FORM BODY & STICKY FOOTER */}
+            <form onSubmit={handleSaveEntity} className="flex flex-col flex-1 min-h-0 overflow-hidden">
+              <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-4">
               {/* Destination Form Fields */}
               {editModal.section === "destination" && (
                 <>
@@ -3072,12 +3617,64 @@ export default function AdminPage() {
                     />
                   </div>
 
-                  <div>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B]">
+                        Slide Media (Photo or Video) *
+                      </label>
+                      <div className="flex items-center gap-1 p-0.5 rounded-lg bg-neutral-100 border border-[#E9E0D2]">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setEditModal({
+                              ...editModal,
+                              data: { ...editModal.data, type: "video" },
+                            })
+                          }
+                          className={`px-2.5 py-1 rounded-md text-[11px] font-semibold transition-all cursor-pointer ${
+                            editModal.data.type === "video" || (!editModal.data.type && editModal.data.src?.endsWith(".mp4"))
+                              ? "bg-[#183D2B] text-white shadow-xs"
+                              : "text-[#242424]/70 hover:text-[#183D2B]"
+                          }`}
+                        >
+                          Video (16MB)
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setEditModal({
+                              ...editModal,
+                              data: { ...editModal.data, type: "image" },
+                            })
+                          }
+                          className={`px-2.5 py-1 rounded-md text-[11px] font-semibold transition-all cursor-pointer ${
+                            editModal.data.type === "image" || (editModal.data.type !== "video" && !editModal.data.src?.endsWith(".mp4"))
+                              ? "bg-[#183D2B] text-white shadow-xs"
+                              : "text-[#242424]/70 hover:text-[#183D2B]"
+                          }`}
+                        >
+                          Photo (10MB)
+                        </button>
+                      </div>
+                    </div>
+
                     <MediaUploaderWithPreview
-                      label="Slide Media (Photo or Video) *"
+                      label={
+                        editModal.data.type === "video" || (!editModal.data.type && editModal.data.src?.endsWith(".mp4"))
+                          ? "Cinematic MP4/WebM Video (up to 16MB) *"
+                          : "High-Resolution Photograph (up to 10MB) *"
+                      }
                       value={editModal.data.src || ""}
-                      mediaType={editModal.data.type === "video" ? "video" : "image"}
-                      maxSizeMb={editModal.data.type === "video" ? 15 : 10}
+                      mediaType={
+                        editModal.data.type === "video" || (!editModal.data.type && editModal.data.src?.endsWith(".mp4"))
+                          ? "video"
+                          : "image"
+                      }
+                      maxSizeMb={
+                        editModal.data.type === "video" || (!editModal.data.type && editModal.data.src?.endsWith(".mp4"))
+                          ? 16
+                          : 10
+                      }
                       onChange={({ url, type }) =>
                         setEditModal({
                           ...editModal,
@@ -3393,11 +3990,14 @@ export default function AdminPage() {
                 </>
               )}
 
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#E9E0D2]">
+              </div>
+
+              {/* STICKY FOOTER - ALWAYS ACCESSIBLE */}
+              <div className="flex items-center justify-end gap-3 p-4 sm:p-5 border-t border-[#E9E0D2] bg-neutral-50/80 shrink-0">
                 <button
                   type="button"
                   onClick={() => setEditModal(null)}
-                  className="px-4 py-2 rounded-full border border-[#E9E0D2] text-xs font-semibold text-[#242424]/70 hover:bg-black/5 transition-colors cursor-pointer"
+                  className="px-4 py-2 rounded-full border border-[#E9E0D2] bg-white text-xs font-semibold text-[#242424]/70 hover:bg-neutral-100 transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>

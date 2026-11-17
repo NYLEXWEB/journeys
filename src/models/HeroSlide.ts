@@ -8,6 +8,7 @@ export interface IHeroSlide extends Document {
   location: string;
   description: string;
   src: string;
+  mediaType: "video" | "image";
   order: number;
 }
 
@@ -20,6 +21,7 @@ const HeroSlideSchema = new Schema<IHeroSlide>(
     location: { type: String, default: "" },
     description: { type: String, default: "" },
     src: { type: String, required: true },
+    mediaType: { type: String, enum: ["video", "image"], default: "video" },
     order: { type: Number, default: 0 },
   },
   { timestamps: true }
@@ -27,4 +29,3 @@ const HeroSlideSchema = new Schema<IHeroSlide>(
 
 export const HeroSlideModel: Model<IHeroSlide> =
   mongoose.models.HeroSlide || mongoose.model<IHeroSlide>("HeroSlide", HeroSlideSchema);
-

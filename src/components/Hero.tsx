@@ -15,6 +15,8 @@ interface HeroSlide {
   tag: string;
   location: string;
   description: string;
+  mediaType?: "video" | "image";
+  type?: "video" | "image";
 }
 
 const STATIC_HERO_SLIDES: HeroSlide[] = [
@@ -134,9 +136,15 @@ export default function Hero() {
         {heroSlides.map((slide, idx) => {
           const isActive = idx === currentIndex;
           const src = slide.src || `/video/video-${(idx % 4) + 1}.mp4`;
-          const isImage = /\.(jpeg|jpg|png|webp|avif|gif)($|\?)/i.test(src);
+          const isVideo =
+            slide.mediaType === "video" ||
+            slide.type === "video" ||
+            src.toLowerCase().endsWith(".mp4") ||
+            src.toLowerCase().endsWith(".webm") ||
+            src.toLowerCase().endsWith(".mov") ||
+            src.includes("/video/");
 
-          if (isImage) {
+          if (!isVideo) {
             return (
               <img
                 key={slide.slideId || slide.id || idx}

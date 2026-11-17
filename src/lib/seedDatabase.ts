@@ -21,72 +21,40 @@ import {
   INITIAL_FAQS,
 } from "./seedData";
 
+let hasCheckedSeed = false;
+
 /**
  * Automatically seeds the database if collections are currently empty.
- * Ensures existing authentic website data is preserved in MongoDB upon first connect.
+ * Runs only once per server runtime lifecycle to eliminate network round-trip overhead.
  */
 export async function seedInitialDataIfEmpty(): Promise<void> {
+  if (hasCheckedSeed) return;
+
   try {
-    const destCount = await DestinationModel.countDocuments();
-    if (destCount === 0) {
-      await DestinationModel.insertMany(INITIAL_DESTINATIONS);
-      console.log("Seeded initial destinations.");
+    // Fast check on main collection to avoid 10 separate round-trips
+    const destCount = await DestinationModel.estimatedDocumentCount();
+    if (destCount > 0) {
+      hasCheckedSeed = true;
+      return;
     }
 
-    const heroCount = await HeroSlideModel.countDocuments();
-    if (heroCount === 0) {
-      await HeroSlideModel.insertMany(INITIAL_HERO_SLIDES);
-      console.log("Seeded initial hero slides.");
-    }
+    // If completely empty, seed in parallel
+    await Promise.all([
+      DestinationModel.insertMany(INITIAL_DESTINATIONS),
+      HeroSlideModel.insertMany(INITIAL_HERO_SLIDES),
+      ExperienceModel.insertMany(INITIAL_EXPERIENCES),
+      JourneyModel.insertMany(INITIAL_JOURNEYS),
+      ReviewModel.insertMany(INITIAL_REVIEWS),
+      ContactInfoModel.create(INITIAL_CONTACT_INFO),
+      FooterContentModel.create(INITIAL_FOOTER_CONTENT),
+      ServiceModel.insertMany(INITIAL_SERVICES),
+      JournalModel.insertMany(INITIAL_JOURNAL),
+      FAQModel.insertMany(INITIAL_FAQS),
+    ]);
 
-    const expCount = await ExperienceModel.countDocuments();
-    if (expCount === 0) {
-      await ExperienceModel.insertMany(INITIAL_EXPERIENCES);
-      console.log("Seeded initial experiences.");
-    }
-
-    const journeyCount = await JourneyModel.countDocuments();
-    if (journeyCount === 0) {
-      await JourneyModel.insertMany(INITIAL_JOURNEYS);
-      console.log("Seeded initial journeys.");
-    }
-
-    const reviewCount = await ReviewModel.countDocuments();
-    if (reviewCount === 0) {
-      await ReviewModel.insertMany(INITIAL_REVIEWS);
-      console.log("Seeded initial reviews.");
-    }
-
-    const contactCount = await ContactInfoModel.countDocuments();
-    if (contactCount === 0) {
-      await ContactInfoModel.create(INITIAL_CONTACT_INFO);
-      console.log("Seeded initial contact info.");
-    }
-
-    const footerCount = await FooterContentModel.countDocuments();
-    if (footerCount === 0) {
-      await FooterContentModel.create(INITIAL_FOOTER_CONTENT);
-      console.log("Seeded initial footer content.");
-    }
-
-    const serviceCount = await ServiceModel.countDocuments();
-    if (serviceCount === 0) {
-      await ServiceModel.insertMany(INITIAL_SERVICES);
-      console.log("Seeded initial services.");
-    }
-
-    const journalCount = await JournalModel.countDocuments();
-    if (journalCount === 0) {
-      await JournalModel.insertMany(INITIAL_JOURNAL);
-      console.log("Seeded initial journal dispatches.");
-    }
-
-    const faqCount = await FAQModel.countDocuments();
-    if (faqCount === 0) {
-      await FAQModel.insertMany(INITIAL_FAQS);
-      console.log("Seeded initial FAQs.");
-    }
+    hasCheckedSeed = true;
+    console.log("[Seed] Initial collections seeded successfully in parallel.");
   } catch (err) {
-    console.error("Initial data seed check warning:", err);
+    console.warn("Initial data seed check warning:", err);
   }
 }

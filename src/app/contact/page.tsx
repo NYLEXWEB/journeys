@@ -169,7 +169,7 @@ export default function ContactPage() {
             <span className="w-6 h-[1.5px] bg-[#8B5E35]" />
             <span>BESPOKE JOURNEY PLANNER &bull; ATELIER CONSULTATION</span>
           </div>
-          <h1 className="text-4xl sm:text-6xl font-serif text-[#183D2B] font-light tracking-tight leading-[1.08] max-w-4xl">
+          <h1 className="text-3xl min-[400px]:text-4xl sm:text-6xl font-serif text-[#183D2B] font-light tracking-tight leading-[1.08] max-w-4xl">
             Let us craft your journey,{" "}
             <span className="italic font-normal underline decoration-[#8B5E35]/40 decoration-1 underline-offset-8">
               from a blank canvas.
@@ -241,7 +241,7 @@ export default function ContactPage() {
               ) : (
                 <form
                   onSubmit={handleSubmit}
-                  className="p-6 sm:p-10 lg:p-12 rounded-[2.5rem] bg-white border border-[#E9E0D2] shadow-[0_15px_45px_rgba(24,61,43,0.06)] space-y-8"
+                  className="p-5 sm:p-10 lg:p-12 rounded-[2rem] sm:rounded-[2.5rem] bg-white border border-[#E9E0D2] shadow-[0_15px_45px_rgba(24,61,43,0.06)] space-y-8"
                 >
                   {/* Honeypot field */}
                   <div className="hidden" aria-hidden="true">

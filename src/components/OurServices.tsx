@@ -113,9 +113,9 @@ export default function OurServices() {
     >
       <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="flex items-center gap-3 mb-6 sm:mb-8">
+        <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap sm:flex-nowrap mb-6 sm:mb-8">
           <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#8B5E35] to-[#B37D47] shadow-sm shrink-0" />
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] uppercase">
+          <h2 className="text-xl min-[400px]:text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.1em] sm:tracking-[0.12em] uppercase">
             <span className="bg-gradient-to-r from-[#183D2B] via-[#1E4A35] to-[#27593D] bg-clip-text text-transparent">
               WAYS TO{" "}
             </span>
@@ -123,7 +123,7 @@ export default function OurServices() {
               TRAVEL &amp; STAYS
             </span>
           </h2>
-          <span className="h-[1.5px] w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent" />
+          <span className="h-[1.5px] w-8 min-[400px]:w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent shrink-0" />
         </div>
 
         {/* Mobile / Tablet Horizontal Navigation (< lg) */}
@@ -261,7 +261,7 @@ export default function OurServices() {
                   </div>
 
                   {/* Minimal Text Action Links */}
-                  <div className="pt-3.5 border-t border-[#E9E0D2]/60 flex items-center justify-between gap-4 text-xs font-medium tracking-wide">
+                  <div className="pt-3.5 border-t border-[#E9E0D2]/60 flex flex-col min-[380px]:flex-row min-[380px]:items-center justify-between gap-2.5 min-[380px]:gap-4 text-xs font-medium tracking-wide">
                     <a
                       href={`https://wa.me/919447000000?text=${encodeURIComponent(
                         `Hello Jibu, I would like to consult about ${activeService.title}.`

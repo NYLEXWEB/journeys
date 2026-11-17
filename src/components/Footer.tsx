@@ -46,19 +46,19 @@ export default function Footer() {
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap sm:flex-nowrap items-center justify-center sm:justify-start gap-2.5 sm:gap-3">
             <a
               href={`https://wa.me/${contact.whatsappNumber.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(contact.whatsappPrefill || "Hello Jibu, I would like to plan a journey to Kerala.")}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white text-xs uppercase tracking-wider font-semibold transition-all duration-300 shadow-md"
+              className="inline-flex items-center gap-1.5 sm:gap-2 px-3.5 min-[380px]:px-5 py-2.5 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white text-[11px] min-[380px]:text-xs uppercase tracking-wider font-semibold transition-all duration-300 shadow-md"
             >
-              <WhatsAppIcon className="w-4 h-4 fill-current" />
+              <WhatsAppIcon className="w-3.5 sm:w-4 h-3.5 sm:h-4 fill-current" />
               <span>WhatsApp Jibu</span>
             </a>
             <Link
               href="/plan-your-journey"
-              className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-[#FFFCF5] text-xs uppercase tracking-wider font-medium border border-white/15 transition-all"
+              className="inline-flex items-center gap-1.5 px-3.5 min-[380px]:px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-[#FFFCF5] text-[11px] min-[380px]:text-xs uppercase tracking-wider font-medium border border-white/15 transition-all"
             >
               <span>Plan Journey</span>
               <ArrowUpRight className="w-3.5 h-3.5" />

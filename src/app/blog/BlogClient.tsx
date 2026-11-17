@@ -7,6 +7,7 @@ import {
   BookOpen,
   Clock,
   Search,
+  ArrowLeft,
   ArrowUpRight,
 } from "lucide-react";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
@@ -71,6 +72,17 @@ export default function BlogClient() {
 
   return (
     <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16">
+      {/* Return to Home Breadcrumb */}
+      <div>
+        <Link
+          href="/#journal"
+          className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-[#8B5E35] hover:text-[#183D2B] transition-colors font-medium"
+        >
+          <ArrowLeft className="w-3.5 h-3.5" />
+          <span>Return to Home</span>
+        </Link>
+      </div>
+
       {/* Blog Page Editorial Header */}
       <div className="max-w-4xl space-y-4">
         <div className="inline-flex items-center gap-2 text-[#8B5E35] text-xs uppercase tracking-[0.25em] font-semibold">

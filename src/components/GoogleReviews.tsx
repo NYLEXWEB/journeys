@@ -206,9 +206,9 @@ export default function GoogleReviews() {
       <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
         {/* Section Header */}
-        <div className="flex items-center gap-3 mb-5 sm:mb-6">
+        <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap sm:flex-nowrap mb-5 sm:mb-6">
           <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#8B5E35] to-[#B37D47] shadow-sm shrink-0" />
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] uppercase">
+          <h2 className="text-xl min-[400px]:text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.1em] sm:tracking-[0.12em] uppercase">
             <span className="bg-gradient-to-r from-[#183D2B] via-[#1E4A35] to-[#27593D] bg-clip-text text-transparent">
               GOOGLE{" "}
             </span>
@@ -216,7 +216,7 @@ export default function GoogleReviews() {
               REVIEWS
             </span>
           </h2>
-          <span className="h-[1.5px] w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent" />
+          <span className="h-[1.5px] w-8 min-[400px]:w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent shrink-0" />
         </div>
 
         {/* Compact Authentic Google Review Header Bar (Seamlessly merged with Journeys brand theme) */}
@@ -426,7 +426,7 @@ export default function GoogleReviews() {
         >
           <div
             data-lenis-prevent="true"
-            className="bg-[#FFFCF5] rounded-3xl max-w-lg w-full p-6 sm:p-8 border border-[#E9E0D2] shadow-2xl relative animate-in fade-in zoom-in-95 duration-200"
+            className="bg-[#FFFCF5] rounded-3xl max-w-lg w-full p-5 sm:p-8 max-h-[90dvh] overflow-y-auto border border-[#E9E0D2] shadow-2xl relative animate-in fade-in zoom-in-95 duration-200"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}

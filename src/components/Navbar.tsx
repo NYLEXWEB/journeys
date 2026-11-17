@@ -567,9 +567,15 @@ export default function Navbar() {
                 <span className="text-[10px] font-sans uppercase tracking-[0.25em] text-[#E9E0D2]">
                   Explore &bull; Journeys Atelier
                 </span>
-                <span className="text-[10px] text-[#E9E0D2]/60 uppercase tracking-widest">
-                  South India
-                </span>
+                <button
+                  type="button"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center gap-1 text-[11px] uppercase tracking-wider text-[#E9E0D2] bg-white/10 hover:bg-white/20 px-2.5 py-1 rounded-full cursor-pointer transition-colors"
+                  aria-label="Close menu"
+                >
+                  <span>Close</span>
+                  <X className="w-3.5 h-3.5" />
+                </button>
               </div>
 
               {SITE_STRUCTURE.map((item) => {

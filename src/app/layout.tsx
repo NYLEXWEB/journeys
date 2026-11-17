@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { getLiveWebsiteContent } from "@/lib/contentService";
 import { WebsiteContentProvider } from "@/hooks/useWebsiteContent";
+import AnalyticsTracker from "@/components/AnalyticsTracker";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -156,6 +157,7 @@ export default async function RootLayout({
         />
       </head>
       <body suppressHydrationWarning className="min-h-screen bg-[#FFFCF5] text-[#242424] font-sans font-light selection:bg-[#183D2B] selection:text-[#FFFCF5] tracking-[-0.015em]">
+        <AnalyticsTracker />
         <WebsiteContentProvider initialContent={initialContent}>
           {children}
         </WebsiteContentProvider>

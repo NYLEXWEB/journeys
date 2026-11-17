@@ -35,9 +35,9 @@ export default function FAQ() {
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-4 mb-6 sm:mb-8">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap sm:flex-nowrap">
             <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#8B5E35] to-[#B37D47] shrink-0" />
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] uppercase">
+            <h2 className="text-xl min-[400px]:text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.1em] sm:tracking-[0.12em] uppercase">
               <span className="bg-gradient-to-r from-[#183D2B] via-[#1E4A35] to-[#27593D] bg-clip-text text-transparent">
                 FREQUENTLY ASKED{" "}
               </span>
@@ -45,7 +45,7 @@ export default function FAQ() {
                 QUESTIONS
               </span>
             </h2>
-            <span className="h-[1.5px] w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent" />
+            <span className="h-[1.5px] w-8 min-[400px]:w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent shrink-0" />
           </div>
 
           <div className="flex items-center gap-2">
@@ -130,7 +130,7 @@ export default function FAQ() {
                       transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                       className="overflow-hidden"
                     >
-                      <div className="pt-3 pb-2 sm:pt-4 sm:pb-3 pl-8 sm:pl-10 text-[#242424]/80 text-xs sm:text-sm md:text-[15px] font-light leading-relaxed">
+                      <div className="pt-3 pb-2 sm:pt-4 sm:pb-3 pl-6 sm:pl-10 text-[#242424]/80 text-xs sm:text-sm md:text-[15px] font-light leading-relaxed">
                         <div className="flex items-start gap-3">
                           <span className="text-[#8B5E35] font-serif text-lg leading-none select-none mt-0.5">
                             &ldquo;

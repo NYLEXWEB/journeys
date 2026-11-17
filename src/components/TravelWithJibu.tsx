@@ -185,9 +185,9 @@ export default function TravelWithJibu() {
       <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 pb-4 sm:pb-5 border-b border-[#E9E0D2] mb-6 sm:mb-8">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap sm:flex-nowrap">
             <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#8B5E35] to-[#B37D47] shadow-sm shrink-0" />
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] uppercase">
+            <h2 className="text-xl min-[400px]:text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.1em] sm:tracking-[0.12em] uppercase">
               <span className="bg-gradient-to-r from-[#183D2B] via-[#1E4A35] to-[#27593D] bg-clip-text text-transparent">
                 TRAVEL WITH{" "}
               </span>
@@ -195,7 +195,7 @@ export default function TravelWithJibu() {
                 JIBU
               </span>
             </h2>
-            <span className="h-[1.5px] w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent" />
+            <span className="h-[1.5px] w-8 min-[400px]:w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent shrink-0" />
           </div>
 
           {/* Tab Selector */}
@@ -204,7 +204,7 @@ export default function TravelWithJibu() {
               type="button"
               suppressHydrationWarning
               onClick={() => setActiveTab("signature")}
-              className={`px-4 sm:px-5 py-2 rounded-full text-xs font-sans transition-all cursor-pointer ${
+              className={`px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full text-[11px] sm:text-xs font-sans transition-all cursor-pointer whitespace-nowrap ${
                 activeTab === "signature"
                   ? "bg-[#183D2B] text-white shadow-sm font-medium"
                   : "text-[#242424]/75 hover:text-[#183D2B]"
@@ -216,7 +216,7 @@ export default function TravelWithJibu() {
               type="button"
               suppressHydrationWarning
               onClick={() => setActiveTab("bespoke")}
-              className={`px-4 sm:px-5 py-2 rounded-full text-xs font-sans transition-all cursor-pointer ${
+              className={`px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full text-[11px] sm:text-xs font-sans transition-all cursor-pointer whitespace-nowrap ${
                 activeTab === "bespoke"
                   ? "bg-[#183D2B] text-white shadow-sm font-medium"
                   : "text-[#242424]/75 hover:text-[#183D2B]"
@@ -233,7 +233,7 @@ export default function TravelWithJibu() {
             {signatureJourneys.map((j) => (
               <Link
                 key={j.id}
-                href="/journeys"
+                href={`/journeys#${j.id}`}
                 className="group relative h-[440px] sm:h-[480px] lg:h-[500px] rounded-3xl overflow-hidden cursor-pointer border border-white/10 hover:border-[#8B5E35]/60 hover:-translate-y-2 transition-all duration-500 bg-[#183D2B] select-none hover:shadow-[0_12px_28px_rgba(24,61,43,0.08)] block"
               >
                 {/* Full Image */}
@@ -304,7 +304,7 @@ export default function TravelWithJibu() {
 
                   {/* VIEW MORE DETAILS BUTTON */}
                   <Link
-                    href="/journeys"
+                    href="/journeys#bespoke"
                     className="w-full py-2 px-3 rounded-full bg-[#183D2B]/5 hover:bg-[#183D2B] text-[#183D2B] hover:text-white text-[11px] uppercase tracking-wider font-medium transition-all duration-200 flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
                   >
                     <span>View More Details</span>

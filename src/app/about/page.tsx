@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { Compass, UserCheck, Heart, ShieldCheck, ArrowLeft, ArrowUpRight, CheckCircle2, MapPin } from "lucide-react";
+import AboutHashHandler from "./AboutHashHandler";
 
 export const metadata = {
   title: "About Us | Journeys by Jibu Thomas",
@@ -18,10 +19,11 @@ export default function AboutPage() {
       <Navbar />
 
       <main className="flex-1 pt-28 sm:pt-36 pb-20">
+        <AboutHashHandler />
         {/* Editorial Top Bar / Breadcrumb */}
         <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 mb-8">
           <Link
-            href="/"
+            href="/#about"
             className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-[#8B5E35] hover:text-[#183D2B] transition-colors font-medium"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
@@ -35,7 +37,7 @@ export default function AboutPage() {
             <span className="w-6 h-[1.5px] bg-[#8B5E35]" />
             <span>ABOUT JOURNEYS BY JIBU THOMAS</span>
           </div>
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif text-[#183D2B] font-light tracking-tight leading-[1.08] max-w-4xl">
+          <h1 className="text-3xl min-[400px]:text-4xl sm:text-6xl lg:text-7xl font-serif text-[#183D2B] font-light tracking-tight leading-[1.08] max-w-4xl">
             South India, experienced with{" "}
             <span className="italic font-normal underline decoration-[#8B5E35]/40 decoration-1 underline-offset-8">
               soul, depth &amp; unhurried grace.

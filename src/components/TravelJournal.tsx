@@ -133,9 +133,9 @@ export default function TravelJournal() {
       <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-4 mb-6 sm:mb-8">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap sm:flex-nowrap">
             <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#8B5E35] to-[#B37D47] shadow-sm shrink-0" />
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] uppercase">
+            <h2 className="text-xl min-[400px]:text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.1em] sm:tracking-[0.12em] uppercase">
               <span className="bg-gradient-to-r from-[#183D2B] via-[#1E4A35] to-[#27593D] bg-clip-text text-transparent">
                 TRAVEL{" "}
               </span>
@@ -143,7 +143,7 @@ export default function TravelJournal() {
                 BLOG
               </span>
             </h2>
-            <span className="h-[1.5px] w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent" />
+            <span className="h-[1.5px] w-8 min-[400px]:w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent shrink-0" />
           </div>
           <div className="flex items-center gap-4">
             <span className="hidden md:inline font-serif italic text-sm sm:text-base text-[#8B5E35] font-light">
@@ -226,7 +226,7 @@ export default function TravelJournal() {
                 className="group p-5 sm:p-6 rounded-[2rem] bg-white border border-[#E9E0D2] hover:border-[#8B5E35]/40 shadow-[0_8px_25px_rgba(24,61,43,0.05)] hover:shadow-[0_15px_35px_rgba(24,61,43,0.12)] transition-all duration-300 cursor-pointer flex flex-col sm:flex-row gap-5 items-start sm:items-center"
               >
                 {/* Thumbnail */}
-                <div className="relative h-28 w-full sm:w-32 shrink-0 rounded-2xl overflow-hidden border border-[#E9E0D2]/50">
+                <div className="relative h-36 sm:h-28 w-full sm:w-32 shrink-0 rounded-2xl overflow-hidden border border-[#E9E0D2]/50">
                   <Image
                     src={article.image}
                     alt={article.title}

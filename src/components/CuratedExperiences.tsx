@@ -161,9 +161,9 @@ export default function CuratedExperiences() {
       <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-4 mb-6 sm:mb-8">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap sm:flex-nowrap">
             <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#8B5E35] to-[#B37D47] shadow-sm shrink-0" />
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] uppercase">
+            <h2 className="text-xl min-[400px]:text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.1em] sm:tracking-[0.12em] uppercase">
               <span className="bg-gradient-to-r from-[#183D2B] via-[#1E4A35] to-[#27593D] bg-clip-text text-transparent">
                 CURATED{" "}
               </span>
@@ -171,7 +171,7 @@ export default function CuratedExperiences() {
                 EXPERIENCES
               </span>
             </h2>
-            <span className="h-[1.5px] w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent" />
+            <span className="h-[1.5px] w-8 min-[400px]:w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent shrink-0" />
           </div>
 
           <Link
@@ -238,7 +238,7 @@ export default function CuratedExperiences() {
                 top: `calc(75px + ${idx * 6}px)`,
                 zIndex: idx + 5,
               }}
-              className={`sticky group relative h-[70vh] min-h-[420px] max-h-[520px] rounded-[2rem] overflow-hidden cursor-pointer shadow-[0_-4px_20px_rgba(0,0,0,0.18)] select-none bg-[#183D2B] border border-white/15 block ${
+              className={`sticky group relative h-[65vh] min-h-[360px] max-h-[500px] rounded-[2rem] overflow-hidden cursor-pointer shadow-[0_-4px_20px_rgba(0,0,0,0.18)] select-none bg-[#183D2B] border border-white/15 block ${
                 idx === experiencesData.length - 1 ? "mb-0" : "mb-6"
               }`}
             >

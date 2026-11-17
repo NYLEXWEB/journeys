@@ -65,9 +65,9 @@ export default function AboutUs() {
       <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 sm:mb-8">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap sm:flex-nowrap">
             <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#8B5E35] to-[#B37D47] shadow-sm shrink-0" />
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] uppercase">
+            <h2 className="text-xl min-[400px]:text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.1em] sm:tracking-[0.12em] uppercase">
               <span className="bg-gradient-to-r from-[#183D2B] via-[#1E4A35] to-[#27593D] bg-clip-text text-transparent">
                 ABOUT{" "}
               </span>
@@ -75,7 +75,7 @@ export default function AboutUs() {
                 US
               </span>
             </h2>
-            <span className="h-[1.5px] w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent" />
+            <span className="h-[1.5px] w-8 min-[400px]:w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent shrink-0" />
           </div>
           <p className="text-[11px] sm:text-xs font-sans font-medium uppercase tracking-[0.22em] text-[#8B5E35]">
             Personally planned &bull; Locally known &bull; Privately travelled
@@ -207,7 +207,7 @@ export default function AboutUs() {
                   {about.jibuDescription || "Jibu personally reviews your travel style, inspects every boutique stay, and briefs your private chauffeur. When you travel, his personal WhatsApp line is with you 24/7."}
                 </p>
 
-                <div className="flex items-center gap-6 py-3 border-y border-[#E9E0D2]">
+                <div className="flex items-center justify-between sm:justify-start gap-3 sm:gap-6 py-3 border-y border-[#E9E0D2]">
                   {(about.jibuStats && about.jibuStats.length > 0 ? about.jibuStats : [
                     { value: "20+ Yrs", label: "Experience" },
                     { value: "100%", label: "Tailored" },

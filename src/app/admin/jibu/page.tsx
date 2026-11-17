@@ -2430,7 +2430,7 @@ export default function AdminPage() {
                   >
                     <div>
                       <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-2">
-                        WhatsApp Number (e.g. 919447000000)
+                        WhatsApp Number 
                       </label>
                       <input
                         name="whatsappNumber"
@@ -2441,7 +2441,7 @@ export default function AdminPage() {
 
                     <div>
                       <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-2">
-                        Display Phone Number (e.g. +91 (0) 9447 000 000)
+                        Display Phone Number 
                       </label>
                       <input
                         name="phoneDisplay"
@@ -2452,7 +2452,7 @@ export default function AdminPage() {
 
                     <div>
                       <label className="block text-xs font-semibold uppercase tracking-wider text-[#183D2B] mb-2">
-                        Direct Dial Phone (e.g. +919447000000)
+                        Direct Dial Phone
                       </label>
                       <input
                         name="phoneNumber"

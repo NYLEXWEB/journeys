@@ -578,7 +578,7 @@ export default function AdminPage() {
           </Link>
           <span className="hidden sm:inline-block h-4 w-px bg-[#E9E0D2]" />
           <span className="hidden sm:inline-block text-[11px] uppercase tracking-widest font-semibold text-[#8B5E35]">
-            Content Management Hub
+          Admin Panel
           </span>
         </div>
 
@@ -775,7 +775,7 @@ export default function AdminPage() {
                         <span>Central Operations Hub</span>
                       </div>
                       <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#183D2B]">
-                        Atelier Overview &amp; Control
+                         Overview &amp; Control
                       </h2>
                       <p className="text-xs text-[#242424]/70 font-light mt-1 max-w-2xl">
                         Manage all website content, media assets, visitor inquiries, and bespoke itineraries from this unified operations hub.
@@ -804,31 +804,6 @@ export default function AdminPage() {
                         <span>View Live Website</span>
                         <ExternalLink className="w-3.5 h-3.5" />
                       </Link>
-                    </div>
-                  </div>
-
-                  {/* System Status Indicators */}
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <div className="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-200/80 flex items-center gap-3">
-                      <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-                      <div>
-                        <span className="text-[10px] uppercase tracking-wider font-semibold text-emerald-800 block">Database</span>
-                        <span className="text-xs font-bold text-[#183D2B]">MongoDB Atlas Connected</span>
-                      </div>
-                    </div>
-                    <div className="p-3.5 rounded-2xl bg-sky-50/70 border border-sky-200/80 flex items-center gap-3">
-                      <div className="w-2.5 h-2.5 rounded-full bg-sky-500 animate-pulse" />
-                      <div>
-                        <span className="text-[10px] uppercase tracking-wider font-semibold text-sky-800 block">Cloud Storage</span>
-                        <span className="text-xs font-bold text-[#183D2B]">UploadThing Active (16MB Video &amp; Image)</span>
-                      </div>
-                    </div>
-                    <div className="p-3.5 rounded-2xl bg-[#8B5E35]/10 border border-[#8B5E35]/20 flex items-center gap-3">
-                      <div className="w-2.5 h-2.5 rounded-full bg-[#8B5E35]" />
-                      <div>
-                        <span className="text-[10px] uppercase tracking-wider font-semibold text-[#8B5E35] block">Security</span>
-                        <span className="text-xs font-bold text-[#183D2B]">JWT Admin Session Active</span>
-                      </div>
                     </div>
                   </div>
 

@@ -46,10 +46,13 @@ import {
   Video,
   Film,
   CheckCircle2,
+  ArrowUpRight,
 } from "lucide-react";
+import AnalyticsDashboard from "@/components/admin/AnalyticsDashboard";
 
 type ActiveTab =
   | "dashboard"
+  | "analytics"
   | "hero"
   | "about"
   | "destinations"
@@ -608,6 +611,7 @@ export default function AdminPage() {
               {(() => {
                 const current = [
                   { id: "dashboard", label: "Operations Dashboard", icon: LayoutDashboard },
+                  { id: "analytics", label: "Live Analytics & Visitors", icon: TrendingUp },
                   { id: "hero", label: "Hero Slideshow", icon: LayoutTemplate },
                   { id: "about", label: "About Atelier & Media", icon: UserCheck },
                   { id: "destinations", label: `Destinations (${content?.destinations?.length || 16})`, icon: MapPin },
@@ -659,6 +663,7 @@ export default function AdminPage() {
             <div className="mt-3 pt-3 border-t border-[#E9E0D2] grid grid-cols-1 gap-1 animate-in fade-in slide-in-from-top-2 duration-200">
               {[
                 { id: "dashboard", label: "Operations Dashboard", icon: LayoutDashboard },
+                { id: "analytics", label: "Live Analytics & Visitors", icon: TrendingUp },
                 { id: "hero", label: "Hero Slideshow", icon: LayoutTemplate },
                 { id: "about", label: "About Atelier & Media", icon: UserCheck },
                 { id: "destinations", label: `Destinations (${content?.destinations?.length || 16})`, icon: MapPin },
@@ -712,6 +717,7 @@ export default function AdminPage() {
           <nav className="flex flex-col space-y-1">
             {[
               { id: "dashboard", label: "Operations Dashboard", icon: LayoutDashboard },
+              { id: "analytics", label: "Live Analytics & Visitors", icon: TrendingUp },
               { id: "hero", label: "Hero Slideshow", icon: LayoutTemplate },
               { id: "about", label: "About Atelier & Media", icon: UserCheck },
               { id: "destinations", label: `Destinations (${content?.destinations?.length || 16})`, icon: MapPin },
@@ -823,6 +829,37 @@ export default function AdminPage() {
                         <span className="text-[10px] uppercase tracking-wider font-semibold text-[#8B5E35] block">Security</span>
                         <span className="text-xs font-bold text-[#183D2B]">JWT Admin Session Active</span>
                       </div>
+                    </div>
+                  </div>
+
+                  {/* Live Analytics Hero Banner */}
+                  <div
+                    onClick={() => setActiveTab("analytics")}
+                    className="p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-[#183D2B] via-[#1E4C36] to-[#0E281C] text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer hover:shadow-lg transition-all group"
+                  >
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-[#E9E0D2] group-hover:scale-110 transition-transform shrink-0">
+                        <TrendingUp className="w-6 h-6 text-[#E9E0D2]" />
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                          <span className="text-[10px] uppercase font-bold tracking-widest text-emerald-300">
+                            Live Analytics Engine Active
+                          </span>
+                        </div>
+                        <h3 className="text-base sm:text-lg font-serif font-bold text-white mt-0.5">
+                          Website Traffic &amp; Conversion Analytics
+                        </h3>
+                        <p className="text-xs text-white/80 font-light">
+                          Track real-time visitors, where they came from, most clicked buttons &amp; lead conversions.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-[#E9E0D2] text-[#183D2B] font-bold text-xs shrink-0 group-hover:bg-white transition-colors shadow-sm self-start sm:self-auto">
+                      <span>Open Analytics</span>
+                      <ArrowUpRight className="w-4 h-4" />
                     </div>
                   </div>
 
@@ -1261,6 +1298,10 @@ export default function AdminPage() {
                   </div>
                 </div>
               )}
+
+              {/* SECTION: LIVE NATIVE ANALYTICS */}
+              {activeTab === "analytics" && <AnalyticsDashboard />}
+
               {/* SECTION: ABOUT ATELIER & FOUNDER JIBU */}
               {activeTab === "about" && (
                 <div className="space-y-8">

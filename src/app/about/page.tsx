@@ -7,13 +7,18 @@ import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { Compass, UserCheck, Heart, ShieldCheck, ArrowLeft, ArrowUpRight, CheckCircle2, MapPin } from "lucide-react";
 import AboutHashHandler from "./AboutHashHandler";
+import { getLiveWebsiteContent } from "@/lib/contentService";
 
 export const metadata = {
   title: "About Us | Journeys by Jibu Thomas",
   description: "Learn about Journeys by Jibu Thomas, our two decades of destination craftsmanship, travel philosophy, and bespoke boutique standards in Kerala and South India.",
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const content = await getLiveWebsiteContent();
+  const about = content?.about || {};
+  const storyImage = about.storyImage || "/images/generated/tea-plantation-approach.webp";
+  const jibuImage = about.jibuImage || "/images/generated/fort-kochi-heritage.webp";
   return (
     <div className="min-h-screen bg-[#FFFCF5] text-[#242424] flex flex-col font-sans selection:bg-[#183D2B] selection:text-[#FFFCF5]">
       <Navbar />
@@ -71,7 +76,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
             <div className="lg:col-span-5 relative h-[380px] sm:h-[480px] rounded-[2rem] overflow-hidden shadow-[0_15px_40px_rgba(24,61,43,0.12)] border border-[#E9E0D2]">
               <Image
-                src="/images/generated/tea-plantation-approach.webp"
+                src={storyImage}
                 alt="Kerala Western Ghats tea highlands"
                 fill
                 sizes="(max-width: 1024px) 100vw, 40vw"
@@ -167,7 +172,7 @@ export default function AboutPage() {
 
             <div className="lg:col-span-5 relative h-[380px] sm:h-[480px] rounded-[2rem] overflow-hidden shadow-[0_15px_40px_rgba(24,61,43,0.12)] border border-[#E9E0D2] order-1 lg:order-2">
               <Image
-                src="/images/generated/fort-kochi-heritage.webp"
+                src={jibuImage}
                 alt="Fort Kochi heritage architecture"
                 fill
                 sizes="(max-width: 1024px) 100vw, 40vw"

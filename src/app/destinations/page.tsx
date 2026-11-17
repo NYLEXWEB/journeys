@@ -139,7 +139,7 @@ export default function DestinationsDirectoryPage() {
                 {/* Visual Image Column */}
                 <div className="lg:col-span-5 relative h-[320px] sm:h-[400px] lg:h-[460px] rounded-[2rem] overflow-hidden shadow-md border border-[#E9E0D2]/60">
                   <Image
-                    src={dest.image}
+                    src={dest.image || "/images/generated/tea-plantation-approach.webp"}
                     alt={dest.name}
                     fill
                     sizes="(max-width: 1024px) 100vw, 42vw"

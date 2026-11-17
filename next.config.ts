@@ -28,6 +28,14 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "5qf3311jjg.ufs.sh",
       },
+      {
+        protocol: "https",
+        hostname: "uploadthing.com",
+      },
+      {
+        protocol: "https",
+        hostname: "*.uploadthing.com",
+      },
     ],
   },
   turbopack: {

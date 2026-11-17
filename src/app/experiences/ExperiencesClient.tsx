@@ -296,7 +296,7 @@ export default function ExperiencesClient() {
               {/* Visual Image Column */}
               <div className="lg:col-span-5 relative h-[320px] sm:h-[400px] lg:h-[460px] rounded-[2rem] overflow-hidden shadow-md border border-[#E9E0D2]/60">
                 <Image
-                  src={exp.image}
+                  src={exp.image || "/images/generated/houseboat-backwaters.webp"}
                   alt={exp.title}
                   fill
                   sizes="(max-width: 1024px) 100vw, 42vw"

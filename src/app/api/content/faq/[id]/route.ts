@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { connectDB } from "@/lib/db";
 import { FAQModel } from "@/models/FAQ";
 import { getAdminSession } from "@/lib/auth";
+import { invalidateContentCache } from "@/lib/contentService";
 
 export async function PUT(
   req: NextRequest,
@@ -33,6 +34,7 @@ export async function PUT(
       return NextResponse.json({ error: "FAQ item not found." }, { status: 404 });
     }
 
+    invalidateContentCache();
     return NextResponse.json({ success: true, faq: updated });
   } catch (error: any) {
     console.error("[FAQ PUT Error]:", error);
@@ -64,6 +66,7 @@ export async function DELETE(
       return NextResponse.json({ error: "FAQ item not found." }, { status: 404 });
     }
 
+    invalidateContentCache();
     return NextResponse.json({ success: true, message: "FAQ item deleted successfully." });
   } catch (error: any) {
     console.error("[FAQ DELETE Error]:", error);

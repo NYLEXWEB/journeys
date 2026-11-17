@@ -3,6 +3,7 @@ import { connectToDatabase } from "@/lib/db";
 import { verifyAuthRequest } from "@/lib/auth";
 import { ContactInfoModel } from "@/models/ContactInfo";
 import { INITIAL_CONTACT_INFO } from "@/lib/seedData";
+import { invalidateContentCache } from "@/lib/contentService";
 
 export async function GET() {
   try {
@@ -65,6 +66,7 @@ export async function PUT(req: NextRequest) {
 
     await contact.save();
 
+    invalidateContentCache();
     return NextResponse.json({ success: true, contact });
   } catch (err: any) {
     console.error("PUT Contact error:", err);

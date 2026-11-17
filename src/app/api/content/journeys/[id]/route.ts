@@ -4,6 +4,7 @@ import { connectToDatabase } from "@/lib/db";
 import { verifyAuthRequest } from "@/lib/auth";
 import { JourneyModel } from "@/models/Journey";
 import { deleteUploadThingFiles } from "@/lib/uploadthing-server";
+import { invalidateContentCache } from "@/lib/contentService";
 
 export async function PUT(
   req: NextRequest,
@@ -49,6 +50,7 @@ export async function PUT(
 
     await existing.save();
 
+    invalidateContentCache();
     return NextResponse.json({ success: true, journey: existing });
   } catch (err: any) {
     console.error("PUT Journey error:", err);
@@ -86,6 +88,7 @@ export async function DELETE(
       });
     }
 
+    invalidateContentCache();
     return NextResponse.json({ success: true, message: `Journey ${deleted.title || deleted.route} deleted successfully.` });
   } catch (err: any) {
     console.error("DELETE Journey error:", err);

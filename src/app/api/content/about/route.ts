@@ -4,6 +4,7 @@ import { AboutModel } from "@/models/About";
 import { getAdminSession } from "@/lib/auth";
 import { INITIAL_ABOUT } from "@/lib/seedData";
 import { deleteUploadThingFiles } from "@/lib/uploadthing-server";
+import { invalidateContentCache } from "@/lib/contentService";
 
 export async function GET() {
   try {
@@ -78,6 +79,7 @@ export async function PUT(req: NextRequest) {
       });
     }
 
+    invalidateContentCache();
     return NextResponse.json({ success: true, about: updated });
   } catch (error: any) {
     console.error("[About PUT Error]:", error);

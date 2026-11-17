@@ -40,7 +40,7 @@ export default function Home() {
           </StackingSection>
 
           {/* Fixed Background Video Curtain Reveal between About Us & Destinations */}
-          <CurtainVideoReveal slot={1} videoSrc="/video/video-1.mp4" />
+          <CurtainVideoReveal slot={1} videoSrc="/video/video-1.mp4" portalZIndex={5} />
 
           {/* 2. DESTINATIONS: Page 2 */}
           <StackingSection zIndex={12}>
@@ -52,14 +52,11 @@ export default function Home() {
             <CuratedExperiences />
           </StackingSection>
 
-          {/* Full Single-Screen Editorial Cover Image between Curated Experiences & Travel With Jibu */}
+          {/* Fixed Background Image Curtain Reveal between Curated Experiences & Travel With Jibu */}
           <CurtainImageReveal
             imageSrc="/images/generated/hero-kerala.webp"
             alt="Misty Western Ghats and Emerald Waterways of Kerala"
-            tag="Curated Perspective"
-            quote="&ldquo;Travel is the art of seeing what others only glance at.&rdquo;"
-            subQuote="Western Ghats · God's Own Country"
-            isFullCover={true}
+            portalZIndex={6}
           />
 
           {/* 4. TRAVEL WITH JIBU: Page 4 */}
@@ -73,7 +70,7 @@ export default function Home() {
           </StackingSection>
 
           {/* Fixed Background Video Curtain Reveal between Our Services & Travel Blog */}
-          <CurtainVideoReveal slot={2} videoSrc="/video/video-4.mp4" />
+          <CurtainVideoReveal slot={2} videoSrc="/video/video-4.mp4" portalZIndex={7} />
 
           {/* 6. TRAVEL BLOG: Page 6 */}
           <StackingSection zIndex={20}>

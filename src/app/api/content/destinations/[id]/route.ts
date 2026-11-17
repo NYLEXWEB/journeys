@@ -4,6 +4,7 @@ import { connectToDatabase } from "@/lib/db";
 import { verifyAuthRequest } from "@/lib/auth";
 import { DestinationModel } from "@/models/Destination";
 import { deleteUploadThingFiles } from "@/lib/uploadthing-server";
+import { invalidateContentCache } from "@/lib/contentService";
 
 export async function PUT(
   req: NextRequest,
@@ -53,6 +54,7 @@ export async function PUT(
 
     await existing.save();
 
+    invalidateContentCache();
     return NextResponse.json({ success: true, destination: existing });
   } catch (err: any) {
     console.error("PUT Destination error:", err);
@@ -90,6 +92,7 @@ export async function DELETE(
       });
     }
 
+    invalidateContentCache();
     return NextResponse.json({ success: true, message: `Destination ${deleted.name} deleted successfully.` });
   } catch (err: any) {
     console.error("DELETE Destination error:", err);

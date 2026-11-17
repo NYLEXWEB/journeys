@@ -3,6 +3,7 @@ import { connectToDatabase } from "@/lib/db";
 import { verifyAuthRequest } from "@/lib/auth";
 import { ReviewModel } from "@/models/Review";
 import { INITIAL_REVIEWS } from "@/lib/seedData";
+import { invalidateContentCache } from "@/lib/contentService";
 
 export async function GET() {
   try {
@@ -76,6 +77,7 @@ export async function POST(req: NextRequest) {
       order: count + 1,
     });
 
+    invalidateContentCache();
     return NextResponse.json({ success: true, review: created }, { status: 201 });
   } catch (err: any) {
     console.error("POST Review error:", err);

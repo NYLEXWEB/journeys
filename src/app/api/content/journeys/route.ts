@@ -3,6 +3,7 @@ import { connectToDatabase } from "@/lib/db";
 import { verifyAuthRequest } from "@/lib/auth";
 import { JourneyModel } from "@/models/Journey";
 import { INITIAL_JOURNEYS } from "@/lib/seedData";
+import { invalidateContentCache } from "@/lib/contentService";
 
 export async function GET() {
   try {
@@ -72,6 +73,7 @@ export async function POST(req: NextRequest) {
       order: count + 1,
     });
 
+    invalidateContentCache();
     return NextResponse.json({ success: true, journey: created }, { status: 201 });
   } catch (err: any) {
     console.error("POST Journey error:", err);

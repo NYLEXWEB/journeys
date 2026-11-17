@@ -3,6 +3,7 @@ import { connectToDatabase } from "@/lib/db";
 import { verifyAuthRequest } from "@/lib/auth";
 import { FooterContentModel } from "@/models/FooterContent";
 import { INITIAL_FOOTER_CONTENT } from "@/lib/seedData";
+import { invalidateContentCache } from "@/lib/contentService";
 
 export async function GET() {
   try {
@@ -57,6 +58,7 @@ export async function PUT(req: NextRequest) {
 
     await footer.save();
 
+    invalidateContentCache();
     return NextResponse.json({ success: true, footer });
   } catch (err: any) {
     console.error("PUT Footer error:", err);

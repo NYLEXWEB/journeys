@@ -3,6 +3,7 @@ import { connectDB } from "@/lib/db";
 import { JournalModel } from "@/models/Journal";
 import { getAdminSession } from "@/lib/auth";
 import { INITIAL_JOURNAL } from "@/lib/seedData";
+import { invalidateContentCache } from "@/lib/contentService";
 
 export async function GET() {
   try {
@@ -74,6 +75,7 @@ export async function POST(req: NextRequest) {
       order: Number(order) || 0,
     });
 
+    invalidateContentCache();
     return NextResponse.json({ success: true, article: newArticle }, { status: 201 });
   } catch (error: any) {
     console.error("[Journal POST Error]:", error);

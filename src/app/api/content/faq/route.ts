@@ -3,6 +3,7 @@ import { connectDB } from "@/lib/db";
 import { FAQModel } from "@/models/FAQ";
 import { getAdminSession } from "@/lib/auth";
 import { INITIAL_FAQS } from "@/lib/seedData";
+import { invalidateContentCache } from "@/lib/contentService";
 
 export async function GET() {
   try {
@@ -54,6 +55,7 @@ export async function POST(req: NextRequest) {
       order: Number(order) || 0,
     });
 
+    invalidateContentCache();
     return NextResponse.json({ success: true, faq: newFaq }, { status: 201 });
   } catch (error: any) {
     console.error("[FAQ POST Error]:", error);

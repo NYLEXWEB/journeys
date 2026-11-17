@@ -4,6 +4,7 @@ import { connectDB } from "@/lib/db";
 import { JournalModel } from "@/models/Journal";
 import { getAdminSession } from "@/lib/auth";
 import { deleteUploadThingFiles } from "@/lib/uploadthing-server";
+import { invalidateContentCache } from "@/lib/contentService";
 
 export async function PUT(
   req: NextRequest,
@@ -24,16 +25,27 @@ export async function PUT(
     await connectDB();
 
     const query = mongoose.isValidObjectId(id) ? { $or: [{ id }, { _id: id }] } : { id };
+    const existing = await JournalModel.findOne(query);
+    if (!existing) {
+      return NextResponse.json({ error: "Article not found" }, { status: 404 });
+    }
+
+    if (body.image !== undefined && body.image.trim() !== existing.image) {
+      const oldImage = existing.image;
+      if (oldImage) {
+        deleteUploadThingFiles([oldImage]).catch((err) =>
+          console.warn("[UploadThing] Failed to delete replaced journal image:", err)
+        );
+      }
+    }
+
     const updated = await JournalModel.findOneAndUpdate(
       query,
       { $set: body },
       { new: true }
     );
 
-    if (!updated) {
-      return NextResponse.json({ error: "Article not found" }, { status: 404 });
-    }
-
+    invalidateContentCache();
     return NextResponse.json({ success: true, article: updated });
   } catch (error: any) {
     console.error("[Journal PUT Error]:", error);
@@ -72,6 +84,7 @@ export async function DELETE(
       });
     }
 
+    invalidateContentCache();
     return NextResponse.json({ success: true, message: "Article deleted." });
   } catch (error: any) {
     console.error("[Journal DELETE Error]:", error);

@@ -4,6 +4,7 @@ import { connectToDatabase } from "@/lib/db";
 import { verifyAuthRequest } from "@/lib/auth";
 import { ExperienceModel } from "@/models/Experience";
 import { deleteUploadThingFiles } from "@/lib/uploadthing-server";
+import { invalidateContentCache } from "@/lib/contentService";
 
 export async function PUT(
   req: NextRequest,
@@ -49,6 +50,7 @@ export async function PUT(
 
     await existing.save();
 
+    invalidateContentCache();
     return NextResponse.json({ success: true, experience: existing });
   } catch (err: any) {
     console.error("PUT Experience error:", err);
@@ -86,6 +88,7 @@ export async function DELETE(
       });
     }
 
+    invalidateContentCache();
     return NextResponse.json({ success: true, message: `Experience ${deleted.title} deleted successfully.` });
   } catch (err: any) {
     console.error("DELETE Experience error:", err);

@@ -289,7 +289,7 @@ export default function JourneysClient() {
 
       {/* Journeys Showcase List */}
       <div className="space-y-16 sm:space-y-24">
-        {filteredJourneys.map((journey) => (
+        {filteredJourneys.map((journey: any) => (
           <article
             key={journey.id}
             id={journey.id}
@@ -321,7 +321,9 @@ export default function JourneysClient() {
                     Route Flow:
                   </span>
                   <p className="text-xs text-white/90 font-serif leading-snug">
-                    {journey.route.join(" → ")}
+                    {Array.isArray(journey.route)
+                      ? journey.route.join(" → ")
+                      : (journey.route || "")}
                   </p>
                 </div>
               </div>
@@ -332,14 +334,16 @@ export default function JourneysClient() {
                   <div className="flex items-center gap-3 text-xs uppercase tracking-widest text-[#8B5E35] font-semibold mb-2">
                     <span>Journey {journey.number}</span>
                     <span>&bull;</span>
-                    <span>Pace: {journey.pace}</span>
+                    <span>Pace: {journey.pace || "Relaxed & Immersive"}</span>
                   </div>
                   <h2 className="text-2xl sm:text-4xl font-serif text-[#183D2B] font-light leading-snug">
                     {journey.title}
                   </h2>
-                  <p className="font-serif italic text-sm text-[#8B5E35] mt-2">
-                    &ldquo;{journey.subtitle}&rdquo;
-                  </p>
+                  {(journey.subtitle || journey.shortVibe) && (
+                    <p className="font-serif italic text-sm text-[#8B5E35] mt-2">
+                      &ldquo;{journey.subtitle || journey.shortVibe}&rdquo;
+                    </p>
+                  )}
                 </div>
 
                 <p className="text-sm sm:text-base text-[#242424]/85 font-light leading-relaxed">
@@ -352,7 +356,7 @@ export default function JourneysClient() {
                     Signature Inclusions:
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                    {journey.highlights.map((hl, hIdx) => (
+                    {(Array.isArray(journey.highlights) ? journey.highlights : []).map((hl: any, hIdx: number) => (
                       <div key={hIdx} className="flex items-start gap-2 text-xs text-[#242424]/80">
                         <CheckCircle2 className="w-4 h-4 text-[#8B5E35] shrink-0 mt-0.5" />
                         <span>{hl}</span>
@@ -368,7 +372,7 @@ export default function JourneysClient() {
                       Handpicked Accommodation
                     </span>
                     <span className="text-[#183D2B] font-medium block mt-0.5">
-                      {journey.stayStyle}
+                      {journey.stayStyle || "Boutique Heritage & Luxury Retreats"}
                     </span>
                   </div>
                   <div>
@@ -376,7 +380,7 @@ export default function JourneysClient() {
                       Ideal For
                     </span>
                     <span className="text-[#183D2B] font-medium block mt-0.5">
-                      {journey.bestFor}
+                      {journey.bestFor || "Couples, families & discerning travellers"}
                     </span>
                   </div>
                 </div>

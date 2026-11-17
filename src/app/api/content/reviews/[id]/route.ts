@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { connectToDatabase } from "@/lib/db";
 import { verifyAuthRequest } from "@/lib/auth";
 import { ReviewModel } from "@/models/Review";
+import { invalidateContentCache } from "@/lib/contentService";
 
 export async function PUT(
   req: NextRequest,
@@ -66,6 +67,7 @@ export async function PUT(
 
     await existing.save();
 
+    invalidateContentCache();
     return NextResponse.json({ success: true, review: existing });
   } catch (err: any) {
     console.error("PUT Review error:", err);
@@ -100,6 +102,7 @@ export async function DELETE(
       return NextResponse.json({ error: "Review not found" }, { status: 404 });
     }
 
+    invalidateContentCache();
     return NextResponse.json({ success: true, message: `Review by ${deleted.author} deleted successfully.` });
   } catch (err: any) {
     console.error("DELETE Review error:", err);

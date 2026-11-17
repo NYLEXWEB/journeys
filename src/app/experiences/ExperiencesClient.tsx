@@ -290,7 +290,7 @@ export default function ExperiencesClient() {
 
       {/* Experiences Grid */}
       <div className="space-y-12 sm:space-y-16">
-        {filtered.map((exp) => (
+        {filtered.map((exp: any) => (
           <article
             key={exp.id}
             id={exp.id}
@@ -352,7 +352,7 @@ export default function ExperiencesClient() {
                     Signature Inclusions:
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                    {exp.highlights.map((hl, hIdx) => (
+                    {exp.highlights?.map((hl: any, hIdx: number) => (
                       <div key={hIdx} className="flex items-start gap-2 text-xs text-[#242424]/80">
                         <CheckCircle2 className="w-4 h-4 text-[#8B5E35] shrink-0 mt-0.5" />
                         <span>{hl}</span>

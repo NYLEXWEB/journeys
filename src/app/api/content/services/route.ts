@@ -3,6 +3,7 @@ import { connectDB } from "@/lib/db";
 import { ServiceModel } from "@/models/Service";
 import { getAdminSession } from "@/lib/auth";
 import { INITIAL_SERVICES } from "@/lib/seedData";
+import { invalidateContentCache } from "@/lib/contentService";
 
 export async function GET() {
   try {
@@ -57,6 +58,7 @@ export async function POST(req: NextRequest) {
       order: Number(order) || 0,
     });
 
+    invalidateContentCache();
     return NextResponse.json({ success: true, service: newService }, { status: 201 });
   } catch (error: any) {
     console.error("[Services POST Error]:", error);

@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
+import mongoose from "mongoose";
 import { connectDB } from "@/lib/db";
 import { ServiceModel } from "@/models/Service";
 import { getAdminSession } from "@/lib/auth";
+import { deleteUploadThingFiles } from "@/lib/uploadthing-server";
 
 export async function PUT(
   req: NextRequest,
@@ -14,12 +16,16 @@ export async function PUT(
     }
 
     const { id } = await params;
-    const body = await req.json();
+    if (!id || id === "undefined") {
+      return NextResponse.json({ error: "Invalid service ID provided." }, { status: 400 });
+    }
 
+    const body = await req.json();
     await connectDB();
 
+    const query = mongoose.isValidObjectId(id) ? { $or: [{ id }, { _id: id }] } : { id };
     const updated = await ServiceModel.findOneAndUpdate(
-      { $or: [{ id }, { _id: id }] },
+      query,
       { $set: body },
       { new: true }
     );
@@ -31,7 +37,7 @@ export async function PUT(
     return NextResponse.json({ success: true, service: updated });
   } catch (error: any) {
     console.error("[Services PUT Error]:", error);
-    return NextResponse.json({ error: "Failed to update service." }, { status: 500 });
+    return NextResponse.json({ error: error.message || "Failed to update service." }, { status: 500 });
   }
 }
 
@@ -46,20 +52,28 @@ export async function DELETE(
     }
 
     const { id } = await params;
+    if (!id || id === "undefined") {
+      return NextResponse.json({ error: "Invalid service ID provided." }, { status: 400 });
+    }
+
     await connectDB();
 
-    const deleted = await ServiceModel.findOneAndDelete({
-      $or: [{ id }, { _id: id }],
-    });
+    const query = mongoose.isValidObjectId(id) ? { $or: [{ id }, { _id: id }] } : { id };
+    const deleted = await ServiceModel.findOneAndDelete(query);
 
     if (!deleted) {
       return NextResponse.json({ error: "Service not found" }, { status: 404 });
     }
 
+    if (deleted.image) {
+      deleteUploadThingFiles([deleted.image]).catch((err) => {
+        console.warn("[UploadThing] Failed to delete file after service deletion:", err);
+      });
+    }
+
     return NextResponse.json({ success: true, message: "Service deleted." });
   } catch (error: any) {
     console.error("[Services DELETE Error]:", error);
-    return NextResponse.json({ error: "Failed to delete service." }, { status: 500 });
+    return NextResponse.json({ error: error.message || "Failed to delete service." }, { status: 500 });
   }
 }
-

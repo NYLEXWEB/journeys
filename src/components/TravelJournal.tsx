@@ -39,7 +39,7 @@ export const JOURNAL_ARTICLES: JournalArticle[] = [
     subtitle: "Secret vantage points, colonial planters' bungalows, and unhurried highland trails.",
     readTime: "5 min read",
     date: "Destination Guide &bull; Highlands",
-    image: "/images/generated/tea-plantation-approach.jpg",
+    image: "/images/generated/tea-plantation-approach.webp",
     summary:
       "Most visitors rush through Munnar on crowded tourist buses, missing its greatest treasures. Here is how we privately guide our guests to centuries-old tea planters' bungalows, private estate walks, and quiet sunrise ridges.",
     fullContent: [
@@ -62,7 +62,7 @@ export const JOURNAL_ARTICLES: JournalArticle[] = [
     subtitle: "Why fewer stops and generous pacing create far more meaningful memories.",
     readTime: "6 min read",
     date: "Travel Tips &bull; Practical Advice",
-    image: "/images/generated/spice-gardens.jpg",
+    image: "/images/generated/spice-gardens.webp",
     summary:
       "South India's roads wind through breathtaking hill gradients and lush village corridors. Understanding realistic travel times and avoiding over-packed itineraries is the secret to a rejuvenating holiday.",
     fullContent: [
@@ -85,7 +85,7 @@ export const JOURNAL_ARTICLES: JournalArticle[] = [
     subtitle: "Meeting the generational carpenters who bind huge jackwood hulls without a single nail.",
     readTime: "4 min read",
     date: "Culture &bull; Living Traditions",
-    image: "/images/generated/houseboat-backwaters.jpg",
+    image: "/images/generated/houseboat-backwaters.webp",
     summary:
       "Centuries before they carried travelers, kettuvallams transported rice and spices across Kerala's waterways. Discover how these majestic vessels are still handcrafted using ancestral methods.",
     fullContent: [
@@ -108,7 +108,7 @@ export const JOURNAL_ARTICLES: JournalArticle[] = [
     subtitle: "Why June through August is Kerala's best-kept secret for wellness and poetry.",
     readTime: "5 min read",
     date: "Seasonality &bull; Ayurveda",
-    image: "/images/generated/coastal-varkala.jpg",
+    image: "/images/generated/coastal-varkala.webp",
     summary:
       "While many avoid rain, discerning travellers and wellness seekers arrive specifically during the Southwest monsoon (Edavappathi) when nature is radiant and Ayurveda is most potent.",
     fullContent: [

@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
       subtitle: subtitle || "",
       readTime: readTime || "5 min read",
       date: date || "Recently Published",
-      image: image || "/images/generated/tea-plantation-approach.jpg",
+      image: image || "/images/generated/tea-plantation-approach.webp",
       summary: summary.trim(),
       fullContent: Array.isArray(fullContent) ? fullContent : [summary],
       takeaways: Array.isArray(takeaways) ? takeaways : [],

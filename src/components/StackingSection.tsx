@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 interface StackingSectionProps {
@@ -23,13 +23,23 @@ export default function StackingSection({
   className = "",
 }: StackingSectionProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile, { passive: true });
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"],
   });
 
-  // Smooth scale-down & subtle depth dimming as the next section slides over this one
+  // Smooth scale-down & subtle depth dimming as the next section slides over this one (desktop only)
   const scale = useTransform(scrollYProgress, [0, 1], [1, 0.96]);
   const opacity = useTransform(scrollYProgress, [0, 0.85, 1], [1, 0.95, 0.85]);
 
@@ -48,8 +58,8 @@ export default function StackingSection({
       } ${className}`}
     >
       <motion.div
-        style={isFooter || disableScale ? undefined : { scale, opacity }}
-        className="w-full origin-top will-change-transform"
+        style={isFooter || disableScale || isMobile ? undefined : { scale, opacity }}
+        className="w-full origin-top"
       >
         {children}
       </motion.div>

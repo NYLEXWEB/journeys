@@ -33,20 +33,24 @@ export async function PUT(req: NextRequest) {
     }
 
     const body = await req.json();
+    const safeTrim = (v: any) =>
+      typeof v === "string" ? v.trim() : v !== null && v !== undefined ? String(v).trim() : "";
 
+    // Bulk update slides
     if (Array.isArray(body.slides)) {
       for (const s of body.slides) {
         if (s.slideId) {
+          const updateData: any = {};
+          if (s.word !== undefined) updateData.word = safeTrim(s.word);
+          if (s.subWord !== undefined) updateData.subWord = safeTrim(s.subWord);
+          if (s.location !== undefined) updateData.location = safeTrim(s.location);
+          if (s.description !== undefined) updateData.description = safeTrim(s.description);
+          if (s.src !== undefined) updateData.src = safeTrim(s.src);
+          if (s.tag !== undefined) updateData.tag = safeTrim(s.tag);
+
           await HeroSlideModel.updateOne(
             { slideId: Number(s.slideId) },
-            {
-              $set: {
-                word: s.word?.trim(),
-                subWord: s.subWord?.trim(),
-                location: s.location?.trim(),
-                description: s.description?.trim(),
-              },
-            }
+            { $set: updateData }
           );
         }
       }
@@ -54,10 +58,11 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ success: true, slides: updatedSlides });
     }
 
-    const { slideId, word, subWord, location, description } = body;
+    // Single slide update
+    const { slideId, word, subWord, location, description, src, tag } = body;
 
-    if (!slideId || !word) {
-      return NextResponse.json({ error: "Slide ID and main word are required." }, { status: 400 });
+    if (!slideId) {
+      return NextResponse.json({ error: "Slide ID is required." }, { status: 400 });
     }
 
     const slide = await HeroSlideModel.findOne({ slideId: Number(slideId) });
@@ -65,10 +70,12 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ error: "Hero slide not found" }, { status: 404 });
     }
 
-    slide.word = word.trim();
-    if (subWord !== undefined) slide.subWord = subWord.trim();
-    if (location !== undefined) slide.location = location.trim();
-    if (description !== undefined) slide.description = description.trim();
+    if (word !== undefined) slide.word = safeTrim(word);
+    if (subWord !== undefined) slide.subWord = safeTrim(subWord);
+    if (location !== undefined) slide.location = safeTrim(location);
+    if (description !== undefined) slide.description = safeTrim(description);
+    if (src !== undefined && src.trim().length > 0) slide.src = safeTrim(src);
+    if (tag !== undefined) slide.tag = safeTrim(tag);
 
     await slide.save();
 

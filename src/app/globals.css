@@ -248,7 +248,7 @@ html.modal-open {
 }
 
 .preloader-bg-responsive {
-  background-image: url('/images/loading-screen-bg.jpg');
+  background-image: url('/images/loading-screen-bg.webp');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center 55%;

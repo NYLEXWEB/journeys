@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
       locations: locations.trim(),
       description: description.trim(),
       highlights: Array.isArray(highlights) ? highlights : [],
-      image: image || "/images/generated/houseboat-backwaters.jpg",
+      image: image || "/images/generated/houseboat-backwaters.webp",
       order: count + 1,
     });
 

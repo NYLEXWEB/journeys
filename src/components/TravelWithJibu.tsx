@@ -41,7 +41,7 @@ export const SIGNATURE_JOURNEYS: JourneyItem[] = [
       "Beachfront Cottage Retreat",
       "Private Chauffeur Throughout",
     ],
-    image: "/images/generated/houseboat-backwaters.jpg",
+    image: "/images/generated/houseboat-backwaters.webp",
   },
   {
     id: "romantic-escapes",
@@ -58,7 +58,7 @@ export const SIGNATURE_JOURNEYS: JourneyItem[] = [
       "Couples Ayurvedic Therapies",
       "Secluded Cliffside Hideaways",
     ],
-    image: "/images/generated/coastal-varkala.jpg",
+    image: "/images/generated/coastal-varkala.webp",
   },
   {
     id: "family-holidays",
@@ -75,7 +75,7 @@ export const SIGNATURE_JOURNEYS: JourneyItem[] = [
       "Spacious Family Chauffeur Van",
       "Special Dietary Coordination",
     ],
-    image: "/images/services/family-senior-friendly.jpg",
+    image: "/images/services/family-senior-friendly.webp",
   },
   {
     id: "nature-wildlife",
@@ -92,7 +92,7 @@ export const SIGNATURE_JOURNEYS: JourneyItem[] = [
       "Eco-Conscious Treehouse Stays",
       "Endemic Birdwatching Expeditions",
     ],
-    image: "/images/generated/hero-kerala.jpg",
+    image: "/images/generated/hero-kerala.webp",
   },
   {
     id: "south-india-heritage",
@@ -109,7 +109,7 @@ export const SIGNATURE_JOURNEYS: JourneyItem[] = [
       "UNESCO Hampi Sunset Walks",
       "Private Architectural Historian",
     ],
-    image: "/images/generated/fort-kochi-heritage.jpg",
+    image: "/images/generated/fort-kochi-heritage.webp",
   },
 ];
 

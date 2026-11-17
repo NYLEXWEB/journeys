@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import mongoose from "mongoose";
 import { connectDB } from "@/lib/db";
 import { JournalModel } from "@/models/Journal";
 import { getAdminSession } from "@/lib/auth";
@@ -15,12 +16,16 @@ export async function PUT(
     }
 
     const { id } = await params;
-    const body = await req.json();
+    if (!id || id === "undefined") {
+      return NextResponse.json({ error: "Invalid article ID provided." }, { status: 400 });
+    }
 
+    const body = await req.json();
     await connectDB();
 
+    const query = mongoose.isValidObjectId(id) ? { $or: [{ id }, { _id: id }] } : { id };
     const updated = await JournalModel.findOneAndUpdate(
-      { $or: [{ id }, { _id: id }] },
+      query,
       { $set: body },
       { new: true }
     );
@@ -32,7 +37,7 @@ export async function PUT(
     return NextResponse.json({ success: true, article: updated });
   } catch (error: any) {
     console.error("[Journal PUT Error]:", error);
-    return NextResponse.json({ error: "Failed to update article." }, { status: 500 });
+    return NextResponse.json({ error: error.message || "Failed to update article." }, { status: 500 });
   }
 }
 
@@ -47,11 +52,14 @@ export async function DELETE(
     }
 
     const { id } = await params;
+    if (!id || id === "undefined") {
+      return NextResponse.json({ error: "Invalid article ID provided." }, { status: 400 });
+    }
+
     await connectDB();
 
-    const deleted = await JournalModel.findOneAndDelete({
-      $or: [{ id }, { _id: id }],
-    });
+    const query = mongoose.isValidObjectId(id) ? { $or: [{ id }, { _id: id }] } : { id };
+    const deleted = await JournalModel.findOneAndDelete(query);
 
     if (!deleted) {
       return NextResponse.json({ error: "Article not found" }, { status: 404 });
@@ -67,6 +75,6 @@ export async function DELETE(
     return NextResponse.json({ success: true, message: "Article deleted." });
   } catch (error: any) {
     console.error("[Journal DELETE Error]:", error);
-    return NextResponse.json({ error: "Failed to delete article." }, { status: 500 });
+    return NextResponse.json({ error: error.message || "Failed to delete article." }, { status: 500 });
   }
 }

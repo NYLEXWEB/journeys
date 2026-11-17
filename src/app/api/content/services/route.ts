@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
       shortVibe: shortVibe || "",
       description: description.trim(),
       points: Array.isArray(points) ? points : [],
-      image: image || "/images/services/private-chauffeur.jpg",
+      image: image || "/images/services/private-chauffeur.webp",
       order: Number(order) || 0,
     });
 

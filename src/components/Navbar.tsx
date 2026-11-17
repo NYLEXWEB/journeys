@@ -12,6 +12,7 @@ import {
   ChevronDown,
   MessageSquare,
 } from "lucide-react";
+import { WhatsAppIcon } from "./WhatsAppIcon";
 
 interface SubItem {
   name: string;
@@ -28,6 +29,7 @@ interface NavItem {
     items: SubItem[];
   }[];
   items?: SubItem[];
+  mobileHighlights: SubItem[];
 }
 
 export const SITE_STRUCTURE: NavItem[] = [
@@ -36,6 +38,15 @@ export const SITE_STRUCTURE: NavItem[] = [
     name: "Kerala",
     fullName: "Kerala Discovery",
     href: "/destinations",
+    mobileHighlights: [
+      { name: "Fort Kochi · Colonial Heritage", href: "/destinations#fort-kochi" },
+      { name: "Munnar · Misty Tea Highlands", href: "/destinations#munnar" },
+      { name: "Alleppey & Kumarakom · Backwaters", href: "/destinations#alleppey" },
+      { name: "Thekkady & Periyar · Spice Forests", href: "/destinations#thekkady" },
+      { name: "Wayanad · Waterfalls & Wildlife", href: "/destinations#wayanad" },
+      { name: "Handpicked Boutique Stays", href: "/#services" },
+      { name: "Explore All Kerala Destinations →", href: "/destinations" },
+    ],
     groups: [
       {
         groupTitle: "Places",
@@ -74,6 +85,13 @@ export const SITE_STRUCTURE: NavItem[] = [
     name: "Journeys",
     fullName: "Journeys, Never Packages",
     href: "/journeys",
+    mobileHighlights: [
+      { name: "Classic Kerala Discovery (10 Days)", href: "/journeys#classic-kerala" },
+      { name: "Romantic Kerala Escapes (8 Days)", href: "/journeys#slow-kerala" },
+      { name: "Family Holidays with Children (9 Days)", href: "/journeys#nature-wildlife" },
+      { name: "Slow Living & Wildlife Journeys (11 Days)", href: "/journeys#beyond-usual" },
+      { name: "Explore All Signature Journeys →", href: "/journeys" },
+    ],
     groups: [
       {
         groupTitle: "Journey Ideas",
@@ -103,6 +121,14 @@ export const SITE_STRUCTURE: NavItem[] = [
     name: "Experiences",
     fullName: "Curated Local Knowledge",
     href: "/experiences",
+    mobileHighlights: [
+      { name: "Private Houseboat Charters", href: "/experiences#backwaters" },
+      { name: "Living Traditions & Arts", href: "/experiences#heritage" },
+      { name: "Tea & High-Altitude Plantations", href: "/experiences#plantations" },
+      { name: "Walking Trails & Nature Walks", href: "/experiences#nature" },
+      { name: "Authentic Ayurvedic Cures", href: "/experiences#wellness" },
+      { name: "Explore All Experiences →", href: "/experiences" },
+    ],
     items: [
       { name: "Food & Cuisine", href: "/experiences#culinary" },
       { name: "Culture & Heritage", href: "/experiences#heritage" },
@@ -120,6 +146,13 @@ export const SITE_STRUCTURE: NavItem[] = [
     name: "About",
     fullName: "About Journeys by Jibu Thomas",
     href: "/about",
+    mobileHighlights: [
+      { name: "Meet Founder Jibu Thomas", href: "/about#jibu" },
+      { name: "Why Travel With Us", href: "/about#why-us" },
+      { name: "The Four Pillars of Our Philosophy", href: "/about#philosophy" },
+      { name: "Guest Stories & Reviews", href: "/#reviews" },
+      { name: "Read Atelier Story →", href: "/about" },
+    ],
     items: [
       { name: "Meet Jibu", href: "/about#jibu" },
       { name: "Why travel with us", href: "/about#why-us" },
@@ -131,9 +164,16 @@ export const SITE_STRUCTURE: NavItem[] = [
   },
   {
     id: "blog",
-    name: "Blog",
-    fullName: "Travel Blog & Stories",
+    name: "Travel Guide",
+    fullName: "Travel Guide & Stories",
     href: "/blog",
+    mobileHighlights: [
+      { name: "Planning Questions & Best Seasons", href: "/blog" },
+      { name: "Frequently Asked Questions", href: "/#faq" },
+      { name: "How Many Days in Kerala?", href: "/blog" },
+      { name: "Dispatches by Jibu Thomas", href: "/blog" },
+      { name: "Explore Travel Journal →", href: "/blog" },
+    ],
     groups: [
       {
         groupTitle: "Planning questions",
@@ -171,7 +211,6 @@ export default function Navbar() {
 
   const headerRef = useRef<HTMLElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
   const isDockedRef = useRef(!isHomepage);
 
   // Monitor if any modal is open across the app, and smoothly hide navbar
@@ -192,21 +231,35 @@ export default function Navbar() {
     return () => observer.disconnect();
   }, []);
 
-  // Precise Anchor Tracking on Scroll:
-  // Starts on the Hero bottom line (#hero-navbar-anchor), moves UP with scroll locked with Heading and Button.
-  // When it reaches top: 16px, it clamps at 16px and smoothly expands into full top navbar.
+  // Lock body scroll when mobile menu is open
   useEffect(() => {
-    let rafId: number;
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMobileMenuOpen]);
 
+  // GPU-Accelerated Scroll Tracking:
+  // Starts on the Hero bottom anchor (#hero-navbar-anchor), moves UP smoothly with scroll.
+  // When it reaches dockTop (12px on mobile / 16px on desktop), it docks and expands into full top navbar.
+  // Uses translate3d exclusively to avoid any layout reflow or mobile jitter.
+  useEffect(() => {
     const updatePosition = () => {
+      const header = headerRef.current;
+      if (!header) return;
+
+      const dockTop = window.innerWidth < 640 ? 12 : 16;
+
       if (!isHomepage) {
         if (!isDockedRef.current) {
           isDockedRef.current = true;
           setIsDocked(true);
         }
-        if (headerRef.current) {
-          headerRef.current.style.top = "16px";
-        }
+        header.style.transform = `translate3d(-50%, ${dockTop}px, 0)`;
         return;
       }
 
@@ -216,39 +269,31 @@ export default function Navbar() {
           isDockedRef.current = true;
           setIsDocked(true);
         }
-        if (headerRef.current) {
-          headerRef.current.style.top = "16px";
-        }
+        header.style.transform = `translate3d(-50%, ${dockTop}px, 0)`;
         return;
       }
 
       const anchorRect = anchor.getBoundingClientRect();
-      const dockTop = 16; // 16px from top of viewport
 
       if (anchorRect.top <= dockTop) {
-        // Reached top position: dock and expand
+        // Reached top dock position: dock and expand horizontally
         if (!isDockedRef.current) {
           isDockedRef.current = true;
           setIsDocked(true);
         }
-        if (headerRef.current) {
-          headerRef.current.style.top = `${dockTop}px`;
-        }
+        header.style.transform = `translate3d(-50%, ${dockTop}px, 0)`;
       } else {
-        // In Hero: lock position to anchor, compact capsule
+        // Inside Hero: position locked to anchor
         if (isDockedRef.current) {
           isDockedRef.current = false;
           setIsDocked(false);
         }
-        if (headerRef.current) {
-          headerRef.current.style.top = `${anchorRect.top}px`;
-        }
+        header.style.transform = `translate3d(-50%, ${anchorRect.top}px, 0)`;
       }
     };
 
     updatePosition();
 
-    // Performant ticking RAF listener to prevent layout thrashing and maintain 120fps smooth scrolling
     let ticking = false;
     const onScrollOrResize = () => {
       if (!ticking) {
@@ -262,10 +307,12 @@ export default function Navbar() {
 
     window.addEventListener("scroll", onScrollOrResize, { passive: true });
     window.addEventListener("resize", onScrollOrResize, { passive: true });
+    window.addEventListener("touchmove", onScrollOrResize, { passive: true });
 
     return () => {
       window.removeEventListener("scroll", onScrollOrResize);
       window.removeEventListener("resize", onScrollOrResize);
+      window.removeEventListener("touchmove", onScrollOrResize);
     };
   }, [isHomepage]);
 
@@ -286,17 +333,19 @@ export default function Navbar() {
       <header
         ref={headerRef}
         style={{
-          top: isHomepage ? "calc(100dvh - 90px)" : "16px",
+          top: "0px",
+          transform: isHomepage ? "translate3d(-50%, calc(100dvh - 84px), 0)" : "translate3d(-50%, 16px, 0)",
+          willChange: "transform",
         }}
-        className={`fixed z-50 left-1/2 -translate-x-1/2 pointer-events-none transition-[opacity,transform] duration-300 ${
-          isModalOpen ? "opacity-0 -translate-y-12 pointer-events-none" : "opacity-100"
+        className={`fixed z-50 left-1/2 pointer-events-none transition-opacity duration-300 ${
+          isModalOpen ? "opacity-0 pointer-events-none" : "opacity-100"
         }`}
       >
         <div
-          className={`pointer-events-auto flex items-center justify-between rounded-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          className={`pointer-events-auto flex items-center justify-between rounded-full transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
             isDocked
-              ? "w-[calc(100vw-20px)] sm:w-[calc(100vw-24px)] max-w-[1600px] bg-[#FFFCF5]/96 backdrop-blur-2xl border border-[#E9E0D2] shadow-[0_16px_40px_rgba(24,61,43,0.12)] text-[#242424] px-3 sm:px-6 py-1.5 sm:py-2.5 h-[50px] sm:h-[58px]"
-              : "w-auto max-w-[calc(100vw-16px)] bg-black/75 backdrop-blur-2xl border border-white/25 shadow-[0_20px_50px_rgba(0,0,0,0.65)] text-white px-2.5 sm:px-4 py-1.5 sm:py-2 gap-1.5 sm:gap-3 h-[46px] sm:h-[54px]"
+              ? "w-[calc(100vw-20px)] sm:w-[calc(100vw-24px)] max-w-[1600px] bg-[#FFFCF5]/98 backdrop-blur-md border border-[#E9E0D2] shadow-[0_12px_35px_rgba(24,61,43,0.1)] text-[#242424] px-3 sm:px-6 py-1.5 sm:py-2.5 h-[50px] sm:h-[58px]"
+              : "w-auto max-w-[calc(100vw-16px)] bg-black/80 backdrop-blur-md border border-white/20 shadow-[0_16px_40px_rgba(0,0,0,0.6)] text-white px-2.5 sm:px-4 py-1.5 sm:py-2 gap-1.5 sm:gap-3 h-[46px] sm:h-[54px]"
           }`}
         >
           {/* Brand Logo */}
@@ -305,19 +354,19 @@ export default function Navbar() {
             className="flex items-center gap-2 group transition-transform duration-300 hover:scale-[1.01] shrink-0 pl-0.5 sm:pl-1"
           >
             <div
-              className={`relative transition-all duration-500 ${
+              className={`relative transition-all duration-300 ${
                 !isDocked
                   ? "h-5 sm:h-7 w-16 sm:w-24"
                   : "h-7 sm:h-9 md:h-10 w-24 sm:w-36 md:w-40"
               }`}
             >
               <Image
-                src="/images/logo.png"
+                src="/images/logo.webp"
                 alt="Journeys by Jibu Thomas"
                 fill
                 priority
                 sizes="(max-width: 768px) 120px, 200px"
-                className={`object-contain object-left transition-all duration-500 ${
+                className={`object-contain object-left transition-all duration-300 ${
                   !isDocked
                     ? "brightness-0 invert drop-shadow-[0_2px_12px_rgba(0,0,0,0.7)]"
                     : "drop-shadow-sm"
@@ -353,9 +402,8 @@ export default function Navbar() {
               {/* Mobile menu toggle for hero capsule */}
               <button
                 type="button"
-                suppressHydrationWarning
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="lg:hidden p-1 sm:p-1.5 rounded-full transition-all active:scale-95 text-white bg-white/15 hover:bg-white/25 ml-0.5 sm:ml-1"
+                className="lg:hidden p-1 sm:p-1.5 rounded-full transition-all active:scale-95 text-white bg-white/15 hover:bg-white/25 ml-0.5 sm:ml-1 cursor-pointer"
                 aria-label="Toggle Navigation Menu"
               >
                 {isMobileMenuOpen ? (
@@ -386,7 +434,7 @@ export default function Navbar() {
                       <span>{item.name}</span>
                     </Link>
 
-                    {/* Clean Dropdown Modal Box */}
+                    {/* Clean Desktop Dropdown Modal Box */}
                     <AnimatePresence>
                       {isOpen && (
                         <motion.div
@@ -480,9 +528,8 @@ export default function Navbar() {
               {/* Mobile Menu Button */}
               <button
                 type="button"
-                suppressHydrationWarning
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="lg:hidden p-1.5 sm:p-2 rounded-full transition-all active:scale-95 text-[#183D2B] bg-[#E9E0D2]/50 hover:bg-[#E9E0D2]"
+                className="lg:hidden p-1.5 sm:p-2 rounded-full transition-all active:scale-95 text-[#183D2B] bg-[#E9E0D2]/50 hover:bg-[#E9E0D2] cursor-pointer"
                 aria-label="Toggle Navigation Menu"
               >
                 {isMobileMenuOpen ? (
@@ -496,39 +543,54 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* Full-Screen Mobile Drawer */}
+      {/* 
+        CURATED MOBILE DRAWER
+        Clean, calm, uncluttered navigation matching the PDF standard:
+        - Kerala
+        - Journeys
+        - Experiences
+        - About
+        - Travel Guide
+        Focused, readable accordions with generous touch targets.
+      */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -16 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.35 }}
-            className="fixed inset-0 z-40 bg-[#183D2B]/98 backdrop-blur-2xl text-[#FFFCF5] flex flex-col justify-between p-6 sm:p-10 pt-24 sm:pt-28 lg:hidden overflow-y-auto max-h-[100dvh]"
+            exit={{ opacity: 0, y: -16 }}
+            transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed inset-0 z-40 bg-[#183D2B]/98 backdrop-blur-lg text-[#FFFCF5] flex flex-col justify-between p-6 sm:p-10 pt-20 sm:pt-24 lg:hidden overflow-y-auto max-h-[100dvh]"
           >
-            <div className="space-y-4 max-w-lg mx-auto w-full pb-8">
-              <span className="text-[11px] font-sans uppercase tracking-[0.25em] text-[#E9E0D2] block border-b border-white/10 pb-2">
-                Explore &bull; Menu
-              </span>
+            <div className="space-y-3 max-w-lg mx-auto w-full pb-6">
+              <div className="flex items-center justify-between border-b border-white/10 pb-2.5 mb-2">
+                <span className="text-[10px] font-sans uppercase tracking-[0.25em] text-[#E9E0D2]">
+                  Explore &bull; Journeys Atelier
+                </span>
+                <span className="text-[10px] text-[#E9E0D2]/60 uppercase tracking-widest">
+                  South India
+                </span>
+              </div>
 
               {SITE_STRUCTURE.map((item) => {
                 const isExpanded = expandedMobileItem === item.id;
                 return (
-                  <div key={item.id} className="border-b border-white/10 pb-3">
-                    <div className="flex items-center justify-between">
+                  <div key={item.id} className="border-b border-white/10 pb-2.5">
+                    <div className="flex items-center justify-between min-h-[48px]">
+                      {/* Main Clean Heading */}
                       <Link
                         href={item.href}
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className="font-serif text-xl text-[#FFFCF5] hover:text-[#E9E0D2] transition-colors"
+                        className="font-serif text-2xl text-[#FFFCF5] hover:text-[#E9E0D2] transition-colors py-1 flex-1 tracking-tight"
                       >
-                        {item.fullName}
+                        {item.name}
                       </Link>
 
+                      {/* Accordion Toggle */}
                       <button
                         type="button"
-                        suppressHydrationWarning
                         onClick={() => setExpandedMobileItem(isExpanded ? null : item.id)}
-                        className="p-2 text-[#E9E0D2]"
+                        className="w-10 h-10 rounded-full flex items-center justify-center text-[#E9E0D2] bg-white/5 hover:bg-white/15 transition-all cursor-pointer shrink-0"
                         aria-label={`Expand ${item.name}`}
                       >
                         <ChevronDown
@@ -539,44 +601,34 @@ export default function Navbar() {
                       </button>
                     </div>
 
+                    {/* Clean, Curated Sub-links (Never crowded) */}
                     <AnimatePresence>
                       {isExpanded && (
                         <motion.div
                           initial={{ height: 0, opacity: 0 }}
                           animate={{ height: "auto", opacity: 1 }}
                           exit={{ height: 0, opacity: 0 }}
-                          className="pt-2 pl-4 space-y-2 overflow-hidden"
+                          transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                          className="pt-2 pl-3 space-y-1.5 overflow-hidden"
                         >
-                          {item.groups ? (
-                            item.groups.map((grp, gIdx) => (
-                              <div key={gIdx} className="space-y-1 pt-1">
-                                <span className="text-[10px] uppercase tracking-wider text-[#8B5E35] font-semibold block">
-                                  {grp.groupTitle}
-                                </span>
-                                {grp.items.map((sub) => (
-                                  <Link
-                                    key={sub.name}
-                                    href={sub.href}
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                    className="block text-xs text-[#E9E0D2]/90 hover:text-white py-0.5"
-                                  >
-                                    &bull; {sub.name}
-                                  </Link>
-                                ))}
-                              </div>
-                            ))
-                          ) : (
-                            item.items?.map((sub) => (
+                          {item.mobileHighlights.map((sub, sIdx) => {
+                            const isActionLink = sub.name.includes("→");
+                            return (
                               <Link
-                                key={sub.name}
+                                key={sIdx}
                                 href={sub.href}
                                 onClick={() => setIsMobileMenuOpen(false)}
-                                className="block text-xs text-[#E9E0D2]/90 hover:text-white py-0.5"
+                                className={`block py-1.5 text-xs transition-colors ${
+                                  isActionLink
+                                    ? "text-[#E9E0D2] font-semibold uppercase tracking-wider pt-1 hover:text-white"
+                                    : "text-white/80 hover:text-white"
+                                }`}
                               >
-                                &bull; {sub.name}
+                                {!isActionLink && <span className="text-[#8B5E35] mr-2">&bull;</span>}
+                                <span>{sub.name}</span>
                               </Link>
-                            ))
-                          )}
+                            );
+                          })}
                         </motion.div>
                       )}
                     </AnimatePresence>
@@ -585,24 +637,26 @@ export default function Navbar() {
               })}
             </div>
 
-            <div className="max-w-lg mx-auto w-full pt-4 space-y-3">
+            {/* Bottom Actions: Large Primary CTA & WhatsApp Contact */}
+            <div className="max-w-lg mx-auto w-full pt-4 space-y-3 pb-6 border-t border-white/10">
               <Link
                 href="/plan-your-journey"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="w-full py-4 rounded-full bg-[#8B5E35] text-[#FFFCF5] text-xs uppercase tracking-widest font-semibold flex items-center justify-center gap-2 shadow-xl hover:bg-[#a06d3f] transition-all"
+                className="w-full py-3.5 rounded-full bg-[#8B5E35] hover:bg-[#A26D3F] text-[#FFFCF5] text-xs uppercase tracking-widest font-semibold flex items-center justify-center gap-2 shadow-xl transition-all active:scale-95"
               >
                 <span>PLAN YOUR JOURNEY</span>
                 <ArrowUpRight className="w-4 h-4" />
               </Link>
-              <div className="flex items-center justify-center gap-3 text-xs text-[#E9E0D2]/80">
+
+              <div className="flex items-center justify-center gap-4 text-xs text-[#E9E0D2]/90 pt-1">
                 <a
-                  href="https://wa.me/919447000000"
+                  href="https://wa.me/919447000000?text=Hello%20Jibu,%20I%20would%20like%20to%20plan%20a%20private%20journey%20to%20Kerala."
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 hover:text-white transition-colors"
+                  className="inline-flex items-center gap-2 hover:text-white transition-colors"
                 >
-                  <MessageSquare className="w-3.5 h-3.5" />
-                  <span>WhatsApp Concierge</span>
+                  <WhatsAppIcon className="w-4 h-4 fill-[#25D366]" />
+                  <span>Chat with Jibu on WhatsApp</span>
                 </a>
               </div>
             </div>

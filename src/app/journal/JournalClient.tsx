@@ -40,7 +40,7 @@ const ARTICLES: Article[] = [
     subtitle: "Why the 'off-season' monsoon might actually be the most poetic time to travel.",
     readTime: "5 min read",
     date: "Updated for 2026 / 2027",
-    image: "/images/generated/tea-plantation-approach.jpg",
+    image: "/images/generated/tea-plantation-approach.webp",
     summary:
       "Most commercial guidebooks tell you that November to February is the only time to visit. While the winter months offer crisp dry weather, Kerala is at its most lush, romantic, and fragrant during the Southwest Monsoon (June to August) and retreating Northeast Monsoon (October). The waterfalls thunder, the dust disappears, and Ayurvedic rejuvenation therapies are historically most effective during the rains.",
     takeaways: [
@@ -63,7 +63,7 @@ const ARTICLES: Article[] = [
     subtitle: "Why 10 to 12 days is the sweet spot for an unhurried, soul-restoring holiday.",
     readTime: "6 min read",
     date: "Founder's Field Notes",
-    image: "/images/generated/houseboat-backwaters.jpg",
+    image: "/images/generated/houseboat-backwaters.webp",
     summary:
       "Too many itineraries try to cram Kochi, Munnar, Thekkady, Alleppey, and Kovalam into 6 or 7 days. In reality, winding mountain roads and country traffic mean you spend half your holiday inside a car. A true bespoke Kerala experience requires spending a minimum of two consecutive nights in each region, giving you full unhurried mornings to explore at your own pace.",
     takeaways: [
@@ -86,7 +86,7 @@ const ARTICLES: Article[] = [
     subtitle: "Manicured British-era tea carpets versus ancient wild cardamom rainforests.",
     readTime: "4 min read",
     date: "Landscape Analysis",
-    image: "/images/generated/hero-kerala.jpg",
+    image: "/images/generated/hero-kerala.webp",
     summary:
       "Both are breathtaking highland regions in the Western Ghats, but their personalities are completely different. Munnar is all about soaring mountain peaks (6,000 ft), dramatic cloud blankets, and rolling carpets of tea. Wayanad is situated in the north: wilder, heavily forested with coffee and cardamom plantations, prehistoric caves (Edakkal), and vibrant tribal heritage.",
     takeaways: [
@@ -108,7 +108,7 @@ const ARTICLES: Article[] = [
     subtitle: "How to choose between a luxury floating hotel night and a quiet wooden day cruise.",
     readTime: "5 min read",
     date: "Insider Inspection",
-    image: "/images/generated/luxury-resort-stay.jpg",
+    image: "/images/generated/luxury-resort-stay.webp",
     summary:
       "A night on a traditional thatched Kettuvallam can be magical, but many travellers do not realize that government maritime regulations require all houseboats to anchor by 5:30 PM to protect fishermen's nighttime nets. If you prefer to stay in an expansive lakefront heritage resort, a 4-hour daytime cruise with a private onboard chef followed by a tranquil resort evening can often be the more luxurious choice.",
     takeaways: [
@@ -130,7 +130,7 @@ const ARTICLES: Article[] = [
     subtitle: "How we eliminate travel fatigue and design itineraries everyone loves.",
     readTime: "6 min read",
     date: "Founder's Care Guide",
-    image: "/images/generated/fort-kochi-heritage.jpg",
+    image: "/images/generated/fort-kochi-heritage.webp",
     summary:
       "Multi-generational family travel is one of Jibu's greatest specialities. Children need tactile, engaging discoveries — elephant washings, canoe steering, martial arts demonstrations. Grandparents need gentle walking surfaces, ground-floor bedrooms, air-conditioned comfortable vehicles, and unhurried bathroom stops. We design every route with thoughtful resting buffers so nobody feels exhausted.",
     takeaways: [

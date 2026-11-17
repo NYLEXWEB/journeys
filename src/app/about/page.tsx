@@ -69,7 +69,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
             <div className="lg:col-span-5 relative h-[380px] sm:h-[480px] rounded-[2rem] overflow-hidden shadow-[0_15px_40px_rgba(24,61,43,0.12)] border border-[#E9E0D2]">
               <Image
-                src="/images/generated/tea-plantation-approach.jpg"
+                src="/images/generated/tea-plantation-approach.webp"
                 alt="Kerala Western Ghats tea highlands"
                 fill
                 sizes="(max-width: 1024px) 100vw, 40vw"
@@ -165,7 +165,7 @@ export default function AboutPage() {
 
             <div className="lg:col-span-5 relative h-[380px] sm:h-[480px] rounded-[2rem] overflow-hidden shadow-[0_15px_40px_rgba(24,61,43,0.12)] border border-[#E9E0D2] order-1 lg:order-2">
               <Image
-                src="/images/generated/fort-kochi-heritage.jpg"
+                src="/images/generated/fort-kochi-heritage.webp"
                 alt="Fort Kochi heritage architecture"
                 fill
                 sizes="(max-width: 1024px) 100vw, 40vw"

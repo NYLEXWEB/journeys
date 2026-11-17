@@ -70,40 +70,62 @@ export default function Hero() {
       : STATIC_HERO_SLIDES;
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isHeroVisible, setIsHeroVisible] = useState(true);
+  const heroSectionRef = useRef<HTMLElement>(null);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
-  // Advance slides automatically
+  // Track Hero visibility: pause all hero videos when user scrolls down
   useEffect(() => {
+    const el = heroSectionRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsHeroVisible(entry.isIntersecting);
+      },
+      { threshold: 0.05 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Advance slides automatically only when Hero is visible
+  useEffect(() => {
+    if (!isHeroVisible) return;
+
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % heroSlides.length);
     }, SLIDE_DURATION);
 
     return () => clearInterval(timer);
-  }, [heroSlides.length]);
+  }, [heroSlides.length, isHeroVisible]);
 
-  // Video playback synchronization
+  // Video playback synchronization: only play active video, pause all others
   useEffect(() => {
     heroSlides.forEach((_, idx) => {
       const vid = videoRefs.current[idx];
-      if (vid) {
-        if (idx === currentIndex) {
-          try {
-            if (vid.readyState >= 1) {
-              vid.currentTime = 0;
-            }
-          } catch {}
-          vid.play().catch(() => {});
-        } else if (idx === (currentIndex + 1) % heroSlides.length) {
-          vid.play().catch(() => {});
-        }
+      if (!vid) return;
+
+      if (isHeroVisible && idx === currentIndex) {
+        try {
+          if (vid.readyState >= 1) {
+            vid.currentTime = 0;
+          }
+        } catch {}
+        vid.play().catch(() => {});
+      } else {
+        // Pause all other videos immediately to save mobile GPU/CPU
+        vid.pause();
       }
     });
-  }, [currentIndex, heroSlides]);
+  }, [currentIndex, heroSlides, isHeroVisible]);
 
   const currentSlide = heroSlides[currentIndex] || heroSlides[0];
 
   return (
     <section
+      ref={heroSectionRef}
       id="hero"
       className="relative min-h-[100dvh] w-full overflow-hidden bg-[#183D2B]"
     >
@@ -111,17 +133,33 @@ export default function Hero() {
       <div className="absolute inset-0 z-0 overflow-hidden">
         {heroSlides.map((slide, idx) => {
           const isActive = idx === currentIndex;
+          const src = slide.src || `/video/video-${(idx % 4) + 1}.mp4`;
+          const isImage = /\.(jpeg|jpg|png|webp|avif|gif)($|\?)/i.test(src);
+
+          if (isImage) {
+            return (
+              <img
+                key={slide.slideId || slide.id || idx}
+                src={src}
+                alt={slide.word || "Hero slide"}
+                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
+                  isActive ? "opacity-90 z-10 scale-100 animate-ken-burns" : "opacity-0 z-0 pointer-events-none scale-105"
+                } transition-transform duration-[6000ms] ease-out`}
+              />
+            );
+          }
+
           return (
             <video
               key={slide.slideId || slide.id || idx}
               ref={(el) => {
                 videoRefs.current[idx] = el;
               }}
-              src={slide.src || `/video/video-${(idx % 4) + 1}.mp4`}
+              src={src}
               muted
               playsInline
               loop
-              preload="auto"
+              preload={idx === 0 ? "auto" : "metadata"}
               className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
                 isActive ? "opacity-90 z-10 scale-100 animate-ken-burns" : "opacity-0 z-0 pointer-events-none scale-105"
               } transition-transform duration-[6000ms] ease-out`}
@@ -140,7 +178,7 @@ export default function Hero() {
         2. Center: Invisible Anchor / Spacer where the floating Navbar capsule sits
         3. Right: Plan Your Journey action button
         - On Desktop / Tablet (md and up): All 3 on the exact same horizontal line!
-        - On Mobile (< md): Two-tier adaptive layout (Heading & CTA on top row, centered Navbar below), with zero horizontal scroll!
+        - On Mobile (< md): Two-tier adaptive layout (Heading & CTA on top row, centered Navbar below)
         All moving up together smoothly on scroll!
       */}
       <div className="absolute bottom-4 sm:bottom-6 md:bottom-8 lg:bottom-10 inset-x-0 z-30 px-3 sm:px-6 md:px-8 lg:px-12 pointer-events-none">

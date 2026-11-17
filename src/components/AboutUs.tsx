@@ -35,25 +35,25 @@ export default function AboutUs() {
       badge: about.storyBadge || "Our Story • Founding Vision",
       title: about.storyTitle || "The Founding Vision of Journeys by Jibu Thomas",
       quote: about.storyQuote || "South India, experienced with soul, depth, and unhurried grace.",
-      image: about.storyImage || "/images/generated/tea-plantation-approach.jpg",
+      image: about.storyImage || "/images/generated/tea-plantation-approach.webp",
     },
     jibu: {
       badge: about.jibuBadge || "Biography • Jibu Thomas",
       title: about.jibuTitle || "Two Decades of Destination Craftsmanship",
       quote: about.jibuSubtitle || "Direct personal accountability for every journey that carries my name.",
-      image: about.jibuImage || "/images/generated/fort-kochi-heritage.jpg",
+      image: about.jibuImage || "/images/generated/fort-kochi-heritage.webp",
     },
     philosophy: {
       badge: about.philosophyBadge || "Philosophy • The Four Pillars",
       title: about.philosophyTitle || "How We Approach Every Single Itinerary",
       quote: about.philosophyQuote || "Generous pacing, living heritage, and conscious respect for local hosts.",
-      image: "/images/generated/houseboat-backwaters.jpg",
+      image: "/images/generated/houseboat-backwaters.webp",
     },
     whyUs: {
       badge: about.whyUsBadge || "Standards • Why Travel With Us",
       title: about.whyUsTitle || "The Discerning Boutique Difference",
       quote: about.whyUsQuote || "No middle-tier sales reps, no hidden commissions, pristine standards.",
-      image: "/images/generated/luxury-resort-stay.jpg",
+      image: "/images/generated/luxury-resort-stay.webp",
     },
   };
 
@@ -122,7 +122,7 @@ export default function AboutUs() {
             >
               <div className="lg:col-span-5 relative h-80 sm:h-96 rounded-3xl overflow-hidden shadow-lg border-2 border-white">
                 <Image
-                  src={about.storyImage || "/images/generated/tea-plantation-approach.jpg"}
+                  src={about.storyImage || "/images/generated/tea-plantation-approach.webp"}
                   alt="Munnar tea highlands"
                   fill
                   sizes="(max-width: 1024px) 100vw, 45vw"
@@ -181,7 +181,7 @@ export default function AboutUs() {
             >
               <div className="lg:col-span-5 relative h-80 sm:h-96 rounded-3xl overflow-hidden shadow-lg border-2 border-white bg-[#183D2B]">
                 <Image
-                  src={about.jibuImage || "/images/generated/fort-kochi-heritage.jpg"}
+                  src={about.jibuImage || "/images/generated/fort-kochi-heritage.webp"}
                   alt="Jibu Thomas"
                   fill
                   sizes="(max-width: 1024px) 100vw, 40vw"

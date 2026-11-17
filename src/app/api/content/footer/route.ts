@@ -40,10 +40,13 @@ export async function PUT(req: NextRequest) {
       footer = new FooterContentModel(INITIAL_FOOTER_CONTENT);
     }
 
-    if (brandName !== undefined) footer.brandName = brandName.trim();
-    if (tagline !== undefined) footer.tagline = tagline.trim();
-    if (atelierDescription !== undefined) footer.atelierDescription = atelierDescription.trim();
-    if (copyrightText !== undefined) footer.copyrightText = copyrightText.trim();
+    const safeTrim = (v: any) => (typeof v === "string" ? v.trim() : v !== null && v !== undefined ? String(v).trim() : "");
+
+    if (brandName !== undefined && brandName !== null) footer.brandName = safeTrim(brandName);
+    if (tagline !== undefined && tagline !== null) footer.tagline = safeTrim(tagline);
+    if (atelierDescription !== undefined && atelierDescription !== null) footer.atelierDescription = safeTrim(atelierDescription);
+    if (copyrightText !== undefined && copyrightText !== null) footer.copyrightText = safeTrim(copyrightText);
+    
     if (socialLinks && Array.isArray(socialLinks)) {
       footer.socialLinks = socialLinks.map((s: any) => ({
         platform: s.platform || "Social",

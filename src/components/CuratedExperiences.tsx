@@ -32,7 +32,7 @@ export const EXPERIENCES_DATA: ExperienceItem[] = [
     id: "backwaters",
     number: "01",
     title: "Backwater & Houseboat Experiences",
-    image: "/images/generated/houseboat-backwaters.jpg",
+    image: "/images/generated/houseboat-backwaters.webp",
     icon: Waves,
     idealDuration: "1 to 3 Nights",
     locations: "Alleppey · Kumarakom · Vembanad Lake",
@@ -49,7 +49,7 @@ export const EXPERIENCES_DATA: ExperienceItem[] = [
     id: "hill-stations",
     number: "02",
     title: "Hill Stations & Plantation Trails",
-    image: "/images/generated/tea-plantation-approach.jpg",
+    image: "/images/generated/tea-plantation-approach.webp",
     icon: Mountain,
     idealDuration: "3 to 5 Days",
     locations: "Munnar · Wayanad · Ooty · Coorg",
@@ -66,7 +66,7 @@ export const EXPERIENCES_DATA: ExperienceItem[] = [
     id: "nature-wildlife",
     number: "03",
     title: "Nature & Wildlife Experiences",
-    image: "/images/generated/hero-kerala.jpg",
+    image: "/images/generated/hero-kerala.webp",
     icon: Trees,
     idealDuration: "2 to 4 Days",
     locations: "Thekkady · Wayanad · Periyar · Nagarhole",
@@ -83,7 +83,7 @@ export const EXPERIENCES_DATA: ExperienceItem[] = [
     id: "culture-heritage",
     number: "04",
     title: "Culture & Heritage Journeys",
-    image: "/images/generated/fort-kochi-heritage.jpg",
+    image: "/images/generated/fort-kochi-heritage.webp",
     icon: Landmark,
     idealDuration: "3 to 6 Days",
     locations: "Fort Kochi · Kannur · Madurai · Mysore · Hampi",
@@ -100,7 +100,7 @@ export const EXPERIENCES_DATA: ExperienceItem[] = [
     id: "beaches-coastal",
     number: "05",
     title: "Beaches & Coastal Escapes",
-    image: "/images/generated/coastal-varkala.jpg",
+    image: "/images/generated/coastal-varkala.webp",
     icon: Sun,
     idealDuration: "3 to 5 Days",
     locations: "Varkala · Marari · Kovalam · Bekal",
@@ -117,7 +117,7 @@ export const EXPERIENCES_DATA: ExperienceItem[] = [
     id: "culinary-food",
     number: "06",
     title: "Culinary & Local Food Experiences",
-    image: "/images/generated/traditional-cuisine.jpg",
+    image: "/images/generated/traditional-cuisine.webp",
     icon: UtensilsCrossed,
     idealDuration: "Custom Integrated",
     locations: "Central Kerala · Fort Kochi · Calicut · Chettinad",
@@ -134,7 +134,7 @@ export const EXPERIENCES_DATA: ExperienceItem[] = [
     id: "village-community",
     number: "07",
     title: "Village & Community Experiences",
-    image: "/images/generated/spice-gardens.jpg",
+    image: "/images/generated/spice-gardens.webp",
     icon: Users2,
     idealDuration: "Full / Half Day",
     locations: "Kumbalangi · Aymanam · Wayanad · Alleppey Countryside",
@@ -191,7 +191,7 @@ export default function CuratedExperiences() {
           {experiencesData.map((exp) => (
             <Link
               key={exp.id}
-              href="/experiences"
+              href={`/experiences#${exp.id}`}
               className="group relative h-[480px] lg:h-[520px] rounded-[2rem] sm:rounded-[2.4rem] overflow-hidden cursor-pointer border border-white/10 hover:border-[#8B5E35]/60 hover:-translate-y-2 transition-all duration-500 select-none bg-[#183D2B] hover:shadow-[0_12px_30px_rgba(24,61,43,0.08)] block"
             >
               <Image
@@ -233,7 +233,7 @@ export default function CuratedExperiences() {
           {experiencesData.map((exp, idx) => (
             <Link
               key={exp.id}
-              href="/experiences"
+              href={`/experiences#${exp.id}`}
               style={{
                 top: `calc(75px + ${idx * 6}px)`,
                 zIndex: idx + 5,

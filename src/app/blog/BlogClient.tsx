@@ -157,7 +157,7 @@ export default function BlogClient() {
               <div>
                 <Link href={`/blog/${art.id}`} className="block relative h-60 w-full overflow-hidden">
                   <Image
-                    src={art.image || "/images/generated/tea-plantation-approach.jpg"}
+                    src={art.image || "/images/generated/tea-plantation-approach.webp"}
                     alt={art.title}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

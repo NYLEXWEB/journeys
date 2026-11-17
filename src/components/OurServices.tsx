@@ -22,7 +22,7 @@ export const SERVICES_DATA: ServiceItem[] = [
     number: "01",
     title: "Private Chauffeur-Driven Journeys",
     shortVibe: "Pristine AC fleet with seasoned, courteous private chauffeurs.",
-    image: "/images/services/private-chauffeur.jpg",
+    image: "/images/services/private-chauffeur.webp",
     description:
       "Travel through South India in immaculate, air-conditioned private vehicles. Our chauffeurs know every scenic mountain pass, quiet tea stall, and tranquil detour. Drive in quiet comfort and stop whenever a vista catches your eye.",
     points: [
@@ -37,7 +37,7 @@ export const SERVICES_DATA: ServiceItem[] = [
     number: "02",
     title: "Handpicked Stays & Accommodation",
     shortVibe: "Heritage tea bungalows, private houseboats & boutique eco-resorts.",
-    image: "/images/services/handpicked-stays.jpg",
+    image: "/images/services/handpicked-stays.webp",
     description:
       "We strictly avoid soulless concrete chain hotels. Instead, we place you in authentic heritage planters' bungalows nestled inside tea estates, private backwater kettuvallams, and secluded eco-resorts overlooking cliff vistas.",
     points: [
@@ -52,7 +52,7 @@ export const SERVICES_DATA: ServiceItem[] = [
     number: "03",
     title: "Family & Senior-Friendly Holidays",
     shortVibe: "Unhurried schedules, ground-floor rooms & gentle pacing.",
-    image: "/images/services/family-senior-friendly.jpg",
+    image: "/images/services/family-senior-friendly.webp",
     description:
       "Traveling with children or elderly grandparents requires specialized care. We craft itineraries with shorter driving segments, accessible ground-floor rooms, gentle walking trails, tailored dietary requests, and multi-bedroom private family villas.",
     points: [
@@ -67,7 +67,7 @@ export const SERVICES_DATA: ServiceItem[] = [
     number: "04",
     title: "Special Interest Travel",
     shortVibe: "Birdwatching, culinary masterclasses, architecture & Ayurveda.",
-    image: "/images/services/special-interest.jpg",
+    image: "/images/services/special-interest.webp",
     description:
       "Whether your passion lies in birdwatching endemic Western Ghats avifauna, documenting Dravidian temple architecture, learning regional culinary secrets, or undergoing an authentic Ayurvedic Panchakarma cure under master physicians.",
     points: [
@@ -82,7 +82,7 @@ export const SERVICES_DATA: ServiceItem[] = [
     number: "05",
     title: "End-to-End Travel Coordination",
     shortVibe: "Airport meet-and-greet, private transfers & 24/7 care desk.",
-    image: "/images/services/end-to-end.jpg",
+    image: "/images/services/end-to-end.webp",
     description:
       "From warm airport meet-and-greets at Kochi, Trivandrum, or Bangalore to seamless luggage handling, pre-arranged entry permits, private boat charters, and instant WhatsApp support, our dedicated Kerala coordination desk handles every detail.",
     points: [

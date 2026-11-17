@@ -50,15 +50,18 @@ export async function PUT(req: NextRequest) {
       contact = new ContactInfoModel(INITIAL_CONTACT_INFO);
     }
 
-    if (whatsappNumber !== undefined) contact.whatsappNumber = whatsappNumber.trim();
-    if (whatsappMessage !== undefined) contact.whatsappMessage = whatsappMessage.trim();
-    if (phoneNumber !== undefined) contact.phoneNumber = phoneNumber.trim();
-    if (phoneDisplay !== undefined) contact.phoneDisplay = phoneDisplay.trim();
-    if (email !== undefined) contact.email = email.trim();
-    if (address !== undefined) contact.address = address.trim();
-    if (conciergeTitle !== undefined) contact.conciergeTitle = conciergeTitle.trim();
-    if (conciergeSubtitle !== undefined) contact.conciergeSubtitle = conciergeSubtitle.trim();
-    if (conciergeNote !== undefined) contact.conciergeNote = conciergeNote.trim();
+    const safeTrim = (v: any) =>
+      typeof v === "string" ? v.trim() : v !== null && v !== undefined ? String(v).trim() : "";
+
+    if (whatsappNumber !== undefined && whatsappNumber !== null) contact.whatsappNumber = safeTrim(whatsappNumber);
+    if (whatsappMessage !== undefined && whatsappMessage !== null) contact.whatsappMessage = safeTrim(whatsappMessage);
+    if (phoneNumber !== undefined && phoneNumber !== null) contact.phoneNumber = safeTrim(phoneNumber);
+    if (phoneDisplay !== undefined && phoneDisplay !== null) contact.phoneDisplay = safeTrim(phoneDisplay);
+    if (email !== undefined && email !== null) contact.email = safeTrim(email);
+    if (address !== undefined && address !== null) contact.address = safeTrim(address);
+    if (conciergeTitle !== undefined && conciergeTitle !== null) contact.conciergeTitle = safeTrim(conciergeTitle);
+    if (conciergeSubtitle !== undefined && conciergeSubtitle !== null) contact.conciergeSubtitle = safeTrim(conciergeSubtitle);
+    if (conciergeNote !== undefined && conciergeNote !== null) contact.conciergeNote = safeTrim(conciergeNote);
 
     await contact.save();
 

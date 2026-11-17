@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
 export interface IEnquiry extends Document {
+  id?: string;
   fullName: string;
   email: string;
   phone: string;
@@ -28,6 +29,8 @@ export interface IEnquiry extends Document {
 
 const EnquirySchema = new Schema<IEnquiry>(
   {
+    _id: { type: Schema.Types.Mixed },
+    id: { type: String, sparse: true, index: true },
     fullName: { type: String, required: true, trim: true },
     email: { type: String, required: true, trim: true, lowercase: true },
     phone: { type: String, required: true, trim: true },
@@ -64,4 +67,3 @@ const EnquirySchema = new Schema<IEnquiry>(
 
 export const EnquiryModel: Model<IEnquiry> =
   mongoose.models.Enquiry || mongoose.model<IEnquiry>("Enquiry", EnquirySchema);
-

@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
 export interface IReview extends Document {
+  id?: string;
   author: string;
   avatarColor: string;
   avatarInitial: string;
@@ -20,6 +21,7 @@ export interface IReview extends Document {
 
 const ReviewSchema = new Schema<IReview>(
   {
+    id: { type: String, sparse: true, index: true },
     author: { type: String, required: true, trim: true },
     avatarColor: { type: String, default: "bg-[#183D2B]" },
     avatarInitial: { type: String, default: "J" },

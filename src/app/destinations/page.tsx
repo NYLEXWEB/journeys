@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
@@ -27,6 +27,23 @@ export default function DestinationsDirectoryPage() {
       : DESTINATIONS_DATA;
 
   const [selectedCategory, setSelectedCategory] = useState<DestinationCategory>("all");
+
+  // Smoothly scroll to destination if arrived with a hash (e.g. /destinations#munnar)
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.location.hash) {
+      const targetId = window.location.hash.replace("#", "");
+      const matched = destinationsData.find((d: any) => d.id === targetId);
+      if (matched && matched.stateCategory) {
+        setSelectedCategory("all");
+      }
+      setTimeout(() => {
+        const el = document.getElementById(targetId);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 300);
+    }
+  }, [destinationsData]);
 
   const filteredDestinations =
     selectedCategory === "all"

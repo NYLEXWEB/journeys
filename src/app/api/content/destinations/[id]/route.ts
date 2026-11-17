@@ -39,7 +39,15 @@ export async function PUT(
     if (region) existing.region = region.trim();
     if (shortVibe) existing.shortVibe = shortVibe.trim();
     if (overview) existing.overview = overview.trim();
-    if (image) existing.image = image.trim();
+    if (image !== undefined && image.trim() !== existing.image) {
+      const oldImage = existing.image;
+      existing.image = image.trim();
+      if (oldImage) {
+        deleteUploadThingFiles([oldImage]).catch((err) =>
+          console.warn("[UploadThing] Failed to delete replaced destination image:", err)
+        );
+      }
+    }
     if (highlights && Array.isArray(highlights)) existing.highlights = highlights;
     if (typeof order === "number") existing.order = order;
 

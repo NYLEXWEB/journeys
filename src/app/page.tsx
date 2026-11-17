@@ -40,7 +40,7 @@ export default function Home() {
           </StackingSection>
 
           {/* Fixed Background Video Curtain Reveal between About Us & Destinations */}
-          <CurtainVideoReveal videoSrc="/video/video-1.mp4" />
+          <CurtainVideoReveal slot={1} videoSrc="/video/video-1.mp4" />
 
           {/* 2. DESTINATIONS: Page 2 */}
           <StackingSection zIndex={12}>
@@ -54,7 +54,7 @@ export default function Home() {
 
           {/* Full Single-Screen Editorial Cover Image between Curated Experiences & Travel With Jibu */}
           <CurtainImageReveal
-            imageSrc="/images/generated/hero-kerala.jpg"
+            imageSrc="/images/generated/hero-kerala.webp"
             alt="Misty Western Ghats and Emerald Waterways of Kerala"
             tag="Curated Perspective"
             quote="&ldquo;Travel is the art of seeing what others only glance at.&rdquo;"
@@ -73,7 +73,7 @@ export default function Home() {
           </StackingSection>
 
           {/* Fixed Background Video Curtain Reveal between Our Services & Travel Blog */}
-          <CurtainVideoReveal videoSrc="/video/video-4.mp4" />
+          <CurtainVideoReveal slot={2} videoSrc="/video/video-4.mp4" />
 
           {/* 6. TRAVEL BLOG: Page 6 */}
           <StackingSection zIndex={20}>

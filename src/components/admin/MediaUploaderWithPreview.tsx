@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import Image from "next/image";
 import { Upload, X, Loader2, AlertCircle, RefreshCw, CheckCircle2 } from "lucide-react";
 import { uploadFiles } from "@/lib/uploadthing";
 
@@ -37,6 +36,7 @@ export function MediaUploaderWithPreview({
   disabled = false,
 }: MediaUploaderWithPreviewProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const uploadedUrlRef = useRef<string | null>(null);
   const [localPreview, setLocalPreview] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
@@ -45,6 +45,22 @@ export function MediaUploaderWithPreview({
   const [isDragging, setIsDragging] = useState(false);
 
   const effectiveMaxMb = maxSizeMb || (mediaType === "video" ? 50 : 10);
+
+  // Helper to delete remote asset from UploadThing cloud storage
+  const deleteRemoteAsset = async (urlOrKey?: string) => {
+    if (!urlOrKey) return;
+    // Don't attempt to delete local static assets
+    if (urlOrKey.startsWith("/") && !urlOrKey.startsWith("/f/")) return;
+    try {
+      await fetch("/api/uploadthing/delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: urlOrKey }),
+      });
+    } catch (e) {
+      console.warn("[MediaUploader] Could not delete remote asset:", e);
+    }
+  };
 
   // Clean up object URL when component unmounts or preview changes
   useEffect(() => {
@@ -142,6 +158,12 @@ export function MediaUploaderWithPreview({
         (uploaded as any).ufsUrl ||
         (uploaded as any).url ||
         `https://utfs.io/f/${uploaded.key}`;
+
+      // If user had previously uploaded a file during this session, purge it to avoid orphaned clutter
+      if (uploadedUrlRef.current && uploadedUrlRef.current !== cloudUrl) {
+        deleteRemoteAsset(uploadedUrlRef.current);
+      }
+      uploadedUrlRef.current = cloudUrl;
 
       setUploadProgress(100);
       setUploadSuccess(true);
@@ -258,7 +280,7 @@ export function MediaUploaderWithPreview({
                 type="button"
                 onClick={() => !disabled && fileInputRef.current?.click()}
                 disabled={disabled}
-                className="flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-white/95 hover:bg-white text-[#183D2B] border border-[#E9E0D2] shadow-sm text-xs font-medium hover:border-[#183D2B] transition-colors"
+                className="flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-white/95 hover:bg-white text-[#183D2B] border border-[#E9E0D2] shadow-sm text-xs font-medium hover:border-[#183D2B] transition-colors cursor-pointer"
                 title="Replace Photo"
               >
                 <RefreshCw className="w-3.5 h-3.5" />
@@ -268,11 +290,15 @@ export function MediaUploaderWithPreview({
                 <button
                   type="button"
                   onClick={() => {
+                    const toDelete = uploadedUrlRef.current || value;
                     setLocalPreview(null);
                     onClear();
+                    if (toDelete && (toDelete.includes("utfs.io") || toDelete.includes("ufs.sh"))) {
+                      deleteRemoteAsset(toDelete);
+                    }
                   }}
                   disabled={disabled}
-                  className="p-1.5 rounded-full bg-white/95 hover:bg-red-50 text-red-600 border border-red-200 shadow-sm transition-colors"
+                  className="p-1.5 rounded-full bg-white/95 hover:bg-red-50 text-red-600 border border-red-200 shadow-sm transition-colors cursor-pointer"
                   title="Remove Photo"
                 >
                   <X className="w-3.5 h-3.5" />

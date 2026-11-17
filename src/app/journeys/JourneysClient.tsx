@@ -42,7 +42,7 @@ const JOURNEYS: JourneyItem[] = [
     duration: "10 to 12 Days",
     pace: "Relaxed & Immersive",
     category: "classic",
-    image: "/images/generated/tea-plantation-approach.jpg",
+    image: "/images/generated/tea-plantation-approach.webp",
     route: ["Kochi", "Munnar Highlands", "Thekkady Spices", "Kumarakom", "Alleppey Backwaters"],
     overview:
       "The quintessential introduction to Kerala. Balanced carefully so you never spend exhausting long days on the road. Begin in historical Fort Kochi, climb into the cool misty tea gardens of Munnar, descend to the spice hills of Periyar, and conclude with silent backwater canals on a private kettuvallam.",
@@ -62,7 +62,7 @@ const JOURNEYS: JourneyItem[] = [
     duration: "12 to 14 Days",
     pace: "Very Slow & Restorative",
     category: "slow",
-    image: "/images/generated/luxury-resort-stay.jpg",
+    image: "/images/generated/luxury-resort-stay.webp",
     route: ["Calicut Coast", "Wayanad Rainforest", "Kannur Weavers", "Neeleshwar Sanctuary"],
     overview:
       "Designed for travellers who believe staying longer in fewer places reveals the true soul of a destination. Journey off the tourist trail into Northern Kerala (Malabar), home to ancient spice trade ports, matrilineal ancestral homes, serene uncrowded backwaters, and pristine coconut-fringed shorelines.",
@@ -82,7 +82,7 @@ const JOURNEYS: JourneyItem[] = [
     duration: "8 to 10 Days",
     pace: "Active & Nature-Focused",
     category: "nature",
-    image: "/images/generated/hero-kerala.jpg",
+    image: "/images/generated/hero-kerala.webp",
     route: ["Kochi", "Anamalai Foothills", "Munnar Peaks", "Periyar Tiger Reserve"],
     overview:
       "A deep immersion into the biological wonder of the Western Ghats, one of the eight hottest biodiversity hotspots on earth. Trek through high-altitude shola-grassland ecosystems, cruise pristine forest lakes, and observe wild elephants and hornbills with naturalist guides.",
@@ -102,7 +102,7 @@ const JOURNEYS: JourneyItem[] = [
     duration: "14 to 16 Days",
     pace: "Cultural & Comprehensive",
     category: "south-india",
-    image: "/images/generated/fort-kochi-heritage.jpg",
+    image: "/images/generated/fort-kochi-heritage.webp",
     route: ["Kochi", "Munnar", "Madurai", "Chettinad", "Thanjavur", "Kumarakom"],
     overview:
       "A cross-peninsular master route connecting the lush tropical serenity of Kerala with the towering stone temple architecture and palatial grandeur of Tamil Nadu. Experience two starkly distinct cultures, languages, and culinary worlds linked by a scenic passage through the Western Ghats.",
@@ -122,7 +122,7 @@ const JOURNEYS: JourneyItem[] = [
     duration: "9 to 11 Days",
     pace: "Leisurely & Gastronomic",
     category: "culture",
-    image: "/images/generated/spice-gardens.jpg",
+    image: "/images/generated/spice-gardens.webp",
     route: ["Fort Kochi", "Kuttanad Backwaters", "Alleppey", "Marari Coast"],
     overview:
       "Kerala has drawn traders from Rome, China, and Arabia for three millennia for one treasure: spices. This culinary-led journey introduces you to the master cooks, organic spice farmers, and authentic home kitchens across Jewish, Syrian Christian, Dutch, and coastal communities.",

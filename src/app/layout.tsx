@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { getLiveWebsiteContent } from "@/lib/contentService";
+import { WebsiteContentProvider } from "@/hooks/useWebsiteContent";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -8,6 +10,9 @@ const inter = Inter({
   variable: "--font-sans",
   display: "swap",
 });
+
+
+export const dynamic = "force-dynamic";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -50,7 +55,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/images/loading-screen-bg.jpg",
+        url: "/images/loading-screen-bg.webp",
         width: 1200,
         height: 630,
         alt: "Journeys by Jibu Thomas - Kerala bespoke travel",
@@ -62,7 +67,7 @@ export const metadata: Metadata = {
     title: "Journeys by Jibu Thomas | Bespoke Kerala Travel",
     description:
       "Founder-led bespoke travel design and boutique destination management across Kerala and South India.",
-    images: ["/images/loading-screen-bg.jpg"],
+    images: ["/images/loading-screen-bg.webp"],
   },
   robots: {
     index: true,
@@ -85,8 +90,8 @@ const jsonLd = {
       "@id": "https://journeysbyjibuthomas.com/#organization",
       name: "Journeys by Jibu Thomas",
       url: "https://journeysbyjibuthomas.com",
-      logo: "https://journeysbyjibuthomas.com/images/loading-screen-bg.jpg",
-      image: "https://journeysbyjibuthomas.com/images/loading-screen-bg.jpg",
+      logo: "https://journeysbyjibuthomas.com/images/loading-screen-bg.webp",
+      image: "https://journeysbyjibuthomas.com/images/loading-screen-bg.webp",
       description:
         "Boutique travel design and bespoke destination management company based in Kerala, India. Specialising in personalised holidays, private itineraries, and authentic experiences across Kerala and South India.",
       founder: {
@@ -135,11 +140,13 @@ const jsonLd = {
   ],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const initialContent = await getLiveWebsiteContent();
+
   return (
     <html lang="en" suppressHydrationWarning className={`${inter.variable} antialiased`}>
       <head>
@@ -149,7 +156,9 @@ export default function RootLayout({
         />
       </head>
       <body suppressHydrationWarning className="min-h-screen bg-[#FFFCF5] text-[#242424] font-sans font-light selection:bg-[#183D2B] selection:text-[#FFFCF5] tracking-[-0.015em]">
-        {children}
+        <WebsiteContentProvider initialContent={initialContent}>
+          {children}
+        </WebsiteContentProvider>
       </body>
     </html>
   );

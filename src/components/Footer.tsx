@@ -32,7 +32,7 @@ export default function Footer() {
             <Link href="/" className="inline-block">
               <div className="relative h-11 sm:h-12 w-48 sm:w-52">
                 <Image
-                  src="/images/logo.png"
+                  src="/images/logo.webp"
                   alt={footer.brandName || "Journeys by Jibu Thomas"}
                   fill
                   sizes="210px"

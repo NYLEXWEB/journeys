@@ -3,24 +3,21 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, HelpCircle, MessageSquare, ArrowUpRight } from "lucide-react";
+import { ChevronDown, HelpCircle, ArrowUpRight } from "lucide-react";
 import { useWebsiteContent } from "@/hooks/useWebsiteContent";
+import { INITIAL_FAQS, FAQItem } from "@/lib/seedData";
 import { WhatsAppIcon } from "./WhatsAppIcon";
-
-export interface FAQItem {
-  id: string;
-  question: string;
-  answer: string;
-  category?: string;
-  order: number;
-}
 
 export default function FAQ() {
   const content = useWebsiteContent();
-  const faqs: FAQItem[] = content?.faqs && content.faqs.length > 0 ? content.faqs : [];
 
-  // Track currently expanded question (null = all collapsed, or id = open)
-  const [openId, setOpenId] = useState<string | null>(faqs[0]?.id || null);
+  // Show exactly 5 questions (from admin or initial seed data)
+  const faqs: FAQItem[] = (
+    content?.faqs && content.faqs.length > 0 ? content.faqs : INITIAL_FAQS
+  ).slice(0, 5);
+
+  // Initially ALL answers are collapsed (null = none revealed)
+  const [openId, setOpenId] = useState<string | null>(null);
 
   const toggleFAQ = (id: string) => {
     setOpenId((prev) => (prev === id ? null : id));
@@ -29,7 +26,7 @@ export default function FAQ() {
   return (
     <section
       id="faq"
-      className="py-20 sm:py-24 md:py-32 bg-[#FFFCF5] relative overflow-hidden"
+      className="pt-10 sm:pt-14 md:pt-16 pb-20 sm:pb-24 md:pb-28 bg-[#FFFCF5] relative overflow-hidden"
     >
       {/* Background ambient lighting accents */}
       <div className="absolute top-1/4 left-0 w-96 h-96 rounded-full bg-[#183D2B]/[0.02] blur-3xl pointer-events-none" />
@@ -37,9 +34,9 @@ export default function FAQ() {
 
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-4 mb-10 sm:mb-14">
+        <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-4 mb-6 sm:mb-8">
           <div className="flex items-center gap-3">
-            <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#8B5E35] to-[#B37D47] shadow-sm shrink-0" />
+            <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#8B5E35] to-[#B37D47] shrink-0" />
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.12em] uppercase">
               <span className="bg-gradient-to-r from-[#183D2B] via-[#1E4A35] to-[#27593D] bg-clip-text text-transparent">
                 FREQUENTLY ASKED{" "}
@@ -59,42 +56,34 @@ export default function FAQ() {
         </div>
 
         {/* Lead Subtitle / Editorial Note */}
-        <p className="text-sm sm:text-base text-[#242424]/75 font-light leading-relaxed max-w-2xl mb-10 sm:mb-12">
+        <p className="text-sm sm:text-base text-[#242424]/75 font-light leading-relaxed max-w-2xl mb-8 sm:mb-10">
           Everything you need to know before stepping into God&rsquo;s Own Country with Jibu Thomas.
           Direct answers regarding private chauffeurs, pacing, houseboats, and our planning philosophy.
         </p>
 
-        {/* 5-Question Luxury Accordion List */}
-        <div className="space-y-3.5 sm:space-y-4">
+        {/* Completely Plain Editorial Accordion (No separate boxes, no card borders) */}
+        <div className="divide-y divide-[#E9E0D2] border-y border-[#E9E0D2]">
           {faqs.map((faq, index) => {
             const isOpen = openId === faq.id;
             const itemNumber = (index + 1).toString().padStart(2, "0");
 
             return (
-              <motion.div
+              <div
                 key={faq.id || index}
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.08 }}
-                className={`rounded-2xl sm:rounded-[1.6rem] border transition-all duration-300 overflow-hidden ${
-                  isOpen
-                    ? "bg-white border-[#183D2B]/30 shadow-[0_12px_35px_rgba(24,61,43,0.08)]"
-                    : "bg-white/80 hover:bg-white border-[#E9E0D2] hover:border-[#8B5E35]/40 shadow-sm hover:shadow-md"
-                }`}
+                className="py-5 sm:py-6 transition-colors duration-200"
               >
                 {/* Header Row: Question + Right-Side Arrow Button */}
                 <button
                   type="button"
                   onClick={() => toggleFAQ(faq.id)}
                   aria-expanded={isOpen}
-                  className="w-full text-left p-5 sm:p-6 md:p-7 flex items-center justify-between gap-4 cursor-pointer select-none group"
+                  className="w-full text-left flex items-start sm:items-center justify-between gap-4 cursor-pointer select-none group"
                 >
-                  <div className="flex items-start sm:items-center gap-3.5 sm:gap-4 flex-1">
+                  <div className="flex items-start sm:items-center gap-3.5 sm:gap-5 flex-1">
                     {/* Index Number */}
                     <span
-                      className={`font-serif italic text-sm sm:text-base transition-colors shrink-0 ${
-                        isOpen ? "text-[#8B5E35]" : "text-[#8B5E35]/70 group-hover:text-[#8B5E35]"
+                      className={`font-serif italic text-base sm:text-lg transition-colors shrink-0 ${
+                        isOpen ? "text-[#8B5E35]" : "text-[#8B5E35]/60 group-hover:text-[#8B5E35]"
                       }`}
                     >
                       {itemNumber}
@@ -107,10 +96,10 @@ export default function FAQ() {
                         </span>
                       )}
                       <h3
-                        className={`text-base sm:text-lg md:text-xl font-medium tracking-tight transition-colors leading-snug ${
+                        className={`text-base sm:text-lg md:text-xl transition-colors leading-snug ${
                           isOpen
                             ? "text-[#183D2B] font-semibold"
-                            : "text-[#242424] group-hover:text-[#183D2B]"
+                            : "text-[#242424] font-medium group-hover:text-[#183D2B]"
                         }`}
                       >
                         {faq.question}
@@ -122,15 +111,15 @@ export default function FAQ() {
                   <div
                     className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shrink-0 border transition-all duration-300 ${
                       isOpen
-                        ? "bg-[#183D2B] border-[#183D2B] text-white rotate-180 shadow-sm"
-                        : "bg-[#FFFCF5] border-[#E9E0D2] text-[#183D2B] group-hover:border-[#183D2B] group-hover:bg-[#183D2B]/5"
+                        ? "bg-[#183D2B] border-[#183D2B] text-white rotate-180"
+                        : "bg-transparent border-[#E9E0D2] text-[#183D2B] group-hover:border-[#183D2B] group-hover:bg-[#183D2B]/5"
                     }`}
                   >
                     <ChevronDown className="w-4 h-4 transition-transform duration-300" />
                   </div>
                 </button>
 
-                {/* Expandable Downwards Answer */}
+                {/* Expandable Downwards Answer - Only shown when arrow/question is clicked */}
                 <AnimatePresence initial={false}>
                   {isOpen && (
                     <motion.div
@@ -139,9 +128,10 @@ export default function FAQ() {
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                      className="overflow-hidden"
                     >
-                      <div className="px-5 pb-6 sm:px-6 sm:pb-7 md:px-7 md:pb-8 pt-0 border-t border-[#E9E0D2]/50 text-[#242424]/85 text-xs sm:text-sm md:text-[15px] font-light leading-relaxed">
-                        <div className="pt-4 flex items-start gap-3">
+                      <div className="pt-3 pb-2 sm:pt-4 sm:pb-3 pl-8 sm:pl-10 text-[#242424]/80 text-xs sm:text-sm md:text-[15px] font-light leading-relaxed">
+                        <div className="flex items-start gap-3">
                           <span className="text-[#8B5E35] font-serif text-lg leading-none select-none mt-0.5">
                             &ldquo;
                           </span>
@@ -151,13 +141,13 @@ export default function FAQ() {
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </motion.div>
+              </div>
             );
           })}
         </div>
 
-        {/* Bottom Editorial Assistance Box */}
-        <div className="mt-12 sm:mt-16 p-6 sm:p-8 rounded-[2rem] bg-gradient-to-br from-[#183D2B] to-[#122A1E] text-white border border-[#8B5E35]/40 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+        {/* Bottom Editorial Assistance Banner (No heavy shadow) */}
+        <div className="mt-12 sm:mt-16 p-6 sm:p-8 rounded-[2rem] bg-gradient-to-br from-[#183D2B] to-[#122A1E] text-white border border-[#8B5E35]/40 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="space-y-1.5 text-center md:text-left">
             <span className="inline-flex items-center gap-1.5 text-[11px] uppercase tracking-[0.25em] text-[#E9E0D2] font-semibold">
               <HelpCircle className="w-3.5 h-3.5 text-[#B87D4B]" />

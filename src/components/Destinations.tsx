@@ -44,7 +44,7 @@ export const DESTINATIONS_DATA: DestinationItem[] = [
     state: "Kerala",
     stateCategory: "kerala",
     region: "Western Ghats Highlands",
-    image: "/images/generated/tea-plantation-approach.jpg",
+    image: "/images/generated/tea-plantation-approach.webp",
     shortVibe: "Misty tea hills & colonial plantation bungalows.",
     overview:
       "Perched high in the Western Ghats at 1,600 metres, Munnar is South India's premier highland retreat. Endless emerald tea plantations, cool mountain air, and private heritage planters' bungalows nestled in cloud-shrouded valleys.",
@@ -56,7 +56,7 @@ export const DESTINATIONS_DATA: DestinationItem[] = [
     state: "Kerala",
     stateCategory: "kerala",
     region: "Northern Rainforest Ghats",
-    image: "/images/generated/spice-gardens.jpg",
+    image: "/images/generated/spice-gardens.webp",
     shortVibe: "Ancient caves, cardamom valleys & quiet forest hideaways.",
     overview:
       "A lush highland paradise in northern Kerala known for its ancient Edakkal caves, dense bio-diverse rainforests, organic cardamom plantations, and secluded eco-resorts tucked beneath the canopy.",
@@ -68,7 +68,7 @@ export const DESTINATIONS_DATA: DestinationItem[] = [
     state: "Kerala",
     stateCategory: "kerala",
     region: "Periyar Wildlife Sanctuary",
-    image: "/images/generated/hero-kerala.jpg",
+    image: "/images/generated/hero-kerala.webp",
     shortVibe: "Spice-scented breezes & wild elephant lake safaris.",
     overview:
       "Home to the famous Periyar Tiger Reserve. Experience gentle morning boat safaris across Periyar Lake, fragrant spice walks with botanists, and tranquil rainforest bamboo rafting.",
@@ -80,7 +80,7 @@ export const DESTINATIONS_DATA: DestinationItem[] = [
     state: "Kerala",
     stateCategory: "kerala",
     region: "Emerald Central Backwaters",
-    image: "/images/generated/houseboat-backwaters.jpg",
+    image: "/images/generated/houseboat-backwaters.webp",
     shortVibe: "Private luxury houseboats & tranquil palm canals.",
     overview:
       "The undisputed heart of the backwaters. Glide through narrow palm-shaded village canals on a private, handcrafted wooden kettuvallam with your personal chef preparing coastal banquets.",
@@ -92,7 +92,7 @@ export const DESTINATIONS_DATA: DestinationItem[] = [
     state: "Kerala",
     stateCategory: "kerala",
     region: "Vembanad Lake Sanctuary",
-    image: "/images/generated/luxury-resort-stay.jpg",
+    image: "/images/generated/luxury-resort-stay.webp",
     shortVibe: "Lakeside luxury, bird sanctuaries & quiet wellness.",
     overview:
       "Set against the vast expanses of Vembanad Lake, Kumarakom offers world-class migratory birdwatching, serene lakeside luxury retreats, and authentic Ayurvedic therapies.",
@@ -104,7 +104,7 @@ export const DESTINATIONS_DATA: DestinationItem[] = [
     state: "Kerala",
     stateCategory: "kerala",
     region: "Colonial Maritime Port",
-    image: "/images/generated/fort-kochi-heritage.jpg",
+    image: "/images/generated/fort-kochi-heritage.webp",
     shortVibe: "Antique spice avenues, Chinese fishing nets & art cafes.",
     overview:
       "A living museum of Portuguese, Dutch, and British history. Stroll through Jew Town antique shops, art galleries, and witness centuries-old Kathakali dramatic arts by the sea.",
@@ -116,7 +116,7 @@ export const DESTINATIONS_DATA: DestinationItem[] = [
     state: "Kerala",
     stateCategory: "kerala",
     region: "Southern Red Cliff Coast",
-    image: "/images/generated/coastal-varkala.jpg",
+    image: "/images/generated/coastal-varkala.webp",
     shortVibe: "Dramatic laterite cliffs, Arabian Sea sunsets & coastal quiet.",
     overview:
       "Unique red cliffs dropping dramatically into golden sand shores. Ideal for quiet seaside rejuvenation, gentle ocean breezes, and uncrowded coastal relaxation.",
@@ -128,7 +128,7 @@ export const DESTINATIONS_DATA: DestinationItem[] = [
     state: "Kerala",
     stateCategory: "kerala",
     region: "Historic Crescent Beach",
-    image: "/images/generated/hero-kerala.jpg",
+    image: "/images/generated/hero-kerala.webp",
     shortVibe: "Striped lighthouse, calm swimming bays & seaside luxury.",
     overview:
       "Kerala's iconic vintage seaside destination featuring three crescent-shaped bays, a famous striped lighthouse, and secluded luxury five-star cliffside resorts.",
@@ -142,7 +142,7 @@ export const DESTINATIONS_DATA: DestinationItem[] = [
     state: "Tamil Nadu",
     stateCategory: "tamil-nadu",
     region: "Nilgiri Blue Mountains",
-    image: "/images/generated/tea-plantation-approach.jpg",
+    image: "/images/generated/tea-plantation-approach.webp",
     shortVibe: "Heritage toy train, eucalyptus forests & botanical gardens.",
     overview:
       "The Queen of Hill Stations in the Nilgiris. Ride the UNESCO World Heritage mountain toy train, stroll through century-old botanical gardens, and explore quiet Toda tribal settlements.",
@@ -154,7 +154,7 @@ export const DESTINATIONS_DATA: DestinationItem[] = [
     state: "Tamil Nadu",
     stateCategory: "tamil-nadu",
     region: "Palani Cloud Hills",
-    image: "/images/generated/spice-gardens.jpg",
+    image: "/images/generated/spice-gardens.webp",
     shortVibe: "Star-shaped lake, pine forests & pillar rock vistas.",
     overview:
       "Nestled in the Palani Hills, Kodaikanal is prized for its cool alpine climate, tranquil star-shaped lake, fragrant pine forests, and dramatic cliff viewpoints.",
@@ -166,7 +166,7 @@ export const DESTINATIONS_DATA: DestinationItem[] = [
     state: "Tamil Nadu",
     stateCategory: "tamil-nadu",
     region: "Ancient Temple Heartland",
-    image: "/images/generated/fort-kochi-heritage.jpg",
+    image: "/images/generated/fort-kochi-heritage.webp",
     shortVibe: "Dravidian gopuram towers, night ceremonies & jasmine bazaars.",
     overview:
       "One of the oldest continuously inhabited cities in the world. Marvel at the soaring sculpted gopurams of Meenakshi Amman Temple and witness the sacred nightly divine procession.",
@@ -178,7 +178,7 @@ export const DESTINATIONS_DATA: DestinationItem[] = [
     state: "Tamil Nadu",
     stateCategory: "tamil-nadu",
     region: "Sacred Island & Pamban Straits",
-    image: "/images/generated/coastal-varkala.jpg",
+    image: "/images/generated/coastal-varkala.webp",
     shortVibe: "Iconic ocean cantilever bridge, 1,000-pillar temple corridors.",
     overview:
       "A sacred island city connected to mainland India by the engineering marvel of Pamban Sea Bridge. Famous for Ramanathaswamy Temple's record-setting pillared corridors and sacred theertham wells.",
@@ -192,7 +192,7 @@ export const DESTINATIONS_DATA: DestinationItem[] = [
     state: "Karnataka",
     stateCategory: "karnataka",
     region: "Kodagu Coffee Highlands",
-    image: "/images/generated/spice-gardens.jpg",
+    image: "/images/generated/spice-gardens.webp",
     shortVibe: "Arabica coffee estates, cascading waterfalls & Kodava cuisine.",
     overview:
       "Known as the Scotland of India. Misty slopes cloaked in Arabica coffee and black pepper vines, private estate stays, and authentic Kodava hospitality and cuisine.",
@@ -204,7 +204,7 @@ export const DESTINATIONS_DATA: DestinationItem[] = [
     state: "Karnataka",
     stateCategory: "karnataka",
     region: "Royal Heritage City",
-    image: "/images/generated/fort-kochi-heritage.jpg",
+    image: "/images/generated/fort-kochi-heritage.webp",
     shortVibe: "Illuminated royal palace, sandalwood markets & silk weaving.",
     overview:
       "The city of royal palaces and sandalwood. Visit the opulent Mysore Palace illuminated by 100,000 bulbs, browse vibrant Devaraja fruit and spice markets, and see heritage silk weaving.",
@@ -216,7 +216,7 @@ export const DESTINATIONS_DATA: DestinationItem[] = [
     state: "Karnataka",
     stateCategory: "karnataka",
     region: "Birthplace of Indian Coffee",
-    image: "/images/generated/tea-plantation-approach.jpg",
+    image: "/images/generated/tea-plantation-approach.webp",
     shortVibe: "Mullayanagiri peaks, bababudan coffee hills & mountain streams.",
     overview:
       "The birthplace of coffee in India. Dramatic mountain peaks including Karnataka's highest summit Mullayanagiri, remote coffee trails, and crisp, fresh mountain air.",
@@ -228,7 +228,7 @@ export const DESTINATIONS_DATA: DestinationItem[] = [
     state: "Karnataka",
     stateCategory: "karnataka",
     region: "UNESCO Vijayanagara Empire",
-    image: "/images/generated/fort-kochi-heritage.jpg",
+    image: "/images/generated/fort-kochi-heritage.webp",
     shortVibe: "Ancient stone boulder empire, chariot temples & Tungabhadra River.",
     overview:
       "A UNESCO World Heritage marvel. Surreal landscapes of giant granite boulders strewn across the ruins of the 14th-century Vijayanagara Empire, stone chariots, and sacred river ghats.",

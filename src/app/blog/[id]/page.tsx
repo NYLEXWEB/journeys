@@ -20,7 +20,7 @@ import {
   Sparkles,
 } from "lucide-react";
 
-export const instant = false;
+
 
 interface Props {
   params: Promise<{ id: string }>;

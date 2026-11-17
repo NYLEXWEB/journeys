@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
     const stateCategory =
       state === "Kerala" ? "kerala" : state === "Tamil Nadu" ? "tamil-nadu" : "karnataka";
 
-    const defaultImage = image || "/images/generated/tea-plantation-approach.jpg";
+    const defaultImage = image || "/images/generated/tea-plantation-approach.webp";
 
     const count = await DestinationModel.countDocuments();
 

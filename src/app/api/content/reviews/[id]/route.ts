@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import mongoose from "mongoose";
 import { connectToDatabase } from "@/lib/db";
 import { verifyAuthRequest } from "@/lib/auth";
 import { ReviewModel } from "@/models/Review";
@@ -19,6 +20,10 @@ export async function PUT(
     }
 
     const { id } = await context.params;
+    if (!id || id === "undefined") {
+      return NextResponse.json({ error: "Invalid review ID provided." }, { status: 400 });
+    }
+
     const body = await req.json();
     const {
       author,
@@ -34,7 +39,8 @@ export async function PUT(
       order,
     } = body;
 
-    const existing = await ReviewModel.findById(id);
+    const query = mongoose.isValidObjectId(id) ? { $or: [{ _id: id }, { id }] } : { id };
+    const existing = await ReviewModel.findOne(query);
     if (!existing) {
       return NextResponse.json({ error: "Review not found" }, { status: 404 });
     }
@@ -46,14 +52,14 @@ export async function PUT(
     if (location) existing.location = location.trim();
     if (typeof rating === "number") existing.rating = rating;
     if (relativeTime) existing.relativeTime = relativeTime.trim();
-    if (tripType !== undefined) existing.tripType = tripType.trim();
+    if (tripType !== undefined) existing.tripType = tripType ? String(tripType).trim() : "";
     if (text) existing.text = text.trim();
     if (isLocalGuide !== undefined) existing.isLocalGuide = Boolean(isLocalGuide);
-    if (guideStats !== undefined) existing.guideStats = guideStats;
+    if (guideStats !== undefined) existing.guideStats = guideStats ? String(guideStats).trim() : "";
     if (ownerResponseDate !== undefined || ownerResponseText !== undefined) {
       existing.ownerResponse = {
-        date: ownerResponseDate ?? existing.ownerResponse?.date ?? "",
-        text: ownerResponseText ?? existing.ownerResponse?.text ?? "",
+        date: ownerResponseDate ? String(ownerResponseDate).trim() : (existing.ownerResponse?.date ?? ""),
+        text: ownerResponseText ? String(ownerResponseText).trim() : (existing.ownerResponse?.text ?? ""),
       };
     }
     if (typeof order === "number") existing.order = order;
@@ -83,7 +89,12 @@ export async function DELETE(
     }
 
     const { id } = await context.params;
-    const deleted = await ReviewModel.findByIdAndDelete(id);
+    if (!id || id === "undefined") {
+      return NextResponse.json({ error: "Invalid review ID provided." }, { status: 400 });
+    }
+
+    const query = mongoose.isValidObjectId(id) ? { $or: [{ _id: id }, { id }] } : { id };
+    const deleted = await ReviewModel.findOneAndDelete(query);
 
     if (!deleted) {
       return NextResponse.json({ error: "Review not found" }, { status: 404 });
@@ -95,4 +106,3 @@ export async function DELETE(
     return NextResponse.json({ error: err.message || "Failed to delete review" }, { status: 500 });
   }
 }
-

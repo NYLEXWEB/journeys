@@ -35,7 +35,15 @@ export async function PUT(
     if (idealDuration) existing.idealDuration = idealDuration.trim();
     if (locations) existing.locations = locations.trim();
     if (description) existing.description = description.trim();
-    if (image) existing.image = image.trim();
+    if (image !== undefined && image.trim() !== existing.image) {
+      const oldImage = existing.image;
+      existing.image = image.trim();
+      if (oldImage) {
+        deleteUploadThingFiles([oldImage]).catch((err) =>
+          console.warn("[UploadThing] Failed to delete replaced experience image:", err)
+        );
+      }
+    }
     if (highlights && Array.isArray(highlights)) existing.highlights = highlights;
     if (typeof order === "number") existing.order = order;
 

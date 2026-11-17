@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import mongoose from "mongoose";
 import { connectDB } from "@/lib/db";
 import { FAQModel } from "@/models/FAQ";
 import { getAdminSession } from "@/lib/auth";
@@ -14,12 +15,16 @@ export async function PUT(
     }
 
     const { id } = await params;
-    const body = await req.json();
+    if (!id || id === "undefined") {
+      return NextResponse.json({ error: "Invalid FAQ ID provided." }, { status: 400 });
+    }
 
+    const body = await req.json();
     await connectDB();
 
+    const query = mongoose.isValidObjectId(id) ? { $or: [{ id }, { _id: id }] } : { id };
     const updated = await FAQModel.findOneAndUpdate(
-      { $or: [{ id }, { _id: id }] },
+      query,
       { $set: body },
       { new: true }
     );
@@ -31,7 +36,7 @@ export async function PUT(
     return NextResponse.json({ success: true, faq: updated });
   } catch (error: any) {
     console.error("[FAQ PUT Error]:", error);
-    return NextResponse.json({ error: "Failed to update FAQ item." }, { status: 500 });
+    return NextResponse.json({ error: error.message || "Failed to update FAQ item." }, { status: 500 });
   }
 }
 
@@ -46,11 +51,14 @@ export async function DELETE(
     }
 
     const { id } = await params;
+    if (!id || id === "undefined") {
+      return NextResponse.json({ error: "Invalid FAQ ID provided." }, { status: 400 });
+    }
+
     await connectDB();
 
-    const deleted = await FAQModel.findOneAndDelete({
-      $or: [{ id }, { _id: id }],
-    });
+    const query = mongoose.isValidObjectId(id) ? { $or: [{ id }, { _id: id }] } : { id };
+    const deleted = await FAQModel.findOneAndDelete(query);
 
     if (!deleted) {
       return NextResponse.json({ error: "FAQ item not found." }, { status: 404 });
@@ -59,6 +67,6 @@ export async function DELETE(
     return NextResponse.json({ success: true, message: "FAQ item deleted successfully." });
   } catch (error: any) {
     console.error("[FAQ DELETE Error]:", error);
-    return NextResponse.json({ error: "Failed to delete FAQ item." }, { status: 500 });
+    return NextResponse.json({ error: error.message || "Failed to delete FAQ item." }, { status: 500 });
   }
 }

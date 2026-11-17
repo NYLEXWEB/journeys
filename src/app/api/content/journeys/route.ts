@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
       shortVibe: shortVibe.trim(),
       overview: overview.trim(),
       highlights: Array.isArray(highlights) ? highlights : [],
-      image: image || "/images/generated/houseboat-backwaters.jpg",
+      image: image || "/images/generated/houseboat-backwaters.webp",
       order: count + 1,
     });
 

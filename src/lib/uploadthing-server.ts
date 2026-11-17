@@ -35,7 +35,11 @@ export function extractUploadThingKey(keyOrUrl?: string | null): string | null {
   const str = keyOrUrl.trim();
   if (!str) return null;
 
-  if (str.startsWith("/images/") || str.startsWith("/videos/")) {
+  if (
+    str.startsWith("/images/") ||
+    str.startsWith("/videos/") ||
+    str.startsWith("/video/")
+  ) {
     return null;
   }
 

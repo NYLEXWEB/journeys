@@ -403,13 +403,13 @@ export default function AdminPage() {
 
   // Predefined Curated Images for New Content
   const CURATED_IMAGES = [
-    { label: "Munnar Highlands Tea Plantation", path: "/images/generated/tea-plantation-approach.jpg" },
-    { label: "Alleppey Luxury Kettuvallam Houseboat", path: "/images/generated/houseboat-backwaters.jpg" },
-    { label: "Fort Kochi Colonial Maritime Heritage", path: "/images/generated/fort-kochi-heritage.jpg" },
-    { label: "Varkala Red Laterite Coastline", path: "/images/generated/coastal-varkala.jpg" },
-    { label: "Wayanad Cardamom Rainforest & Spices", path: "/images/generated/spice-gardens.jpg" },
-    { label: "Kumarakom Lakeside Luxury Resort", path: "/images/generated/luxury-resort-stay.jpg" },
-    { label: "Periyar Wildlife Sanctuary", path: "/images/generated/hero-kerala.jpg" },
+    { label: "Munnar Highlands Tea Plantation", path: "/images/generated/tea-plantation-approach.webp" },
+    { label: "Alleppey Luxury Kettuvallam Houseboat", path: "/images/generated/houseboat-backwaters.webp" },
+    { label: "Fort Kochi Colonial Maritime Heritage", path: "/images/generated/fort-kochi-heritage.webp" },
+    { label: "Varkala Red Laterite Coastline", path: "/images/generated/coastal-varkala.webp" },
+    { label: "Wayanad Cardamom Rainforest & Spices", path: "/images/generated/spice-gardens.webp" },
+    { label: "Kumarakom Lakeside Luxury Resort", path: "/images/generated/luxury-resort-stay.webp" },
+    { label: "Periyar Wildlife Sanctuary", path: "/images/generated/hero-kerala.webp" },
   ];
 
   // 1. Loading Initial Authentication Check
@@ -432,7 +432,7 @@ export default function AdminPage() {
         <div className="flex items-center justify-between max-w-5xl mx-auto w-full">
           <div className="relative h-9 w-36">
             <Image
-              src="/images/logo.png"
+              src="/images/logo.webp"
               alt="Journeys by Jibu Thomas"
               fill
               priority
@@ -553,7 +553,7 @@ export default function AdminPage() {
           <Link href="/admin/jibu" className="flex items-center gap-2">
             <div className="relative h-8 w-32">
               <Image
-                src="/images/logo.png"
+                src="/images/logo.webp"
                 alt="Journeys"
                 fill
                 priority
@@ -766,11 +766,11 @@ export default function AdminPage() {
                           <input
                             type="hidden"
                             name="storyImage"
-                            value={aboutStoryImage || content?.about?.storyImage || "/images/generated/tea-plantation-approach.jpg"}
+                            value={aboutStoryImage || content?.about?.storyImage || "/images/generated/tea-plantation-approach.webp"}
                           />
                           <MediaUploaderWithPreview
                             label="Story Photo *"
-                            value={aboutStoryImage || content?.about?.storyImage || "/images/generated/tea-plantation-approach.jpg"}
+                            value={aboutStoryImage || content?.about?.storyImage || "/images/generated/tea-plantation-approach.webp"}
                             onChange={({ url }) => setAboutStoryImage(url)}
                             onClear={() => setAboutStoryImage("")}
                           />
@@ -835,11 +835,11 @@ export default function AdminPage() {
                           <input
                             type="hidden"
                             name="jibuImage"
-                            value={aboutJibuImage || content?.about?.jibuImage || "/images/generated/fort-kochi-heritage.jpg"}
+                            value={aboutJibuImage || content?.about?.jibuImage || "/images/generated/fort-kochi-heritage.webp"}
                           />
                           <MediaUploaderWithPreview
                             label="Jibu Thomas Official Portrait *"
-                            value={aboutJibuImage || content?.about?.jibuImage || "/images/generated/fort-kochi-heritage.jpg"}
+                            value={aboutJibuImage || content?.about?.jibuImage || "/images/generated/fort-kochi-heritage.webp"}
                             onChange={({ url }) => setAboutJibuImage(url)}
                             onClear={() => setAboutJibuImage("")}
                           />
@@ -1251,7 +1251,7 @@ export default function AdminPage() {
                       >
                         <div className="relative h-44 w-full bg-neutral-100 overflow-hidden">
                           <img
-                            src={srv.image || "/images/services/private-chauffeur.jpg"}
+                            src={srv.image || "/images/services/private-chauffeur.webp"}
                             alt={srv.title}
                             className="w-full h-full object-cover"
                           />
@@ -1961,7 +1961,7 @@ export default function AdminPage() {
                       >
                         <div className="relative h-44 w-full bg-neutral-100 overflow-hidden">
                           <img
-                            src={art.image || "/images/generated/tea-plantation-approach.jpg"}
+                            src={art.image || "/images/generated/tea-plantation-approach.webp"}
                             alt={art.title}
                             className="w-full h-full object-cover"
                           />

@@ -30,8 +30,8 @@ export const DEFAULT_CRITICAL_ASSETS: AssetConfig[] = [
     weight: 2,
   },
   {
-    id: "loading-background",
-    src: "/images/loading-screen-bg.jpg",
+    id: "brand-logo",
+    src: "/images/logo.webp",
     type: "image",
     weight: 2,
   },
@@ -39,29 +39,29 @@ export const DEFAULT_CRITICAL_ASSETS: AssetConfig[] = [
     id: "hero-video-playable",
     src: "/video/video-1.mp4",
     type: "video",
-    weight: 4, // Higher weight for playable video frame readiness
-  },
-  {
-    id: "brand-logo",
-    src: "/images/logo.png",
-    type: "image",
-    weight: 1,
+    weight: 3, // Playable video frame readiness
   },
   {
     id: "highlands-feature",
-    src: "/images/generated/tea-plantation-approach.jpg",
+    src: "/images/generated/tea-plantation-approach.webp",
     type: "image",
     weight: 1,
   },
   {
     id: "backwaters-feature",
-    src: "/images/generated/houseboat-backwaters.jpg",
+    src: "/images/generated/houseboat-backwaters.webp",
+    type: "image",
+    weight: 1,
+  },
+  {
+    id: "fort-kochi-feature",
+    src: "/images/generated/fort-kochi-heritage.webp",
     type: "image",
     weight: 1,
   },
   {
     id: "chauffeur-service",
-    src: "/images/services/private-chauffeur.jpg",
+    src: "/images/services/private-chauffeur.webp",
     type: "image",
     weight: 1,
   },
@@ -123,7 +123,7 @@ function preloadImage(src: string): Promise<{ success: boolean; src: string }> {
 
 /**
  * Preload a video until its first playable frame is ready (readyState >= 2 / loadeddata / canplay)
- * Does NOT force download of the entire 22MB video stream, preserving mobile bandwidth.
+ * Does NOT force download of the entire video stream, preserving bandwidth.
  */
 function preloadVideoFirstFrame(src: string): Promise<{ success: boolean; src: string }> {
   return new Promise((resolve) => {
@@ -140,9 +140,6 @@ function preloadVideoFirstFrame(src: string): Promise<{ success: boolean; src: s
     video.playsInline = true;
     video.preload = "auto";
 
-    // readyState 2 = HAVE_CURRENT_DATA (first frame available)
-    // readyState 3 = HAVE_FUTURE_DATA
-    // readyState 4 = HAVE_ENOUGH_DATA
     if (video.readyState >= 2) {
       resolve({ success: true, src });
       return;
@@ -207,20 +204,17 @@ export function useRealtimeAssetLoader(customAssets?: AssetConfig[]): AssetLoadS
   const updateProgress = useCallback(
     (completedWeight: number, isFinished: boolean) => {
       const calculatedFraction = totalWeight > 0 ? completedWeight / totalWeight : 1;
-      // Cap at 0.99 until fully finished
       const nextProgress = isFinished ? 1 : Math.min(0.99, calculatedFraction);
 
       setProgress(nextProgress);
 
       if (isFinished) {
-        // Wait for next browser rendering tick before signaling completion
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
             setIsLoading(false);
-            // Slight delay for smooth visual transition
             setTimeout(() => {
               setIsComplete(true);
-            }, 600);
+            }, 400);
           });
         });
       }
@@ -247,7 +241,23 @@ export function useRealtimeAssetLoader(customAssets?: AssetConfig[]): AssetLoadS
       }
 
       const allDone = finishedCount >= totalCount;
-      updateProgress(completedWeight, allDone);
+
+      if (allDone) {
+        // Ensure DOM document is also completely ready
+        if (typeof document !== "undefined" && document.readyState !== "complete") {
+          window.addEventListener(
+            "load",
+            () => {
+              updateProgress(completedWeight, true);
+            },
+            { once: true }
+          );
+        } else {
+          updateProgress(completedWeight, true);
+        }
+      } else {
+        updateProgress(completedWeight, false);
+      }
     };
 
     // Preload each asset independently in real-time
@@ -267,7 +277,7 @@ export function useRealtimeAssetLoader(customAssets?: AssetConfig[]): AssetLoadS
       }
     });
 
-    // Safeguard timeout (10 seconds max) to prevent getting stuck if network stalls permanently
+    // Safeguard timeout (8 seconds max) to prevent getting stuck if network stalls permanently
     const safetyTimeout = setTimeout(() => {
       if (finishedCount < totalCount) {
         console.warn(
@@ -275,7 +285,7 @@ export function useRealtimeAssetLoader(customAssets?: AssetConfig[]): AssetLoadS
         );
         updateProgress(totalWeight, true);
       }
-    }, 10000);
+    }, 8000);
 
     return () => {
       clearTimeout(safetyTimeout);
@@ -292,4 +302,3 @@ export function useRealtimeAssetLoader(customAssets?: AssetConfig[]): AssetLoadS
     failedAssets,
   };
 }
-

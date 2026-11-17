@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
+import { useWebsiteContent } from "@/hooks/useWebsiteContent";
 
 interface CurtainImageRevealProps {
   imageSrc?: string;
@@ -15,7 +16,7 @@ interface CurtainImageRevealProps {
 }
 
 export default function CurtainImageReveal({
-  imageSrc = "/images/generated/hero-kerala.jpg",
+  imageSrc = "/images/generated/hero-kerala.webp",
   alt = "Curated Kerala Landscape",
   heightClass,
   tag = "Curated Perspective",
@@ -24,6 +25,9 @@ export default function CurtainImageReveal({
   portalZIndex = 6,
   isFullCover = false,
 }: CurtainImageRevealProps) {
+  const content = useWebsiteContent();
+  const effectiveImageSrc = content?.about?.curtainImage || imageSrc;
+
   const [mounted, setMounted] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const spacerRef = useRef<HTMLDivElement>(null);
@@ -83,13 +87,13 @@ export default function CurtainImageReveal({
     return (
       <div
         ref={spacerRef}
-        className={`relative w-full ${finalHeight} min-h-[600px] overflow-hidden flex items-center justify-center bg-[#0d1f16]`}
+        className={`relative w-full ${finalHeight} min-h-[480px] sm:min-h-[600px] overflow-hidden flex items-center justify-center bg-[#0d1f16]`}
       >
         <img
-          src={imageSrc}
+          src={effectiveImageSrc}
           alt={alt}
           className="absolute inset-0 w-full h-full object-cover select-none"
-          loading="eager"
+          loading="lazy"
         />
         {/* Subtle luxury editorial gradient overlays */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#183D2B]/35 via-black/20 to-[#183D2B]/50 pointer-events-none" />
@@ -134,7 +138,7 @@ export default function CurtainImageReveal({
           >
             {/* Background Image with Fixed Fullscreen Cover */}
             <img
-              src={imageSrc}
+              src={effectiveImageSrc}
               alt={alt}
               className="w-full h-full object-cover select-none"
               loading="eager"

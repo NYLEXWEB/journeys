@@ -3,6 +3,7 @@ import { connectDB } from "@/lib/db";
 import { AboutModel } from "@/models/About";
 import { getAdminSession } from "@/lib/auth";
 import { INITIAL_ABOUT } from "@/lib/seedData";
+import { deleteUploadThingFiles } from "@/lib/uploadthing-server";
 
 export async function GET() {
   try {
@@ -33,11 +34,28 @@ export async function PUT(req: NextRequest) {
     const body = await req.json();
     await connectDB();
 
+    // Check existing document to compare image URLs
+    const existing = await AboutModel.findOne().lean();
+
     const updated = await AboutModel.findOneAndUpdate(
       {},
       { $set: body },
       { upsert: true, new: true }
     );
+
+    // If storyImage replaced, purge old file
+    if (existing && body.storyImage && existing.storyImage && body.storyImage !== existing.storyImage) {
+      deleteUploadThingFiles([existing.storyImage]).catch((err) => {
+        console.warn("[UploadThing] Failed to delete replaced storyImage:", err);
+      });
+    }
+
+    // If jibuImage replaced, purge old file
+    if (existing && body.jibuImage && existing.jibuImage && body.jibuImage !== existing.jibuImage) {
+      deleteUploadThingFiles([existing.jibuImage]).catch((err) => {
+        console.warn("[UploadThing] Failed to delete replaced jibuImage:", err);
+      });
+    }
 
     return NextResponse.json({ success: true, about: updated });
   } catch (error: any) {
@@ -45,4 +63,3 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ error: "Failed to update about content." }, { status: 500 });
   }
 }
-

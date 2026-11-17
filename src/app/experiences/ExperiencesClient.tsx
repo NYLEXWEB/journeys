@@ -39,7 +39,7 @@ const EXPERIENCES: Experience[] = [
     location: "Kuttanad & Alleppey",
     duration: "Half Day (4 Hours)",
     timing: "Late Morning to Afternoon",
-    image: "/images/generated/houseboat-backwaters.jpg",
+    image: "/images/generated/houseboat-backwaters.webp",
     leadQuote: "“Kerala's real kitchen is found in riverside hearths, not luxury dining rooms.”",
     description:
       "Step far beyond commercial resort buffets into the true epicurean heart of Central Kerala. Travel along quiet water canals to an authentic, family-run village toddy shop and a Syrian Christian home kitchen where duck roast, pearl spot (Karimeen Pollichathu), and freshly drawn sweet coconut sap are prepared with heirloom recipes.",
@@ -59,7 +59,7 @@ const EXPERIENCES: Experience[] = [
     location: "Munnar Highlands (5,000 ft)",
     duration: "3.5 Hours",
     timing: "Sunrise (06:00 AM – 09:30 AM)",
-    image: "/images/generated/tea-plantation-approach.jpg",
+    image: "/images/generated/tea-plantation-approach.webp",
     leadQuote: "“Watching the first morning rays slice through mountain mist over 100-year-old tea bushes.”",
     description:
       "Walk the high slopes of Lockhart and Kolukkumalai with a retired third-generation tea estate superintendent. Learn the delicate art of fine leaf plucking ('two leaves and a bud'), tour a century-old orthdox wooden tea factory, and participate in a private professional tea cupping session tasting white, green, and golden pekoe teas.",
@@ -79,7 +79,7 @@ const EXPERIENCES: Experience[] = [
     location: "Fort Kochi & Mattancherry",
     duration: "3 Hours",
     timing: "Morning or Late Afternoon",
-    image: "/images/generated/fort-kochi-heritage.jpg",
+    image: "/images/generated/fort-kochi-heritage.webp",
     leadQuote: "“Three thousand years of global sea trade carved into timber, stone, and narrow alleys.”",
     description:
       "Fort Kochi is far more than fishing nets and souvenir shops. Walk alongside a published local historian who unlocks the hidden courtyards of Portuguese grand houses, centuries-old spice warehouses in Jew Town, 400-year-old Dutch graves, and the secret maritime trade routes that connected Kerala to Venice and Lisbon.",
@@ -99,7 +99,7 @@ const EXPERIENCES: Experience[] = [
     location: "Kumarakom & Vembanad Wetlands",
     duration: "3 Hours",
     timing: "Dawn (06:30 AM) or Sunset (04:30 PM)",
-    image: "/images/generated/luxury-resort-stay.jpg",
+    image: "/images/generated/luxury-resort-stay.webp",
     leadQuote: "“Large diesel houseboats cannot enter these narrow canals. Here, silence is king.”",
     description:
       "While large houseboats dominate the broad lakes, the genuine magic of the backwaters lies in the narrow, shaded waterways where village life unfolds. Drift on a silent wooden country boat propelled only by a long bamboo pole, gliding past kingfishers, duck farmers, coir-makers, and blooming purple water lilies.",
@@ -119,7 +119,7 @@ const EXPERIENCES: Experience[] = [
     location: "Thekkady / Periyar Tiger Reserve",
     duration: "Full Day (Dawn to Dusk)",
     timing: "07:30 AM – 04:30 PM",
-    image: "/images/generated/hero-kerala.jpg",
+    image: "/images/generated/hero-kerala.webp",
     leadQuote: "“Gliding across the submerged forest tree trunks with native tribal wardens.”",
     description:
       "A rare wilderness expedition operated with former tribal poachers who are now trained conservation guardians of Periyar. Hike through evergreen and moist deciduous forests before boarding handcrafted bamboo rafts across the deep waters of Periyar Lake, surrounded by the calls of Nilgiri langurs and wild Asian elephants.",
@@ -139,7 +139,7 @@ const EXPERIENCES: Experience[] = [
     location: "Marari Coast & Central Kerala",
     duration: "Half Day to Multi-Day",
     timing: "Morning Consultations",
-    image: "/images/generated/coastal-varkala.jpg",
+    image: "/images/generated/coastal-varkala.webp",
     leadQuote: "“Not an unverified spa rub, but a 5,000-year-old living science of natural balance.”",
     description:
       "Kerala is the global birthplace of authentic Ayurveda. We bypass commercial hotel spas and connect you with revered, lineage-trained Ayurvedic Vaidyas (physicians). Experience a pulse diagnosis (Nadi Pariksha), bespoke herbal oil formulation, and traditional Abhyanga and Shirodhara treatments tailored strictly to your individual dosha constitution.",

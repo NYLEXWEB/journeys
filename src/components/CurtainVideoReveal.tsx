@@ -2,8 +2,10 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
+import { useWebsiteContent } from "@/hooks/useWebsiteContent";
 
 interface CurtainVideoRevealProps {
+  slot?: 1 | 2;
   videoSrc?: string;
   heightClass?: string;
   tag?: string;
@@ -14,6 +16,7 @@ interface CurtainVideoRevealProps {
 }
 
 export default function CurtainVideoReveal({
+  slot,
   videoSrc = "/video/video-1.mp4",
   heightClass,
   tag = "Cinematic Pause",
@@ -22,6 +25,14 @@ export default function CurtainVideoReveal({
   portalZIndex = 5,
   isFullCover = false,
 }: CurtainVideoRevealProps) {
+  const content = useWebsiteContent();
+  const effectiveVideoSrc =
+    slot === 1
+      ? content?.about?.curtainVideo1 || videoSrc
+      : slot === 2
+      ? content?.about?.curtainVideo2 || videoSrc
+      : videoSrc;
+
   const [mounted, setMounted] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const spacerRef = useRef<HTMLDivElement>(null);
@@ -57,7 +68,7 @@ export default function CurtainVideoReveal({
     };
   }, [isFullCover, mounted]);
 
-  // For isFullCover = false: Use scroll handler for fixed background curtain portal
+  // For isFullCover = false: Use performant scroll handler for fixed background curtain portal
   useEffect(() => {
     if (isFullCover) return;
 
@@ -68,13 +79,13 @@ export default function CurtainVideoReveal({
       const scrollY = window.scrollY || window.pageYOffset;
 
       // 1. Only activate once scrolled past Hero
-      const isPastHero = scrollY > windowHeight * 0.6;
+      const isPastHero = scrollY > windowHeight * 0.5;
 
       // 2. Activate as user approaches spacer
-      const isApproaching = rect.top <= windowHeight * 1.5;
+      const isApproaching = rect.top <= windowHeight * 1.25;
 
       // 3. Deactivate once following section has fully scrolled over the spacer
-      const isCovered = rect.bottom < -100;
+      const isCovered = rect.bottom < -50;
 
       const active = isPastHero && isApproaching && !isCovered;
       setIsActive(active);
@@ -113,12 +124,14 @@ export default function CurtainVideoReveal({
     };
   }, [isFullCover, mounted]);
 
-  // Ensure autoplay on mobile
+  // Ensure autoplay only when active
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.muted = true;
       if (isFullCover || isActive) {
         videoRef.current.play().catch(() => {});
+      } else {
+        videoRef.current.pause();
       }
     }
   }, [isActive, isFullCover]);
@@ -131,16 +144,15 @@ export default function CurtainVideoReveal({
     return (
       <div
         ref={spacerRef}
-        className={`relative w-full ${finalHeight} min-h-[600px] overflow-hidden flex items-center justify-center bg-[#0d1f16]`}
+        className={`relative w-full ${finalHeight} min-h-[480px] sm:min-h-[600px] overflow-hidden flex items-center justify-center bg-[#0d1f16]`}
       >
         <video
           ref={videoRef}
-          src={videoSrc}
-          autoPlay
+          src={effectiveVideoSrc}
           loop
           muted
           playsInline
-          preload="auto"
+          preload="metadata"
           className="absolute inset-0 w-full h-full object-cover"
         />
         {/* Subtle luxury editorial gradient overlays */}
@@ -186,12 +198,11 @@ export default function CurtainVideoReveal({
           >
             <video
               ref={videoRef}
-              src={videoSrc}
-              autoPlay
+              src={effectiveVideoSrc}
               loop
               muted
               playsInline
-              preload="auto"
+              preload="none"
               className="w-full h-full object-cover"
             />
             {/* Subtle luxury editorial gradient overlay */}

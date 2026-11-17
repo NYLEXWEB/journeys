@@ -86,7 +86,7 @@ export default function Home() {
           </StackingSection>
 
           {/* 7. FREQUENTLY ASKED QUESTIONS: Page 8 (100% Admin Editable Accordion) */}
-          <StackingSection zIndex={23}>
+          <StackingSection zIndex={23} disableOverlap={true}>
             <FAQ />
           </StackingSection>
 

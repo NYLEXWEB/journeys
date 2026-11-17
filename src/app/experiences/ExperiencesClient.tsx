@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { trackWhatsAppClick, trackCTAClick } from "@/lib/analytics";
+import { useWebsiteContent } from "@/hooks/useWebsiteContent";
 
 export interface Experience {
   id: string;
@@ -220,10 +221,13 @@ export default function ExperiencesClient() {
     }
   }, []);
 
+  const content = useWebsiteContent();
+  const experiencesData = content.experiences?.length ? content.experiences : ALL_EXPERIENCES;
+
   const filtered =
     activeCategory === "all"
-      ? ALL_EXPERIENCES
-      : ALL_EXPERIENCES.filter((e) => e.category === activeCategory);
+      ? experiencesData
+      : experiencesData.filter((e: any) => e.category === activeCategory);
 
   return (
     <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16">

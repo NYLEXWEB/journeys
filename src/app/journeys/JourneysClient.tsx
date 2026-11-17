@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { trackWhatsAppClick, trackCTAClick, trackJourneyView } from "@/lib/analytics";
+import { useWebsiteContent } from "@/hooks/useWebsiteContent";
 
 interface JourneyItem {
   id: string;
@@ -200,10 +201,13 @@ export default function JourneysClient() {
     }
   }, []);
 
+  const content = useWebsiteContent();
+  const journeysData = content.journeys?.length ? content.journeys : JOURNEYS;
+
   const filteredJourneys =
     selectedCategory === "all"
-      ? JOURNEYS
-      : JOURNEYS.filter((j) => j.category === selectedCategory);
+      ? journeysData
+      : journeysData.filter((j: any) => j.category === selectedCategory);
 
   return (
     <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 space-y-16 sm:space-y-24">
@@ -238,7 +242,7 @@ export default function JourneysClient() {
         <div className="mt-8 p-6 sm:p-8 rounded-3xl bg-white border border-[#E9E0D2] shadow-sm flex flex-col sm:flex-row items-start sm:items-center gap-6">
           <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden shrink-0 border-2 border-[#8B5E35]/30">
             <Image
-              src="/images/jibu-portrait.jpg"
+              src={content.about?.jibuImage || "/images/travel-with-jibu-reference.webp"}
               alt="Jibu Thomas - Founder"
               fill
               className="object-cover"
@@ -295,7 +299,7 @@ export default function JourneysClient() {
               {/* Visual Side */}
               <div className="lg:col-span-5 relative h-[360px] sm:h-[440px] lg:h-[500px] rounded-[2.2rem] overflow-hidden shadow-md border border-[#E9E0D2]/60">
                 <Image
-                  src={journey.image}
+                  src={journey.image || "/images/generated/fort-kochi-heritage.webp"}
                   alt={journey.title}
                   fill
                   sizes="(max-width: 1024px) 100vw, 42vw"

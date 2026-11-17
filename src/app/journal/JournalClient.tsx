@@ -14,6 +14,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
+import { useWebsiteContent } from "@/hooks/useWebsiteContent";
 
 interface Article {
   id: string;

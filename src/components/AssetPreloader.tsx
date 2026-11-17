@@ -2,25 +2,19 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
 import { useRealtimeAssetLoader } from "@/hooks/useRealtimeAssetLoader";
 
 export default function AssetPreloader() {
   const { progress: realProgress, isLoading } = useRealtimeAssetLoader();
 
-  // Smoothly animated display percentage (0 to 100)
-  const [hasFinished, setHasFinished] = useState<boolean>(() => {
-    if (typeof window !== "undefined") {
-      return sessionStorage.getItem("jibu_preloader_seen") === "true";
-    }
-    return false;
-  });
-  const [displayProgress, setDisplayProgress] = useState<number>(() => (hasFinished ? 100 : 0));
-  const [shouldFadeOut, setShouldFadeOut] = useState<boolean>(hasFinished);
+  // Initialize consistently between SSR and client initial hydration (no mismatch)
+  const [displayProgress, setDisplayProgress] = useState<number>(0);
+  const [shouldFadeOut, setShouldFadeOut] = useState<boolean>(false);
+  const [hasFinished, setHasFinished] = useState<boolean>(false);
 
   const animFrameRef = useRef<number | null>(null);
 
-  // Freeze background scrolling while preloading (only on initial visit)
+  // Freeze background scrolling while preloading
   useEffect(() => {
     if (hasFinished) {
       document.body.style.overflow = "";
@@ -43,15 +37,15 @@ export default function AssetPreloader() {
     };
   }, [hasFinished]);
 
-  // Smooth progress interpolator: ensures silky, continuous progression
+  // Smooth progress interpolator: ensures continuous progression
   // tracking real network assets while guaranteeing a polished luxury feel
   useEffect(() => {
     if (hasFinished) return;
 
     let currentVal = 0;
     const startTime = performance.now();
-    // Minimum 1.4s smooth glide so the animation is graceful and visible
-    const minGlideDuration = 1400;
+    // Minimum 1.3s smooth glide so the animation is graceful and visible
+    const minGlideDuration = 1300;
 
     const updateInterval = () => {
       const elapsed = performance.now() - startTime;
@@ -75,9 +69,6 @@ export default function AssetPreloader() {
       } else {
         // Reached 100% and all network assets are complete
         setDisplayProgress(100);
-        try {
-          sessionStorage.setItem("jibu_preloader_seen", "true");
-        } catch {}
         // Brief pause at 100% so the user sees the completed state
         setTimeout(() => {
           setShouldFadeOut(true);
@@ -99,79 +90,59 @@ export default function AssetPreloader() {
     return null;
   }
 
-  if (hasFinished) return null;
-
   const pctInt = Math.min(100, Math.max(0, Math.round(displayProgress)));
 
   return (
-    <AnimatePresence>
-      {!shouldFadeOut && (
-        <motion.div
-          key="luxury-minimal-preloader"
-          initial={{ opacity: 1 }}
-          animate={{ opacity: 1 }}
-          exit={{
-            opacity: 0,
-            transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
-          }}
-          className="fixed inset-0 z-[99999] flex flex-col items-center justify-center select-none bg-[#FFFCF5] px-6"
-          style={{ width: "100vw", height: "100vh" }}
-          aria-live="polite"
-          aria-busy={true}
-        >
-          {/* Soft Luxury Warm Radial Ambient Vignette */}
-          <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,rgba(233,224,210,0.35)_0%,transparent_75%)]" />
+    <div
+      className={`fixed inset-0 z-[99999] flex flex-col items-center justify-center select-none bg-[#FFFCF5] px-6 transition-opacity duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        shouldFadeOut ? "opacity-0 pointer-events-none" : "opacity-100"
+      }`}
+      style={{ width: "100vw", height: "100vh" }}
+      aria-live="polite"
+      aria-busy={!shouldFadeOut}
+    >
+      {/* Soft Luxury Warm Radial Ambient Vignette */}
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,rgba(233,224,210,0.4)_0%,transparent_75%)]" />
 
-          {/* Center Stage: Minimalist Logo + Progress Bar */}
-          <div className="relative z-10 flex flex-col items-center justify-center max-w-md w-full">
-            {/* Official Brand Logo */}
-            <motion.div
-              initial={{ opacity: 0, y: 10, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className="relative w-56 sm:w-64 md:w-72 h-20 sm:h-24 mb-8 sm:mb-10 flex items-center justify-center"
+      {/* Center Stage: Minimalist Logo + Progress Bar */}
+      <div className="relative z-10 flex flex-col items-center justify-center max-w-sm w-full">
+        {/* Official Brand Logo */}
+        <div className="relative w-56 sm:w-64 h-20 sm:h-22 mb-7 sm:mb-9 flex items-center justify-center">
+          <Image
+            src="/images/logo.webp"
+            alt="Journeys by Jibu Thomas"
+            width={256}
+            height={88}
+            priority
+            sizes="(max-width: 768px) 220px, 260px"
+            className="w-auto h-16 sm:h-20 object-contain drop-shadow-sm"
+          />
+        </div>
+
+        {/* Clearly Visible Minimalist Progress Bar */}
+        <div className="w-full flex flex-col items-center">
+          {/* Progress Track */}
+          <div className="w-full h-2 sm:h-2.5 bg-[#E9E0D2] rounded-full p-[2px] border border-[#D8C7B5] shadow-inner overflow-hidden">
+            <div
+              className="h-full rounded-full bg-gradient-to-r from-[#8B5E35] via-[#183D2B] to-[#8B5E35] relative overflow-hidden transition-all duration-150 ease-out shadow-[0_0_10px_rgba(24,61,43,0.3)]"
+              style={{ width: `${pctInt}%` }}
             >
-              <Image
-                src="/images/logo.webp"
-                alt="Journeys by Jibu Thomas"
-                fill
-                priority
-                sizes="(max-width: 768px) 240px, 300px"
-                className="object-contain drop-shadow-sm"
-              />
-            </motion.div>
-
-            {/* Clearly Visible Minimalist Progress Bar */}
-            <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-              className="w-full max-w-xs sm:max-w-sm flex flex-col items-center"
-            >
-              {/* Progress Track */}
-              <div className="w-full h-2 sm:h-2.5 bg-[#E9E0D2]/70 rounded-full p-[2px] border border-[#E9E0D2] shadow-inner overflow-hidden">
-                <div
-                  className="h-full rounded-full bg-gradient-to-r from-[#8B5E35] via-[#183D2B] to-[#8B5E35] relative overflow-hidden transition-all duration-150 ease-out shadow-[0_0_10px_rgba(24,61,43,0.25)]"
-                  style={{ width: `${pctInt}%` }}
-                >
-                  {/* Subtle Shimmer Light Sweep */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full animate-[shimmer_1.8s_infinite]" />
-                </div>
-              </div>
-
-              {/* Percentage & Status Label */}
-              <div className="flex items-center justify-between w-full mt-3 px-1">
-                <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-[#8B5E35] font-sans font-medium">
-                  {pctInt < 100 ? "Loading Experiences" : "Welcome to Journeys"}
-                </span>
-                <span className="font-mono text-xs sm:text-sm font-semibold text-[#183D2B] tabular-nums tracking-wider">
-                  {pctInt}%
-                </span>
-              </div>
-            </motion.div>
+              {/* Subtle Shimmer Light Sweep */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full animate-[shimmer_1.8s_infinite]" />
+            </div>
           </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+
+          {/* Percentage & Status Label */}
+          <div className="flex items-center justify-between w-full mt-3 px-1">
+            <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-[#8B5E35] font-sans font-medium">
+              {pctInt < 100 ? "Loading Experiences" : "Welcome to Journeys"}
+            </span>
+            <span className="font-mono text-xs sm:text-sm font-semibold text-[#183D2B] tabular-nums tracking-wider">
+              {pctInt}%
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

@@ -202,7 +202,7 @@ export default function GoogleReviews() {
   };
 
   return (
-    <section id="reviews" className="pt-10 sm:pt-14 md:pt-16 pb-20 sm:pb-24 md:pb-28 bg-[#FFFCF5] relative">
+    <section id="reviews" className="pt-10 sm:pt-14 md:pt-16 pb-10 sm:pb-12 md:pb-14 bg-[#FFFCF5] relative">
       <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
         {/* Section Header */}

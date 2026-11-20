@@ -61,7 +61,7 @@ export default function Home() {
           </StackingSection>
 
           {/* 5. OUR SERVICES: Page 5 */}
-          <StackingSection zIndex={18}>
+          <StackingSection zIndex={18} disableScale={true}>
             <OurServices />
           </StackingSection>
 

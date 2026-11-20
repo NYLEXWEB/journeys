@@ -73,7 +73,7 @@ export default function FloatingWhatsApp() {
           <span className="text-[10px] uppercase tracking-widest text-[#E9E0D2] font-semibold leading-tight">
             WhatsApp Enquiry
           </span>
-          <span className="text-xs font-serif text-white/95 leading-tight group-hover:text-[#25D366] transition-colors">
+          <span className="text-xs font-sans font-medium text-white/95 leading-tight group-hover:text-[#25D366] transition-colors">
             Chat with Jibu
           </span>
         </div>

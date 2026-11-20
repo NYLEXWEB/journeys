@@ -43,19 +43,19 @@ export default function StackingSection({
   const scale = useTransform(scrollYProgress, [0, 1], [1, 0.96]);
   const opacity = useTransform(scrollYProgress, [0, 0.85, 1], [1, 0.95, 0.85]);
 
+  const sectionStyle = isFirst
+    ? "rounded-t-[2.5rem] sm:rounded-t-[3.5rem] md:rounded-t-[4.5rem] border-t border-[#E9E0D2] bg-[#FFFCF5]"
+    : isFooter
+    ? "-mt-10 sm:-mt-14 md:-mt-16 rounded-t-[2.5rem] sm:rounded-t-[3.5rem] md:rounded-t-[4.5rem] border-t border-[#8B5E35]/40 bg-[#183D2B]"
+    : disableOverlap
+    ? "bg-[#FFFCF5]"
+    : "-mt-10 sm:-mt-14 md:-mt-16 rounded-t-[2.5rem] sm:rounded-t-[3.5rem] md:rounded-t-[4.5rem] border-t border-[#E9E0D2] bg-[#FFFCF5]";
+
   return (
     <div
       ref={containerRef}
       style={{ zIndex }}
-      className={`relative origin-top transform-gpu ${
-        isFirst
-          ? "rounded-t-[2.5rem] sm:rounded-t-[3.5rem] md:rounded-t-[4.5rem] border-t border-[#E9E0D2] bg-[#FFFCF5]"
-          : isFooter
-          ? "-mt-10 sm:-mt-14 md:-mt-16 rounded-t-[2.5rem] sm:rounded-t-[3.5rem] md:rounded-t-[4.5rem] border-t border-[#8B5E35]/40 bg-[#183D2B]"
-          : disableOverlap
-          ? "bg-[#FFFCF5]"
-          : "-mt-10 sm:-mt-14 md:-mt-16 rounded-t-[2.5rem] sm:rounded-t-[3.5rem] md:rounded-t-[4.5rem] border-t border-[#E9E0D2] bg-[#FFFCF5]"
-      } ${className}`}
+      className={`relative origin-top ${disableScale ? "" : "transform-gpu"} ${sectionStyle} ${className}`}
     >
       <motion.div
         style={isFooter || disableScale || isMobile ? undefined : { scale, opacity }}

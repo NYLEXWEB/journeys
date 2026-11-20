@@ -41,7 +41,7 @@ export default function Footer() {
               </div>
             </Link>
             <div className="hidden sm:block w-[1px] h-8 bg-white/20" />
-            <p className="font-serif italic text-sm text-[#E9E0D2] break-words">
+            <p className="font-sans font-light text-sm text-[#E9E0D2] tracking-wide break-words">
               {footer.tagline || "South India, tailored around your pace."}
             </p>
           </div>

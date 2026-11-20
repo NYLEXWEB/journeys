@@ -276,6 +276,7 @@ export default function ContactPage() {
                         <input
                           type="text"
                           required
+                          suppressHydrationWarning
                           placeholder="e.g. Eleanor & David Vance"
                           value={formData.fullName}
                           onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
@@ -289,6 +290,7 @@ export default function ContactPage() {
                         <input
                           type="email"
                           required
+                          suppressHydrationWarning
                           placeholder="eleanor@example.com"
                           value={formData.email}
                           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -302,6 +304,7 @@ export default function ContactPage() {
                         <input
                           type="tel"
                           required
+                          suppressHydrationWarning
                           placeholder="+44 7700 900077"
                           value={formData.phone}
                           onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
@@ -314,6 +317,7 @@ export default function ContactPage() {
                         </label>
                         <input
                           type="text"
+                          suppressHydrationWarning
                           placeholder="e.g. United Kingdom / USA / Australia"
                           value={formData.country}
                           onChange={(e) => setFormData({ ...formData, country: e.target.value })}
@@ -335,6 +339,7 @@ export default function ContactPage() {
                         </label>
                         <input
                           type="text"
+                          suppressHydrationWarning
                           placeholder="e.g. Dec 2026 / Jan 2027"
                           value={formData.travelMonth}
                           onChange={(e) => setFormData({ ...formData, travelMonth: e.target.value })}
@@ -388,6 +393,7 @@ export default function ContactPage() {
                           <button
                             type="button"
                             key={st}
+                            suppressHydrationWarning
                             onClick={() => handleStateToggle(st)}
                             className={`px-4 py-2 rounded-full text-xs uppercase tracking-wider font-semibold transition-all cursor-pointer ${
                               isSelected
@@ -423,6 +429,7 @@ export default function ContactPage() {
                           <button
                             type="button"
                             key={exp}
+                            suppressHydrationWarning
                             onClick={() => handleExpToggle(exp)}
                             className={`p-3 rounded-xl text-left text-xs transition-all flex items-center justify-between border cursor-pointer ${
                               checked
@@ -445,6 +452,7 @@ export default function ContactPage() {
                     </span>
                     <textarea
                       rows={4}
+                      suppressHydrationWarning
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       placeholder="Share anything that matters to you: special dietary needs, mobility considerations, flight arrival cities, or milestones you are celebrating..."
@@ -456,6 +464,7 @@ export default function ContactPage() {
                   <div className="pt-4">
                     <button
                       type="submit"
+                      suppressHydrationWarning
                       disabled={isSubmitting}
                       className="w-full py-4 rounded-full bg-[#183D2B] hover:bg-[#8B5E35] text-white text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
                     >

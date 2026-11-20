@@ -337,16 +337,14 @@ export default function Navbar() {
           transform: isHomepage ? "translate3d(-50%, calc(100dvh - 84px), 0)" : "translate3d(-50%, 16px, 0)",
           willChange: "transform",
         }}
-        className={`fixed z-50 left-1/2 pointer-events-none transition-opacity duration-300 ${
-          isModalOpen ? "opacity-0 pointer-events-none" : "opacity-100"
-        }`}
+        className={`fixed z-50 left-1/2 pointer-events-none transition-opacity duration-300 ${isModalOpen ? "opacity-0 pointer-events-none" : "opacity-100"
+          }`}
       >
         <div
-          className={`pointer-events-auto flex items-center justify-between rounded-full transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-            isDocked
-              ? "w-[calc(100vw-20px)] sm:w-[calc(100vw-24px)] max-w-[1600px] bg-[#FFFCF5]/98 backdrop-blur-md border border-[#E9E0D2] shadow-[0_12px_35px_rgba(24,61,43,0.1)] text-[#242424] px-3 sm:px-6 py-1.5 sm:py-2.5 h-[50px] sm:h-[58px]"
-              : "w-auto max-w-[calc(100vw-16px)] bg-black/80 backdrop-blur-md border border-white/20 shadow-[0_16px_40px_rgba(0,0,0,0.6)] text-white px-2.5 sm:px-4 py-1.5 sm:py-2 gap-1.5 sm:gap-3 h-[46px] sm:h-[54px]"
-          }`}
+          className={`pointer-events-auto flex items-center justify-between rounded-full transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${isDocked
+            ? "w-[calc(100vw-20px)] sm:w-[calc(100vw-24px)] max-w-[1600px] bg-[#FFFCF5]/98 backdrop-blur-md border border-[#E9E0D2] shadow-[0_12px_35px_rgba(24,61,43,0.1)] text-[#242424] px-3 sm:px-6 py-1.5 sm:py-2.5 h-[50px] sm:h-[58px]"
+            : "w-auto max-w-[calc(100vw-16px)] bg-black/80 backdrop-blur-md border border-white/20 shadow-[0_16px_40px_rgba(0,0,0,0.6)] text-white px-2.5 sm:px-4 py-1.5 sm:py-2 gap-1.5 sm:gap-3 h-[46px] sm:h-[54px]"
+            }`}
         >
           {/* Brand Logo */}
           <Link
@@ -354,11 +352,10 @@ export default function Navbar() {
             className="flex items-center gap-2 group transition-transform duration-300 hover:scale-[1.01] shrink-0 pl-0.5 sm:pl-1"
           >
             <div
-              className={`relative transition-all duration-300 ${
-                !isDocked
-                  ? "h-5 sm:h-7 w-16 sm:w-24"
-                  : "h-7 sm:h-9 md:h-10 w-24 sm:w-36 md:w-40"
-              }`}
+              className={`relative transition-all duration-300 ${!isDocked
+                ? "h-5 sm:h-7 w-16 sm:w-24"
+                : "h-7 sm:h-9 md:h-10 w-24 sm:w-36 md:w-40"
+                }`}
             >
               <Image
                 src="/images/logo.webp"
@@ -366,11 +363,10 @@ export default function Navbar() {
                 fill
                 priority
                 sizes="(max-width: 768px) 120px, 200px"
-                className={`object-contain object-left transition-all duration-300 ${
-                  !isDocked
-                    ? "brightness-0 invert drop-shadow-[0_2px_12px_rgba(0,0,0,0.7)]"
-                    : "drop-shadow-sm"
-                }`}
+                className={`object-contain object-left transition-all duration-300 ${!isDocked
+                  ? "brightness-0 invert drop-shadow-[0_2px_12px_rgba(0,0,0,0.7)]"
+                  : "drop-shadow-sm"
+                  }`}
               />
             </div>
           </Link>
@@ -402,6 +398,7 @@ export default function Navbar() {
               {/* Mobile menu toggle for hero capsule */}
               <button
                 type="button"
+                suppressHydrationWarning
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="lg:hidden p-1 sm:p-1.5 rounded-full transition-all active:scale-95 text-white bg-white/15 hover:bg-white/25 ml-0.5 sm:ml-1 cursor-pointer"
                 aria-label="Toggle Navigation Menu"
@@ -427,9 +424,8 @@ export default function Navbar() {
                   >
                     <Link
                       href={item.href}
-                      className={`font-sans transition-all duration-200 py-1.5 px-3 rounded-full text-[13px] font-medium tracking-wide whitespace-nowrap block text-[#242424] hover:text-[#183D2B] hover:bg-[#183D2B]/5 ${
-                        isOpen ? "bg-[#183D2B]/10 text-[#183D2B]" : ""
-                      }`}
+                      className={`font-sans transition-all duration-200 py-1.5 px-3 rounded-full text-[13px] font-medium tracking-wide whitespace-nowrap block text-[#242424] hover:text-[#183D2B] hover:bg-[#183D2B]/5 ${isOpen ? "bg-[#183D2B]/10 text-[#183D2B]" : ""
+                        }`}
                     >
                       <span>{item.name}</span>
                     </Link>
@@ -442,11 +438,10 @@ export default function Navbar() {
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 8, scale: 0.98 }}
                           transition={{ duration: 0.18 }}
-                          className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-[#FFFCF5] rounded-3xl border border-[#E9E0D2] shadow-2xl p-6 text-[#242424] z-50 ${
-                            item.groups
-                              ? "w-[560px] sm:w-[620px]"
-                              : "w-[300px]"
-                          }`}
+                          className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-[#FFFCF5] rounded-3xl border border-[#E9E0D2] shadow-2xl p-6 text-[#242424] z-50 ${item.groups
+                            ? "w-[560px] sm:w-[620px]"
+                            : "w-[300px]"
+                            }`}
                         >
                           {item.groups ? (
                             <div className="grid grid-cols-2 gap-6">
@@ -527,6 +522,7 @@ export default function Navbar() {
               {/* Mobile Menu Button */}
               <button
                 type="button"
+                suppressHydrationWarning
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="lg:hidden p-1.5 sm:p-2 rounded-full transition-all active:scale-95 text-[#183D2B] bg-[#E9E0D2]/50 hover:bg-[#E9E0D2] cursor-pointer"
                 aria-label="Toggle Navigation Menu"
@@ -568,6 +564,7 @@ export default function Navbar() {
                 </span>
                 <button
                   type="button"
+                  suppressHydrationWarning
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="flex items-center gap-1 text-[11px] uppercase tracking-wider text-[#E9E0D2] bg-white/10 hover:bg-white/20 px-2.5 py-1 rounded-full cursor-pointer transition-colors"
                   aria-label="Close menu"
@@ -586,7 +583,7 @@ export default function Navbar() {
                       <Link
                         href={item.href}
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className="font-serif text-2xl text-[#FFFCF5] hover:text-[#E9E0D2] transition-colors py-1 flex-1 tracking-tight"
+                        className="font-sans font-light text-2xl text-[#FFFCF5] hover:text-[#E9E0D2] transition-colors py-1 flex-1 tracking-tight"
                       >
                         {item.name}
                       </Link>
@@ -594,14 +591,14 @@ export default function Navbar() {
                       {/* Accordion Toggle */}
                       <button
                         type="button"
+                        suppressHydrationWarning
                         onClick={() => setExpandedMobileItem(isExpanded ? null : item.id)}
                         className="w-10 h-10 rounded-full flex items-center justify-center text-[#E9E0D2] bg-white/5 hover:bg-white/15 transition-all cursor-pointer shrink-0"
                         aria-label={`Expand ${item.name}`}
                       >
                         <ChevronDown
-                          className={`w-4 h-4 transition-transform duration-300 ${
-                            isExpanded ? "rotate-180" : ""
-                          }`}
+                          className={`w-4 h-4 transition-transform duration-300 ${isExpanded ? "rotate-180" : ""
+                            }`}
                         />
                       </button>
                     </div>
@@ -623,11 +620,10 @@ export default function Navbar() {
                                 key={sIdx}
                                 href={sub.href}
                                 onClick={() => setIsMobileMenuOpen(false)}
-                                className={`block py-1.5 text-xs transition-colors ${
-                                  isActionLink
-                                    ? "text-[#E9E0D2] font-semibold uppercase tracking-wider pt-1 hover:text-white"
-                                    : "text-white/80 hover:text-white"
-                                }`}
+                                className={`block py-1.5 text-xs transition-colors ${isActionLink
+                                  ? "text-[#E9E0D2] font-semibold uppercase tracking-wider pt-1 hover:text-white"
+                                  : "text-white/80 hover:text-white"
+                                  }`}
                               >
                                 {!isActionLink && <span className="text-[#8B5E35] mr-2">&bull;</span>}
                                 <span>{sub.name}</span>

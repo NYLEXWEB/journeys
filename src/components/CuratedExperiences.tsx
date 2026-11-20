@@ -14,6 +14,7 @@ import {
   ArrowUpRight,
 } from "lucide-react";
 import { useWebsiteContent } from "@/hooks/useWebsiteContent";
+import ScrollReveal from "./ScrollReveal";
 
 export interface ExperienceItem {
   id: string;
@@ -160,68 +161,73 @@ export default function CuratedExperiences() {
     <section id="experiences" className="pt-10 sm:pt-14 md:pt-16 pb-20 sm:pb-24 md:pb-28 bg-[#FFFCF5] relative overflow-visible">
       <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-4 mb-6 sm:mb-8">
-          <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap sm:flex-nowrap">
-            <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#8B5E35] to-[#B37D47] shadow-sm shrink-0" />
-            <h2 className="text-xl min-[400px]:text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.1em] sm:tracking-[0.12em] uppercase">
-              <span className="bg-gradient-to-r from-[#183D2B] via-[#1E4A35] to-[#27593D] bg-clip-text text-transparent">
-                CURATED{" "}
-              </span>
-              <span className="bg-gradient-to-r from-[#8B5E35] via-[#B87D4B] to-[#8B5E35] bg-clip-text text-transparent">
-                EXPERIENCES
-              </span>
-            </h2>
-            <span className="h-[1.5px] w-8 min-[400px]:w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent shrink-0" />
-          </div>
+        <ScrollReveal className="mb-6 sm:mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-4">
+            <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap sm:flex-nowrap">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#8B5E35] animate-pulse shrink-0" />
+              <h2 className="text-xl min-[400px]:text-2xl sm:text-3xl lg:text-4xl font-sans font-light tracking-[0.1em] sm:tracking-[0.12em] uppercase">
+                <span className="text-[#183D2B]">
+                  CURATED{" "}
+                </span>
+                <span className="text-[#8B5E35]">
+                  EXPERIENCES
+                </span>
+              </h2>
+              <span className="h-[1.5px] w-8 min-[400px]:w-12 sm:w-20 bg-[#8B5E35]/40 shrink-0" />
+            </div>
 
-          <Link prefetch={true} href="/experiences"
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#E9E0D2] bg-white/80 hover:bg-[#183D2B] text-[#183D2B] hover:text-white text-xs font-semibold uppercase tracking-wider transition-all duration-300 shadow-sm self-start sm:self-auto"
-          >
-            <span>Explore All Experiences</span>
-            <ArrowUpRight className="w-3.5 h-3.5" />
-          </Link>
-        </div>
+            <Link
+              prefetch={true}
+              href="/experiences"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#E9E0D2] bg-white/80 hover:bg-[#183D2B] text-[#183D2B] hover:text-white text-xs font-semibold uppercase tracking-wider transition-all duration-300 shadow-sm self-start sm:self-auto"
+            >
+              <span>Explore All Experiences</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+        </ScrollReveal>
 
         {/* 
           PURE VISUAL TILES
-          Desktop / Tablet: Clean Multi-Column Luxury Grid (Completely static, no stacking)
+          Desktop / Tablet: Clean Multi-Column Luxury Grid with Staggered Scroll Reveal
         */}
         <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6">
-          {experiencesData.map((exp) => (
-            <Link
-              key={exp.id}
-              href={`/experiences#${exp.id}`}
-              className="group relative h-[480px] lg:h-[520px] rounded-[2rem] sm:rounded-[2.4rem] overflow-hidden cursor-pointer border border-white/10 hover:border-[#8B5E35]/60 hover:-translate-y-2 transition-all duration-500 select-none bg-[#183D2B] hover:shadow-[0_12px_30px_rgba(24,61,43,0.08)] block"
-            >
-              <Image
-                src={exp.image}
-                alt={exp.title}
-                fill
-                sizes="(max-width: 1024px) 50vw, 25vw"
-                className="object-cover transition-transform duration-1000 ease-out group-hover:scale-110"
-              />
+          {experiencesData.map((exp, idx) => (
+            <ScrollReveal key={exp.id} delay={idx * 0.07}>
+              <Link
+                href={`/experiences#${exp.id}`}
+                className="group relative h-[480px] lg:h-[520px] rounded-[2rem] sm:rounded-[2.4rem] overflow-hidden cursor-pointer border border-white/10 hover:border-[#8B5E35]/60 hover:-translate-y-2 transition-all duration-500 select-none bg-[#183D2B] hover:shadow-[0_12px_30px_rgba(24,61,43,0.08)] block"
+              >
+                <Image
+                  src={exp.image}
+                  alt={exp.title}
+                  fill
+                  sizes="(max-width: 1024px) 50vw, 25vw"
+                  className="object-cover transition-transform duration-1000 ease-out group-hover:scale-110"
+                />
 
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/10 transition-opacity duration-500 group-hover:from-black/90" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/10 transition-opacity duration-500 group-hover:from-black/90" />
 
-              <div className="absolute top-5 left-5 z-10">
-                <span className="font-serif italic text-lg sm:text-xl text-[#E9E0D2] drop-shadow-sm transition-transform duration-300 group-hover:-translate-y-1 block">
-                  {exp.number}
-                </span>
-              </div>
-
-              <div className="absolute inset-x-0 bottom-0 z-10 p-6 sm:p-7 flex flex-col justify-end space-y-3">
-                <h3 className="font-serif text-2xl sm:text-[25px] text-white font-light leading-snug group-hover:text-[#E9E0D2] group-hover:translate-x-0.5 transition-all duration-300">
-                  {exp.title}
-                </h3>
-
-                <div className="pt-1">
-                  <span className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] font-medium text-[#E9E0D2] group-hover:text-white transition-colors duration-300">
-                    <span>View Details</span>
-                    <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1.5 group-hover:-translate-y-0.5" />
+                <div className="absolute top-5 left-5 z-10">
+                  <span className="font-mono text-xs font-semibold text-[#E9E0D2] bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/10 drop-shadow-sm transition-transform duration-300 group-hover:-translate-y-0.5 block">
+                    {exp.number}
                   </span>
                 </div>
-              </div>
-            </Link>
+
+                <div className="absolute inset-x-0 bottom-0 z-10 p-6 sm:p-7 flex flex-col justify-end space-y-3">
+                  <h3 className="font-sans text-xl sm:text-2xl text-white font-light leading-snug group-hover:text-[#E9E0D2] group-hover:translate-x-0.5 transition-all duration-300">
+                    {exp.title}
+                  </h3>
+
+                  <div className="pt-1">
+                    <span className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] font-medium text-[#E9E0D2] group-hover:text-white transition-colors duration-300">
+                      <span>View Details</span>
+                      <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1.5 group-hover:-translate-y-0.5" />
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            </ScrollReveal>
           ))}
         </div>
 
@@ -237,9 +243,8 @@ export default function CuratedExperiences() {
                 top: `calc(75px + ${idx * 6}px)`,
                 zIndex: idx + 5,
               }}
-              className={`sticky group relative h-[65vh] min-h-[360px] max-h-[500px] rounded-[2rem] overflow-hidden cursor-pointer shadow-[0_-4px_20px_rgba(0,0,0,0.18)] select-none bg-[#183D2B] border border-white/15 block ${
-                idx === experiencesData.length - 1 ? "mb-0" : "mb-6"
-              }`}
+              className={`sticky group relative h-[65vh] min-h-[360px] max-h-[500px] rounded-[2rem] overflow-hidden cursor-pointer shadow-[0_-4px_20px_rgba(0,0,0,0.18)] select-none bg-[#183D2B] border border-white/15 block ${idx === experiencesData.length - 1 ? "mb-0" : "mb-6"
+                }`}
             >
               <Image
                 src={exp.image}

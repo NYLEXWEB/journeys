@@ -15,6 +15,7 @@ import {
   SlidersHorizontal,
 } from "lucide-react";
 import { WhatsAppIcon } from "./WhatsAppIcon";
+import ScrollReveal from "./ScrollReveal";
 
 export interface DestinationItem {
   id: string;
@@ -349,11 +350,10 @@ export default function Destinations() {
     <Link
       key={indexKey}
       href={`/destinations#${dest.id}`}
-      className={`group relative ${
-        isGrid
-          ? "w-full h-[380px] sm:h-[420px]"
-          : "w-[280px] sm:w-[340px] md:w-[380px] h-[340px] sm:h-[390px] shrink-0 mx-2 sm:mx-3"
-      } rounded-[2rem] sm:rounded-[2.4rem] overflow-hidden cursor-pointer border border-white/10 hover:border-[#8B5E35]/60 hover:-translate-y-1.5 transition-all duration-500 bg-[#183D2B] select-none hover:shadow-[0_12px_28px_rgba(24,61,43,0.08)]`}
+      className={`group relative ${isGrid
+        ? "w-full h-[380px] sm:h-[420px]"
+        : "w-[280px] sm:w-[340px] md:w-[380px] h-[340px] sm:h-[390px] shrink-0 mx-2 sm:mx-3"
+        } rounded-[2rem] sm:rounded-[2.4rem] overflow-hidden cursor-pointer border border-white/10 hover:border-[#8B5E35]/60 hover:-translate-y-1.5 transition-all duration-500 bg-[#183D2B] select-none hover:shadow-[0_12px_28px_rgba(24,61,43,0.08)]`}
     >
       {/* Full Image with Living Slow Drift & Hover Zoom */}
       <Image
@@ -401,17 +401,17 @@ export default function Destinations() {
 
   return (
     <section id="destinations" className="pt-10 sm:pt-14 md:pt-16 pb-20 sm:pb-24 md:pb-28 bg-[#FFFCF5] relative overflow-hidden">
-      {/* Section Header */}
-      <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10 mb-6 sm:mb-8">
+      {/* Section Header with Apple-Style Slim Minimalist Typography */}
+      <ScrollReveal className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10 mb-6 sm:mb-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 pb-4 sm:pb-5 border-b border-[#E9E0D2]">
           <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap sm:flex-nowrap">
-            <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#8B5E35] to-[#B37D47] shadow-sm shrink-0" />
-            <h2 className="text-xl min-[400px]:text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.1em] sm:tracking-[0.12em] uppercase">
-              <span className="bg-gradient-to-r from-[#183D2B] via-[#1E4A35] to-[#27593D] bg-clip-text text-transparent">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#8B5E35] animate-pulse shrink-0" />
+            <h2 className="text-xl min-[400px]:text-2xl sm:text-3xl lg:text-4xl font-sans font-light tracking-[0.1em] sm:tracking-[0.12em] uppercase">
+              <span className="text-[#183D2B]">
                 DESTINATIONS
               </span>
             </h2>
-            <span className="h-[1.5px] w-8 min-[400px]:w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent shrink-0" />
+            <span className="h-[1.5px] w-8 min-[400px]:w-12 sm:w-20 bg-[#8B5E35]/40 shrink-0" />
           </div>
 
           <div className="flex flex-wrap items-center gap-3 self-start md:self-end">
@@ -423,11 +423,10 @@ export default function Destinations() {
                 type="button"
                 suppressHydrationWarning
                 onClick={() => setViewMode("flow")}
-                className={`px-3 py-1.5 rounded-full text-[11px] uppercase tracking-wider font-medium flex items-center gap-1.5 transition-all duration-300 cursor-pointer ${
-                  viewMode === "flow"
-                    ? "bg-[#183D2B] text-[#FFFCF5] shadow-sm"
-                    : "text-[#183D2B]/70 hover:text-[#183D2B]"
-                }`}
+                className={`px-3 py-1.5 rounded-full text-[11px] uppercase tracking-wider font-medium flex items-center gap-1.5 transition-all duration-300 cursor-pointer ${viewMode === "flow"
+                  ? "bg-[#183D2B] text-[#FFFCF5] shadow-sm"
+                  : "text-[#183D2B]/70 hover:text-[#183D2B]"
+                  }`}
                 title="Continuous Panoramic Showcase"
               >
                 <SlidersHorizontal className="w-3.5 h-3.5" />
@@ -437,11 +436,10 @@ export default function Destinations() {
                 type="button"
                 suppressHydrationWarning
                 onClick={() => setViewMode("grid")}
-                className={`px-3 py-1.5 rounded-full text-[11px] uppercase tracking-wider font-medium flex items-center gap-1.5 transition-all duration-300 cursor-pointer ${
-                  viewMode === "grid"
-                    ? "bg-[#183D2B] text-[#FFFCF5] shadow-sm"
-                    : "text-[#183D2B]/70 hover:text-[#183D2B]"
-                }`}
+                className={`px-3 py-1.5 rounded-full text-[11px] uppercase tracking-wider font-medium flex items-center gap-1.5 transition-all duration-300 cursor-pointer ${viewMode === "grid"
+                  ? "bg-[#183D2B] text-[#FFFCF5] shadow-sm"
+                  : "text-[#183D2B]/70 hover:text-[#183D2B]"
+                  }`}
                 title="Grid View"
               >
                 <LayoutGrid className="w-3.5 h-3.5" />
@@ -461,19 +459,17 @@ export default function Destinations() {
                 type="button"
                 suppressHydrationWarning
                 onClick={() => setSelectedCategory(cat.id)}
-                className={`px-4 sm:px-6 py-2.5 sm:py-3 rounded-full text-xs sm:text-sm uppercase tracking-wider font-medium transition-all duration-300 flex items-center gap-2.5 whitespace-nowrap cursor-pointer select-none ${
-                  isActive
-                    ? "bg-[#183D2B] text-[#FFFCF5] shadow-lg shadow-[#183D2B]/15 scale-[1.02]"
-                    : "bg-[#E9E0D2]/30 text-[#183D2B]/80 hover:text-[#183D2B] hover:bg-[#E9E0D2]/60 border border-[#E9E0D2]/50"
-                }`}
+                className={`px-4 sm:px-6 py-2.5 sm:py-3 rounded-full text-xs sm:text-sm uppercase tracking-wider font-medium transition-all duration-300 flex items-center gap-2.5 whitespace-nowrap cursor-pointer select-none ${isActive
+                  ? "bg-[#183D2B] text-[#FFFCF5] shadow-lg shadow-[#183D2B]/15 scale-[1.02]"
+                  : "bg-[#E9E0D2]/30 text-[#183D2B]/80 hover:text-[#183D2B] hover:bg-[#E9E0D2]/60 border border-[#E9E0D2]/50"
+                  }`}
               >
                 <span>{cat.label}</span>
                 <span
-                  className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${
-                    isActive
-                      ? "bg-white/20 text-[#FFFCF5]"
-                      : "bg-[#183D2B]/10 text-[#183D2B]"
-                  }`}
+                  className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${isActive
+                    ? "bg-white/20 text-[#FFFCF5]"
+                    : "bg-[#183D2B]/10 text-[#183D2B]"
+                    }`}
                 >
                   {cat.count}
                 </span>
@@ -481,7 +477,7 @@ export default function Destinations() {
             );
           })}
         </div>
-      </div>
+      </ScrollReveal>
 
       {/* 
         DESTINATION CARDS DISPLAY:
@@ -544,7 +540,7 @@ export default function Destinations() {
         </Link>
       </div>
 
-      
+
     </section>
   );
 }

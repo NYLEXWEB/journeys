@@ -13,6 +13,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { WhatsAppIcon } from "./WhatsAppIcon";
+import ScrollReveal from "./ScrollReveal";
 
 export interface JournalArticle {
   id: string;
@@ -132,31 +133,33 @@ export default function TravelJournal() {
     <section id="blog" className="pt-10 sm:pt-14 md:pt-16 pb-20 sm:pb-24 md:pb-28 bg-[#FFFCF5] relative overflow-hidden">
       <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-4 mb-6 sm:mb-8">
-          <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap sm:flex-nowrap">
-            <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#8B5E35] to-[#B37D47] shadow-sm shrink-0" />
-            <h2 className="text-xl min-[400px]:text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.1em] sm:tracking-[0.12em] uppercase">
-              <span className="bg-gradient-to-r from-[#183D2B] via-[#1E4A35] to-[#27593D] bg-clip-text text-transparent">
-                TRAVEL{" "}
+        <ScrollReveal className="mb-6 sm:mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-4">
+            <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap sm:flex-nowrap">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#8B5E35] animate-pulse shrink-0" />
+              <h2 className="text-xl min-[400px]:text-2xl sm:text-3xl lg:text-4xl font-sans font-light tracking-[0.1em] sm:tracking-[0.12em] uppercase">
+                <span className="text-[#183D2B]">
+                  TRAVEL{" "}
+                </span>
+                <span className="text-[#8B5E35]">
+                  BLOG
+                </span>
+              </h2>
+              <span className="h-[1.5px] w-8 min-[400px]:w-12 sm:w-20 bg-[#8B5E35]/40 shrink-0" />
+            </div>
+            <div className="flex items-center gap-4">
+              <span className="hidden md:inline font-serif italic text-sm sm:text-base text-[#8B5E35] font-light">
+                Stories &amp; Dispatches by Jibu Thomas
               </span>
-              <span className="bg-gradient-to-r from-[#8B5E35] via-[#B87D4B] to-[#8B5E35] bg-clip-text text-transparent">
-                BLOG
-              </span>
-            </h2>
-            <span className="h-[1.5px] w-8 min-[400px]:w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent shrink-0" />
+              <Link prefetch={true} href="/blog"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#E9E0D2] bg-white/80 hover:bg-[#183D2B] text-[#183D2B] hover:text-white text-xs font-semibold uppercase tracking-wider transition-all duration-300 shadow-sm"
+              >
+                <span>Explore All Stories</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
           </div>
-          <div className="flex items-center gap-4">
-            <span className="hidden md:inline font-serif italic text-sm sm:text-base text-[#8B5E35] font-light">
-              Stories &amp; Dispatches by Jibu Thomas
-            </span>
-            <Link prefetch={true} href="/blog"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#E9E0D2] bg-white/80 hover:bg-[#183D2B] text-[#183D2B] hover:text-white text-xs font-semibold uppercase tracking-wider transition-all duration-300 shadow-sm"
-            >
-              <span>Explore All Stories</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-        </div>
+        </ScrollReveal>
 
         {/* STYLISH EDITORIAL MAGAZINE LAYOUT */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
@@ -174,7 +177,7 @@ export default function TravelJournal() {
                 className="object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-              
+
               <div className="absolute top-5 left-5 right-5 flex items-center justify-between z-10">
                 <span className="px-3.5 py-1.5 rounded-full bg-white/95 backdrop-blur-md text-[10px] uppercase font-semibold text-[#183D2B] tracking-wider shadow-sm">
                   Featured Dispatch
@@ -274,7 +277,7 @@ export default function TravelJournal() {
           </Link>
         </div>
 
-        </div>
+      </div>
     </section>
   );
 }

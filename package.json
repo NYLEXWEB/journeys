@@ -19,7 +19,6 @@
     "next": "16.4.5",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "ua-parser-js": "^2.0.10",
     "uploadthing": "^7.7.4"
   },
   "devDependencies": {
@@ -28,7 +27,6 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@types/ua-parser-js": "^0.7.39",
     "eslint": "^9",
     "eslint-config-next": "16.4.5",
     "ffmpeg-static": "^5.3.0",

@@ -107,6 +107,7 @@ export default function BlogClient() {
           <Search className="w-4 h-4 text-[#8B5E35] absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             type="text"
+            suppressHydrationWarning
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search articles, Munnar, houseboats, timing..."

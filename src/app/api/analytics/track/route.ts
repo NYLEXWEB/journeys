@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { UAParser } from "ua-parser-js";
 import { connectToDatabase } from "@/lib/db";
 import { AnalyticsEventModel } from "@/models/Analytics";
 
@@ -73,6 +72,44 @@ function parseReferrerDomain(referrer: string): string {
   }
 }
 
+function parseUserAgent(ua: string) {
+  let browser = "Chrome";
+  let os = "Windows";
+  let deviceType: "mobile" | "desktop" | "tablet" = "desktop";
+
+  if (/iPad|Tablet|(Android(?!.*Mobile))/i.test(ua)) {
+    deviceType = "tablet";
+  } else if (/Mobi|iPhone|iPod|Android/i.test(ua)) {
+    deviceType = "mobile";
+  }
+
+  if (/Windows NT 10/i.test(ua)) os = "Windows 10/11";
+  else if (/Windows NT/i.test(ua)) os = "Windows";
+  else if (/Macintosh|Mac OS X/i.test(ua)) os = "macOS";
+  else if (/iPhone|iPad|iPod/i.test(ua)) os = "iOS";
+  else if (/Android/i.test(ua)) os = "Android";
+  else if (/Linux/i.test(ua)) os = "Linux";
+
+  if (/Edg\//i.test(ua)) {
+    const match = ua.match(/Edg\/(\d+)/i);
+    browser = `Edge ${match ? match[1] : ""}`.trim();
+  } else if (/Chrome\//i.test(ua) && !/Chromium|OPR/i.test(ua)) {
+    const match = ua.match(/Chrome\/(\d+)/i);
+    browser = `Chrome ${match ? match[1] : ""}`.trim();
+  } else if (/Firefox\//i.test(ua)) {
+    const match = ua.match(/Firefox\/(\d+)/i);
+    browser = `Firefox ${match ? match[1] : ""}`.trim();
+  } else if (/Safari\//i.test(ua) && !/Chrome/i.test(ua)) {
+    const match = ua.match(/Version\/(\d+)/i);
+    browser = `Safari ${match ? match[1] : ""}`.trim();
+  } else if (/OPR\//i.test(ua)) {
+    const match = ua.match(/OPR\/(\d+)/i);
+    browser = `Opera ${match ? match[1] : ""}`.trim();
+  }
+
+  return { browser, os, deviceType };
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json().catch(() => ({}));
@@ -96,18 +133,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: false, error: "Missing visitor or session identifier" }, { status: 400 });
     }
 
-    // 1. Device and User-Agent parsing via ua-parser-js
+    // 1. Device and User-Agent parsing (zero-dependency, offline & crash-free)
     const userAgent = req.headers.get("user-agent") || "";
-    const parser = new UAParser(userAgent);
-    const browserResult = parser.getBrowser();
-    const osResult = parser.getOS();
-    const deviceResult = parser.getDevice();
-
-    let deviceType: "mobile" | "desktop" | "tablet" = "desktop";
-    if (deviceResult.type === "mobile") deviceType = "mobile";
-    else if (deviceResult.type === "tablet") deviceType = "tablet";
-    else if (/Mobi|Android|iPhone|iPod/i.test(userAgent)) deviceType = "mobile";
-    else if (/iPad|Tablet/i.test(userAgent)) deviceType = "tablet";
+    const { browser: detectedBrowser, os: detectedOS, deviceType } = parseUserAgent(userAgent);
 
     // 2. Geolocation detection (CDN headers with timezone fallback - 100% offline & zero external API)
     const ipCountryCode = (
@@ -154,8 +182,8 @@ export async function POST(req: NextRequest) {
         category: category.slice(0, 50),
         device: {
           type: deviceType,
-          browser: browserResult.name ? `${browserResult.name} ${browserResult.major || ""}`.trim() : "Chrome",
-          os: osResult.name ? `${osResult.name} ${osResult.version || ""}`.trim() : "Windows",
+          browser: detectedBrowser,
+          os: detectedOS,
           screen: screen ? screen.slice(0, 50) : "",
         },
         location: {

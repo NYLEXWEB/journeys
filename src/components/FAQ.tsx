@@ -36,30 +36,27 @@ export default function FAQ() {
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-4 mb-6 sm:mb-8">
           <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap sm:flex-nowrap">
-            <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#8B5E35] to-[#B37D47] shrink-0" />
-            <h2 className="text-xl min-[400px]:text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.1em] sm:tracking-[0.12em] uppercase">
-              <span className="bg-gradient-to-r from-[#183D2B] via-[#1E4A35] to-[#27593D] bg-clip-text text-transparent">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#8B5E35] animate-pulse shrink-0" />
+            <h2 className="text-xl min-[400px]:text-2xl sm:text-3xl lg:text-4xl font-sans font-light tracking-[0.1em] sm:tracking-[0.12em] uppercase">
+              <span className="text-[#183D2B]">
                 FREQUENTLY ASKED{" "}
               </span>
-              <span className="bg-gradient-to-r from-[#8B5E35] via-[#B87D4B] to-[#8B5E35] bg-clip-text text-transparent">
+              <span className="text-[#8B5E35]">
                 QUESTIONS
               </span>
             </h2>
-            <span className="h-[1.5px] w-8 min-[400px]:w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent shrink-0" />
+            <span className="h-[1.5px] w-8 min-[400px]:w-12 sm:w-20 bg-[#8B5E35]/40 shrink-0" />
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="font-serif italic text-sm sm:text-base text-[#8B5E35] font-light">
-              Clear Guidance &bull; Practical Travel Advice
-            </span>
+            <Link prefetch={true} href="/about"
+              className="inline-flex items-center gap-1 text-xs text-[#8B5E35] hover:text-[#183D2B] font-medium"
+            >
+              <span>Learn about our travel philosophy</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </Link>
           </div>
         </div>
-
-        {/* Lead Subtitle / Editorial Note */}
-        <p className="text-sm sm:text-base text-[#242424]/75 font-light leading-relaxed max-w-2xl mb-8 sm:mb-10">
-          Everything you need to know before stepping into God&rsquo;s Own Country with Jibu Thomas.
-          Direct answers regarding private chauffeurs, pacing, houseboats, and our planning philosophy.
-        </p>
 
         {/* Completely Plain Editorial Accordion (No separate boxes, no card borders) */}
         <div className="divide-y divide-[#E9E0D2] border-y border-[#E9E0D2]">
@@ -75,6 +72,7 @@ export default function FAQ() {
                 {/* Header Row: Question + Right-Side Arrow Button */}
                 <button
                   type="button"
+                  suppressHydrationWarning
                   onClick={() => toggleFAQ(faq.id)}
                   aria-expanded={isOpen}
                   className="w-full text-left flex items-start sm:items-center justify-between gap-4 cursor-pointer select-none group"
@@ -82,9 +80,8 @@ export default function FAQ() {
                   <div className="flex items-start sm:items-center gap-3.5 sm:gap-5 flex-1">
                     {/* Index Number */}
                     <span
-                      className={`font-serif italic text-base sm:text-lg transition-colors shrink-0 ${
-                        isOpen ? "text-[#8B5E35]" : "text-[#8B5E35]/60 group-hover:text-[#8B5E35]"
-                      }`}
+                      className={`font-serif italic text-base sm:text-lg transition-colors shrink-0 ${isOpen ? "text-[#8B5E35]" : "text-[#8B5E35]/60 group-hover:text-[#8B5E35]"
+                        }`}
                     >
                       {itemNumber}
                     </span>
@@ -96,11 +93,10 @@ export default function FAQ() {
                         </span>
                       )}
                       <h3
-                        className={`text-base sm:text-lg md:text-xl transition-colors leading-snug ${
-                          isOpen
-                            ? "text-[#183D2B] font-semibold"
-                            : "text-[#242424] font-medium group-hover:text-[#183D2B]"
-                        }`}
+                        className={`text-base sm:text-lg md:text-xl transition-colors leading-snug ${isOpen
+                          ? "text-[#183D2B] font-semibold"
+                          : "text-[#242424] font-medium group-hover:text-[#183D2B]"
+                          }`}
                       >
                         {faq.question}
                       </h3>
@@ -109,11 +105,10 @@ export default function FAQ() {
 
                   {/* Right-Side Arrow Indicator */}
                   <div
-                    className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shrink-0 border transition-all duration-300 ${
-                      isOpen
-                        ? "bg-[#183D2B] border-[#183D2B] text-white rotate-180"
-                        : "bg-transparent border-[#E9E0D2] text-[#183D2B] group-hover:border-[#183D2B] group-hover:bg-[#183D2B]/5"
-                    }`}
+                    className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shrink-0 border transition-all duration-300 ${isOpen
+                      ? "bg-[#183D2B] border-[#183D2B] text-white rotate-180"
+                      : "bg-transparent border-[#E9E0D2] text-[#183D2B] group-hover:border-[#183D2B] group-hover:bg-[#183D2B]/5"
+                      }`}
                   >
                     <ChevronDown className="w-4 h-4 transition-transform duration-300" />
                   </div>

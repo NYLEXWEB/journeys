@@ -32,13 +32,13 @@ if (!global.mongooseCache) {
 }
 
 let lastFailureTime = 0;
-const FAILURE_COOLDOWN_MS = 20000; // 20s cooldown: prevents blocking on every route navigation if Atlas is unreachable
+const FAILURE_COOLDOWN_MS = 60000; // 60s cooldown: prevents blocking on every route navigation if Atlas is unreachable
 
 export async function connectToDatabase(): Promise<typeof mongoose | null> {
   const uri = process.env.MONGODB_URI;
 
   if (!uri) {
-    // If MONGODB_URI is not set, log warning once and return null gracefully
+    // If MONGODB_URI is not set, return null gracefully to use local fallback content
     return null;
   }
 
@@ -46,17 +46,23 @@ export async function connectToDatabase(): Promise<typeof mongoose | null> {
     return cached.conn;
   }
 
-  // Fast-fail if recent connection attempt timed out/failed, avoiding 2-5s thread freeze
+  // Fast-fail if recent connection attempt timed out/failed, avoiding thread freeze
   const now = Date.now();
   if (lastFailureTime && now - lastFailureTime < FAILURE_COOLDOWN_MS) {
     return null;
   }
 
   if (!cached.promise) {
+    try {
+      dns.setServers(["8.8.8.8", "8.8.4.4"]);
+    } catch {
+      // Silent fallback
+    }
+
     const opts = {
       bufferCommands: false,
       maxPoolSize: 10,
-      serverSelectionTimeoutMS: 2000,
+      serverSelectionTimeoutMS: 3000,
     };
 
     cached.promise = mongoose
@@ -68,7 +74,8 @@ export async function connectToDatabase(): Promise<typeof mongoose | null> {
       .catch((err) => {
         cached.promise = null;
         lastFailureTime = Date.now();
-        console.error("MongoDB connection error:", err.message);
+        // Use console.warn so Next.js SSR doesn't trigger the red error overlay modal
+        console.warn("[MongoDB Info] Offline or DNS unavailable, gracefully using local content fallback:", err.message);
         return null;
       });
   }

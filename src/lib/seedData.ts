@@ -592,7 +592,7 @@ export const INITIAL_SERVICES = [
     number: "03",
     title: "Family & Senior-Friendly Travel Planning",
     shortVibe: "Gentle pacing, accessible stays & multi-generational comfort.",
-    image: "/images/services/family-travel.jpg",
+    image: "/images/services/family-senior-friendly.webp",
     description: "South India should be enjoyed without exhausting long drives or steep climbs. We curate spacious ground-floor rooms, accessible transport, and unhurried daily schedules ideal for grandparents and young children alike.",
     points: [
       "Gentle travel distances with ample restroom and coffee breaks",
@@ -622,7 +622,7 @@ export const INITIAL_SERVICES = [
     number: "05",
     title: "End-to-End On-Ground Coordination",
     shortVibe: "Direct WhatsApp concierge with Jibu Thomas throughout your holiday.",
-    image: "/images/services/coordination.jpg",
+    image: "/images/services/end-to-end.webp",
     description: "From the moment you step out of Kochi or Trivandrum airport until your departure flight, our Kerala team monitors your trip continuously. If flight schedules change or you wish to adjust tomorrow's route, it is handled in minutes.",
     points: [
       "Direct WhatsApp contact with Jibu Thomas 24 hours a day",

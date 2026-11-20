@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { WhatsAppIcon } from "./WhatsAppIcon";
 import { useWebsiteContent } from "@/hooks/useWebsiteContent";
+import ScrollReveal from "./ScrollReveal";
 
 export default function AboutUs() {
   const content = useWebsiteContent();
@@ -64,27 +65,29 @@ export default function AboutUs() {
 
       <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 sm:mb-8">
-          <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap sm:flex-nowrap">
-            <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#8B5E35] to-[#B37D47] shadow-sm shrink-0" />
-            <h2 className="text-xl min-[400px]:text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.1em] sm:tracking-[0.12em] uppercase">
-              <span className="bg-gradient-to-r from-[#183D2B] via-[#1E4A35] to-[#27593D] bg-clip-text text-transparent">
-                ABOUT{" "}
-              </span>
-              <span className="bg-gradient-to-r from-[#8B5E35] via-[#B87D4B] to-[#8B5E35] bg-clip-text text-transparent">
-                US
-              </span>
-            </h2>
-            <span className="h-[1.5px] w-8 min-[400px]:w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent shrink-0" />
+        <ScrollReveal className="mb-6 sm:mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap sm:flex-nowrap">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#8B5E35] animate-pulse shrink-0" />
+              <h2 className="text-xl min-[400px]:text-2xl sm:text-3xl lg:text-4xl font-sans font-light tracking-[0.1em] sm:tracking-[0.12em] uppercase">
+                <span className="text-[#183D2B]">
+                  ABOUT{" "}
+                </span>
+                <span className="text-[#8B5E35]">
+                  US
+                </span>
+              </h2>
+              <span className="h-[1.5px] w-8 min-[400px]:w-12 sm:w-20 bg-[#8B5E35]/40 shrink-0" />
+            </div>
+            <p className="text-[11px] sm:text-xs font-sans font-medium uppercase tracking-[0.22em] text-[#8B5E35]">
+              Personally planned &bull; Locally known &bull; Privately travelled
+            </p>
           </div>
-          <p className="text-[11px] sm:text-xs font-sans font-medium uppercase tracking-[0.22em] text-[#8B5E35]">
-            Personally planned &bull; Locally known &bull; Privately travelled
-          </p>
-        </div>
+        </ScrollReveal>
 
         {/* Tab Navigation Pill Bar with smooth mobile horizontal scroll */}
-        <div className="w-full overflow-x-auto no-scrollbar mb-6 sm:mb-8 pb-1">
-          <div className="flex items-center gap-2 p-1.5 rounded-full bg-[#E9E0D2]/40 border border-[#E9E0D2] w-max">
+        <ScrollReveal delay={0.1} className="w-full overflow-x-auto no-scrollbar mb-6 sm:mb-8 pb-1">
+          <div className="flex items-center gap-2 p-1.5 rounded-full bg-white/80 backdrop-blur-md border border-[#E9E0D2] shadow-sm w-max">
             {tabs.map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -94,11 +97,10 @@ export default function AboutUs() {
                   type="button"
                   suppressHydrationWarning
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-sans tracking-wide transition-all whitespace-nowrap cursor-pointer ${
-                    isActive
-                      ? "bg-[#183D2B] text-[#FFFCF5] shadow-sm font-medium"
-                      : "text-[#242424]/75 hover:text-[#183D2B] hover:bg-white/60"
-                  }`}
+                  className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-sans tracking-wide transition-all whitespace-nowrap cursor-pointer ${isActive
+                    ? "bg-[#183D2B] text-[#FFFCF5] shadow-sm font-medium scale-[1.02]"
+                    : "text-[#242424]/75 hover:text-[#183D2B] hover:bg-black/5"
+                    }`}
                 >
                   <Icon className={`w-3.5 h-3.5 ${isActive ? "text-[#E9E0D2]" : "text-[#8B5E35]"}`} />
                   <span>{tab.label}</span>
@@ -106,7 +108,7 @@ export default function AboutUs() {
               );
             })}
           </div>
-        </div>
+        </ScrollReveal>
 
         {/* Interactive Tab Panels */}
         <AnimatePresence mode="wait">
@@ -267,11 +269,11 @@ export default function AboutUs() {
 
               <div className="flex items-center justify-between pt-2">
                 <Link prefetch={true} href="/about#philosophy"
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#183D2B] hover:bg-[#8B5E35] text-[#FFFCF5] text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-md active:scale-95 cursor-pointer"
-                  >
-                    <span>View More Details</span>
-                    <ArrowUpRight className="w-3.5 h-3.5" />
-                  </Link>
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#183D2B] hover:bg-[#8B5E35] text-[#FFFCF5] text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-md active:scale-95 cursor-pointer"
+                >
+                  <span>View More Details</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </Link>
               </div>
             </motion.div>
           )}
@@ -304,17 +306,17 @@ export default function AboutUs() {
 
               <div className="flex items-center justify-between pt-2">
                 <Link prefetch={true} href="/about#why-us"
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#183D2B] hover:bg-[#8B5E35] text-[#FFFCF5] text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-md active:scale-95 cursor-pointer"
-                  >
-                    <span>View More Details</span>
-                    <ArrowUpRight className="w-3.5 h-3.5" />
-                  </Link>
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#183D2B] hover:bg-[#8B5E35] text-[#FFFCF5] text-xs uppercase tracking-widest font-semibold transition-all duration-300 shadow-md active:scale-95 cursor-pointer"
+                >
+                  <span>View More Details</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </Link>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
 
-        </div>
+      </div>
     </section>
   );
 }

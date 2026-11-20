@@ -207,16 +207,16 @@ export default function GoogleReviews() {
 
         {/* Section Header */}
         <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap sm:flex-nowrap mb-5 sm:mb-6">
-          <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#8B5E35] to-[#B37D47] shadow-sm shrink-0" />
-          <h2 className="text-xl min-[400px]:text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.1em] sm:tracking-[0.12em] uppercase">
-            <span className="bg-gradient-to-r from-[#183D2B] via-[#1E4A35] to-[#27593D] bg-clip-text text-transparent">
+          <span className="w-2.5 h-2.5 rounded-full bg-[#8B5E35] animate-pulse shrink-0" />
+          <h2 className="text-xl min-[400px]:text-2xl sm:text-3xl lg:text-4xl font-sans font-light tracking-[0.1em] sm:tracking-[0.12em] uppercase">
+            <span className="text-[#183D2B]">
               GOOGLE{" "}
             </span>
-            <span className="bg-gradient-to-r from-[#8B5E35] via-[#B87D4B] to-[#8B5E35] bg-clip-text text-transparent">
+            <span className="text-[#8B5E35]">
               REVIEWS
             </span>
           </h2>
-          <span className="h-[1.5px] w-8 min-[400px]:w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent shrink-0" />
+          <span className="h-[1.5px] w-8 min-[400px]:w-12 sm:w-20 bg-[#8B5E35]/40 shrink-0" />
         </div>
 
         {/* Compact Authentic Google Review Header Bar (Seamlessly merged with Journeys brand theme) */}
@@ -225,14 +225,14 @@ export default function GoogleReviews() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-30px" }}
           transition={{ duration: 0.6 }}
-          className="bg-[#FAF6EF] rounded-2xl p-4 sm:p-5 border border-[#E9E0D2] mb-5 sm:mb-7"
+          className="bg-white rounded-2xl p-4 sm:p-5 border border-[#EBE3D7] shadow-[0_8px_30px_rgba(24,61,43,0.04)] mb-5 sm:mb-7"
         >
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 sm:gap-6">
 
             {/* Left: Google Brand & Score */}
             <div className="flex items-center gap-3.5 sm:gap-4">
               {/* Google 4-Color Icon in clean container */}
-              <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-white border border-[#E9E0D2] flex items-center justify-center p-2.5 shrink-0">
+              <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-[#FFFCF5] border border-[#EBE3D7] flex items-center justify-center p-2.5 shrink-0">
                 <svg viewBox="0 0 24 24" className="w-full h-full" aria-hidden="true">
                   <path
                     fill="#4285F4"
@@ -293,7 +293,7 @@ export default function GoogleReviews() {
                 type="button"
                 suppressHydrationWarning
                 onClick={() => setIsWriteModalOpen(true)}
-                className="flex-1 md:flex-initial inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-black hover:bg-neutral-800 active:scale-[0.98] text-white font-sans font-medium text-xs sm:text-sm transition-all duration-200 shadow-sm cursor-pointer"
+                className="flex-1 md:flex-initial inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-[#183D2B] hover:bg-[#23533c] active:scale-[0.98] text-[#FFFCF5] font-sans font-medium text-xs sm:text-sm transition-all duration-200 shadow-sm cursor-pointer"
               >
                 <PenSquare className="w-3.5 h-3.5 text-white" />
                 <span>Write a review</span>
@@ -323,7 +323,7 @@ export default function GoogleReviews() {
               return (
                 <div
                   key={itemKey}
-                  className="w-[280px] sm:w-[320px] md:w-[340px] shrink-0 bg-[#FAF6EF]/90 hover:bg-[#FAF6EF] rounded-2xl p-4 sm:p-5 border border-[#E9E0D2] hover:border-[#8B5E35]/50 transition-all duration-300 flex flex-col justify-between select-none"
+                  className="w-[280px] sm:w-[320px] md:w-[340px] shrink-0 bg-white rounded-2xl p-4 sm:p-5 border border-[#EBE3D7] hover:border-[#8B5E35]/50 shadow-[0_6px_20px_rgba(24,61,43,0.03)] hover:shadow-[0_12px_30px_rgba(24,61,43,0.08)] transition-all duration-300 flex flex-col justify-between select-none"
                 >
                   <div>
                     {/* Reviewer Header */}
@@ -385,11 +385,10 @@ export default function GoogleReviews() {
                         {[1, 2, 3, 4, 5].map((s) => (
                           <Star
                             key={s}
-                            className={`w-3.5 h-3.5 ${
-                              s <= rev.rating
+                            className={`w-3.5 h-3.5 ${s <= rev.rating
                                 ? "fill-[#FBBC05] text-[#FBBC05]"
                                 : "fill-gray-200 text-gray-200"
-                            }`}
+                              }`}
                           />
                         ))}
                       </div>
@@ -505,11 +504,10 @@ export default function GoogleReviews() {
                         aria-label={`${star} Stars`}
                       >
                         <Star
-                          className={`w-7 h-7 ${
-                            star <= (hoverRating || newRating)
+                          className={`w-7 h-7 ${star <= (hoverRating || newRating)
                               ? "fill-[#FBBC05] text-[#FBBC05]"
                               : "fill-gray-200 text-gray-200"
-                          }`}
+                            }`}
                         />
                       </button>
                     ))}
@@ -527,6 +525,7 @@ export default function GoogleReviews() {
                   <input
                     type="text"
                     required
+                    suppressHydrationWarning
                     value={newAuthor}
                     onChange={(e) => setNewAuthor(e.target.value)}
                     placeholder="e.g. David Henderson"
@@ -541,6 +540,7 @@ export default function GoogleReviews() {
                   </label>
                   <input
                     type="text"
+                    suppressHydrationWarning
                     value={newLocation}
                     onChange={(e) => setNewLocation(e.target.value)}
                     placeholder="e.g. London, UK"

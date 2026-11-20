@@ -20,6 +20,7 @@ import {
   trackWhatsAppClick,
   trackPhoneCallClick,
 } from "@/lib/analytics";
+import ScrollReveal from "./ScrollReveal";
 
 export default function ContactUs() {
   const content = useWebsiteContent();
@@ -96,23 +97,25 @@ export default function ContactUs() {
 
       <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2 mb-6 sm:mb-8">
-          <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap sm:flex-nowrap">
-            <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#8B5E35] to-[#B37D47] shadow-sm shrink-0" />
-            <h2 className="text-xl min-[400px]:text-2xl sm:text-3xl lg:text-4xl font-sans font-extrabold tracking-[0.1em] sm:tracking-[0.12em] uppercase">
-              <span className="bg-gradient-to-r from-[#183D2B] via-[#1E4A35] to-[#27593D] bg-clip-text text-transparent">
-                PLAN YOUR{" "}
-              </span>
-              <span className="bg-gradient-to-r from-[#8B5E35] via-[#B87D4B] to-[#8B5E35] bg-clip-text text-transparent">
-                JOURNEY
-              </span>
-            </h2>
-            <span className="h-[1.5px] w-8 min-[400px]:w-12 sm:w-20 bg-gradient-to-r from-[#8B5E35]/50 to-transparent shrink-0" />
+        <ScrollReveal className="mb-6 sm:mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2">
+            <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap sm:flex-nowrap">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#8B5E35] animate-pulse shrink-0" />
+              <h2 className="text-xl min-[400px]:text-2xl sm:text-3xl lg:text-4xl font-sans font-light tracking-[0.1em] sm:tracking-[0.12em] uppercase">
+                <span className="text-[#183D2B]">
+                  PLAN YOUR{" "}
+                </span>
+                <span className="text-[#8B5E35]">
+                  JOURNEY
+                </span>
+              </h2>
+              <span className="h-[1.5px] w-8 min-[400px]:w-12 sm:w-20 bg-[#8B5E35]/40 shrink-0" />
+            </div>
+            <p className="font-serif italic text-sm sm:text-base text-[#8B5E35]">
+              &ldquo;Your Kerala journey should feel like yours.&rdquo;
+            </p>
           </div>
-          <p className="font-serif italic text-sm sm:text-base text-[#8B5E35]">
-            &ldquo;Your Kerala journey should feel like yours.&rdquo;
-          </p>
-        </div>
+        </ScrollReveal>
 
         {/* Minimal 2-Column Compact Architecture */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
@@ -251,6 +254,7 @@ export default function ContactUs() {
                       <input
                         type="text"
                         required
+                        suppressHydrationWarning
                         placeholder="e.g. Eleanor Vance"
                         value={formData.fullName}
                         onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
@@ -265,6 +269,7 @@ export default function ContactUs() {
                       <input
                         type="text"
                         required
+                        suppressHydrationWarning
                         placeholder="+44 7700 900077 or email"
                         value={formData.contactInfo}
                         onChange={(e) => setFormData({ ...formData, contactInfo: e.target.value })}
@@ -279,6 +284,7 @@ export default function ContactUs() {
                     </label>
                     <input
                       type="text"
+                      suppressHydrationWarning
                       placeholder="e.g. November 2026, 10–12 days"
                       value={formData.travelDates}
                       onChange={(e) => setFormData({ ...formData, travelDates: e.target.value })}
@@ -292,6 +298,7 @@ export default function ContactUs() {
                     </label>
                     <textarea
                       rows={3}
+                      suppressHydrationWarning
                       placeholder="e.g. We are interested in tea plantations in Munnar, backwater houseboats, and gentle village walks..."
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}

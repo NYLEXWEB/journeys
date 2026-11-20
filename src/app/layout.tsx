@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Plus_Jakarta_Sans, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import { getLiveWebsiteContent } from "@/lib/contentService";
 import { WebsiteContentProvider } from "@/hooks/useWebsiteContent";
@@ -14,6 +14,20 @@ const inter = Inter({
   display: "swap",
 });
 
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["200", "300", "400", "500", "600", "700"],
+  variable: "--font-plus-jakarta",
+  display: "swap",
+});
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  style: ["normal", "italic"],
+  variable: "--font-serif",
+  display: "swap",
+});
 
 // Vercel Edge Caching with ISR: pages are served instantly from Vercel's global CDN Edge,
 // eliminating serverless function cold starts and reducing navigation latency to 0ms.
@@ -154,14 +168,21 @@ export default async function RootLayout({
   const initialContent = await getLiveWebsiteContent();
 
   return (
-    <html lang="en" suppressHydrationWarning className={`${inter.variable} antialiased`}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${inter.variable} ${plusJakarta.variable} ${cormorant.variable} antialiased`}
+    >
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body suppressHydrationWarning className="min-h-screen bg-[#FFFCF5] text-[#242424] font-sans font-light selection:bg-[#183D2B] selection:text-[#FFFCF5] tracking-[-0.015em]">
+      <body
+        suppressHydrationWarning
+        className="min-h-screen bg-[#FFFCF5] text-[#242424] font-sans font-light selection:bg-[#183D2B] selection:text-[#FFFCF5] tracking-[-0.015em]"
+      >
         <NavigationProgressBar />
         <AnalyticsTracker />
         <WebsiteContentProvider initialContent={initialContent}>
